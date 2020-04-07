@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FMF_Backend;
 using FMF_Backend.Models;
+using FMF_Backend.Data;
 
 namespace FMF_Backend.Controllers
 {
@@ -14,9 +15,9 @@ namespace FMF_Backend.Controllers
     [ApiController]
     public class GroceryListController : ControllerBase
     {
-        private readonly FMFContext _context;
+        private readonly FMFDbContext _context;
 
-        public GroceryListController(FMFContext context)
+        public GroceryListController(FMFDbContext context)
         {
             _context = context;
         }

@@ -1,10 +1,10 @@
 namespace FMF_Backend.Models{
-        public class Customer {
-                public Customer(){}
+        public class CustomerDTO {
+                public CustomerDTO(){}
 
                 //comment
 
-                public Customer(string firstName, string lastName, string address){
+                public CustomerDTO(string firstName, string lastName, string address){
                         FirstName = firstName;
                         LastName = lastName;
                         Address = address;

@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using FMF_Backend.Models;
 
-namespace FMF_Backend.Models {
-    public class FMFContext : DbContext {
-        public FMFContext(DbContextOptions<FMFContext> options) : base(options){}
+namespace FMF_Backend.Data {
+    public class FMFDbContext : DbContext {
+        public FMFDbContext(DbContextOptions<FMFDbContext> options) : base(options){}
 
         public DbSet<Driver> Drivers { get; set; }
-        public DbSet<Customer> Customer { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
         public DbSet<GroceryList> GroceryLists { get; set; }
 

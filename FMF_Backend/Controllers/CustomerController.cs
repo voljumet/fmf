@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using FMF_Backend;
+using FMF_Backend.Data;
 using FMF_Backend.Models;
 
 namespace FMF_Backend.Controllers
@@ -14,9 +14,9 @@ namespace FMF_Backend.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        private readonly FMFContext _context;
+        private readonly FMFDbContext _context;
 
-        public CustomerController(FMFContext context)
+        public CustomerController(FMFDbContext context)
         {
             _context = context;
         }
@@ -25,14 +25,14 @@ namespace FMF_Backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomer()
         {
-            return await _context.Customer.ToListAsync();
+            return await _context.Customers.ToListAsync();
         }
 
         // GET: api/Customer/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Customer>> GetCustomer(long id)
         {
-            var customer = await _context.Customer.FindAsync(id);
+            var customer = await _context.Customers.FindAsync(id);
 
             if (customer == null)
             {
@@ -80,7 +80,7 @@ namespace FMF_Backend.Controllers
         [HttpPost]
         public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
         {
-            _context.Customer.Add(customer);
+            _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
@@ -90,13 +90,13 @@ namespace FMF_Backend.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Customer>> DeleteCustomer(long id)
         {
-            var customer = await _context.Customer.FindAsync(id);
+            var customer = await _context.Customers.FindAsync(id);
             if (customer == null)
             {
                 return NotFound();
             }
 
-            _context.Customer.Remove(customer);
+            _context.Customers.Remove(customer);
             await _context.SaveChangesAsync();
 
             return customer;
@@ -104,7 +104,7 @@ namespace FMF_Backend.Controllers
 
         private bool CustomerExists(long id)
         {
-            return _context.Customer.Any(e => e.Id == id);
+            return _context.Customers.Any(e => e.Id == id);
         }
     }
 }

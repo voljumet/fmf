@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FMF_Backend.Models;
+using FMF_Backend.Data;
 
 namespace FMF_Backend.Controllers
 {
@@ -13,9 +14,9 @@ namespace FMF_Backend.Controllers
     [ApiController]
     public class Store1Controller : ControllerBase
     {
-        private readonly FMFContext _context;
+        private readonly FMFDbContext _context;
 
-        public Store1Controller(FMFContext context)
+        public Store1Controller(FMFDbContext context)
         {
             _context = context;
         }
