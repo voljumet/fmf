@@ -6,7 +6,8 @@ import {
   TextInput,
   FlatList,
   ActivityIndicator,
-  Keyboard
+  Keyboard,
+  TouchableOpacity
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as Animatable from 'react-native-animatable';
@@ -49,7 +50,9 @@ export default class SearchScreen extends React.Component {
     this.setState({ searchBarFocused: false })
 
   }
-
+Message = item =>  {
+  alert(item.title)
+}
   serachitem = value => {
     //Change "title" with the corresponding name in API
     const filteredItems = this.state.inMemmory.filter(item => {
@@ -62,14 +65,15 @@ export default class SearchScreen extends React.Component {
     this.setState({ dataSource: filteredItems });
   };
 
-  renderItem = ({ item }) =>
+  renderItem = ({item}) =>
     (
-
         //Change "title" with the corresponding name in API
       <View style={{ minHeight: 70, padding: 5 }}>
+        <TouchableOpacity onPress= {val => this.Message(item)} >
         <Text>
           {item.title}
         </Text>
+        </TouchableOpacity>
       </View>
     )
 
@@ -122,6 +126,7 @@ export default class SearchScreen extends React.Component {
 
 
           <View>
+            
             <FlatList
               style={{ backgroundColor: this.state.searchBarFocused ? 'rgba(0,0,0,0.3)' : 'white', margin: 20 }}
               data={this.state.dataSource}
