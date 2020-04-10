@@ -37,12 +37,9 @@ export default function BottomTabNavigator({ navigation, route }) {
         component={SearchScreen}
         options={{
           title: 'Search',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-search" />,
         }}
       />
-
-
-
       <BottomTab.Screen
         name="Links"
         component={LinksScreen}
