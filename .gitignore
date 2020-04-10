@@ -1,3 +1,7 @@
+# extras
+.idea
+*.db
+
 *.swp
 *.*~
 project.lock.json

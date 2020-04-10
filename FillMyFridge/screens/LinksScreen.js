@@ -20,11 +20,19 @@ export default function LinksScreen() {
       />
 
       <OptionButton
-        icon="ios-chatboxes"
+        icon="ios-compass"
         label="Ask a question on the forums"
         onPress={() => WebBrowser.openBrowserAsync('https://forums.expo.io')}
         isLastOption
       />
+
+      <OptionButton
+        icon="ios-compass"
+        label="VG"
+        onPress={() => WebBrowser.openBrowserAsync('www.vg.no')}
+        isLastOption
+      />
+
     </ScrollView>
   );
 }
