@@ -3,6 +3,123 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.10](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/compare/@react-navigation/stack@5.2.9...@react-navigation/stack@5.2.10) (2020-04-08)
+
+
+### Bug Fixes
+
+* make color of shadow element same as card color in stack ([f1a8bce](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/commit/f1a8bceba5b736e9f59862a8ae819342209a46f2))
+* mark type exports for all packages ([b71de6c](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/commit/b71de6cc799143f1d0e8a0cfcc34f0a2381f9840))
+
+
+
+
+
+## [5.2.9](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/compare/@react-navigation/stack@5.2.8...@react-navigation/stack@5.2.9) (2020-03-30)
+
+
+### Bug Fixes
+
+* dismiss keyboard on screen change for android ([8432e5a](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/commit/8432e5ab25f041af8538ea7fb35e97cfcf1f983e))
+* finish stack animation on CANCELLED event ([#7898](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/issues/7898)) ([d649fbc](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/commit/d649fbc6691871f0348076bce185d11a183c02cf)), closes [#7897](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/issues/7897)
+* when comparing changed routes, only check keys ([9a8fea8](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/commit/9a8fea8f2c1bdabfc5dd87e5c3ff4e7b97aef47d))
+
+
+
+
+
+## [5.2.7](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/compare/@react-navigation/stack@5.2.6...@react-navigation/stack@5.2.7) (2020-03-26)
+
+
+### Bug Fixes
+
+* add pointerEvents=box-none to overlay View ([#7871](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/issues/7871)) ([e097df8](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/commit/e097df880adab984aae29f847003d2548cfbdce5))
+
+
+
+
+
+## [5.2.6](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/compare/@react-navigation/stack@5.2.5...@react-navigation/stack@5.2.6) (2020-03-23)
+
+**Note:** Version bump only for package @react-navigation/stack
+
+
+
+
+
+## [5.2.5](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/compare/@react-navigation/stack@5.2.4...@react-navigation/stack@5.2.5) (2020-03-23)
+
+
+### Bug Fixes
+
+* fix swipe gestures requiring a lot of velocity to dismiss ([61f16d3](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/commit/61f16d3f25cbbcc00d699dd09c5f4abde9b17d5a))
+
+
+
+
+
+## [5.2.4](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/compare/@react-navigation/stack@5.2.3...@react-navigation/stack@5.2.4) (2020-03-22)
+
+
+### Bug Fixes
+
+* fix swipe not dismissing card in RTL ([043924c](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/commit/043924ca4843b6f02626532cbf4aafc7cad9fab1)), closes [#7841](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/issues/7841)
+
+
+
+
+
+## [5.2.3](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/compare/@react-navigation/stack@5.2.2...@react-navigation/stack@5.2.3) (2020-03-19)
+
+
+### Bug Fixes
+
+* use the correct velocity value in closing animation ([#7836](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/issues/7836)) ([adbfedc](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/commit/adbfedcd58d4e3d358c6c9691710bb8e4e0d8afb))
+
+
+
+
+
+## [5.2.2](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/compare/@react-navigation/stack@5.2.1...@react-navigation/stack@5.2.2) (2020-03-19)
+
+
+### Bug Fixes
+
+* don't use react-native-screens on web ([b1a65fc](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/commit/b1a65fc73e8603ae2c06ef101a74df31e80bb9b2)), closes [#7485](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/issues/7485)
+* fix blank page if stack was inside display: none before ([49f6fed](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/commit/49f6fed6d3da878e02a9fe9115c05bcf84e332bf))
+* fix closing stack using inverted gesture. ([#7824](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/issues/7824)) ([f24d3a3](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/commit/f24d3a3461ee8a566c25ce7d13f31035b4be2691))
+* initialize height and width to zero if undefined ([3df65e2](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/commit/3df65e28197db3bb8371059146546d57661c5ba3)), closes [#6789](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/issues/6789)
+* only dismiss previously focused input on page change. closes [#6918](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/issues/6918) ([b1fe730](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/commit/b1fe73097f3ad58d3ba4a8a9b875276d1d8d220c))
+
+
+
+
+
+## [5.2.1](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/compare/@react-navigation/stack@5.2.0...@react-navigation/stack@5.2.1) (2020-03-17)
+
+**Note:** Version bump only for package @react-navigation/stack
+
+
+
+
+
+# [5.2.0](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/compare/@react-navigation/stack@5.1.1...@react-navigation/stack@5.2.0) (2020-03-16)
+
+
+### Bug Fixes
+
+* fix android header title font weight ([#7720](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/issues/7720)) ([0dcaea3](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/commit/0dcaea32428484cdc9b4d56f7bf38f9f1bdf1dee))
+* fix back gesture cancellation ([#7700](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/issues/7700)) ([469d054](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/commit/469d0542c7341dc524a597d70216ba743602a51e)), closes [#6782](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/issues/6782)
+
+
+### Features
+
+* add an option to change use a custom card overlay ([#7809](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/issues/7809)) ([70029d6](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/commit/70029d6c130f0f47de94b6a6c4cbee6afa12b405))
+
+
+
+
+
 ## [5.1.1](https://github.com/react-navigation/react-navigation/tree/master/packages/stack/compare/@react-navigation/stack@5.1.0...@react-navigation/stack@5.1.1) (2020-03-03)
 
 

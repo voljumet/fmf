@@ -119,7 +119,7 @@ it('sets options with screenOptions prop as an object', () => {
 
     return (
       <>
-        {state.routes.map(route => {
+        {state.routes.map((route) => {
           const { render, options } = descriptors[route.key];
 
           return (
@@ -179,7 +179,7 @@ it('sets options with screenOptions prop as a fuction', () => {
 
     return (
       <>
-        {state.routes.map(route => {
+        {state.routes.map((route) => {
           const { render, options } = descriptors[route.key];
 
           return (
@@ -262,8 +262,10 @@ it('sets initial options with setOptions', () => {
   };
 
   const TestScreen = ({ navigation }: any): any => {
-    navigation.setOptions({
-      title: 'Hello world',
+    React.useEffect(() => {
+      navigation.setOptions({
+        title: 'Hello world',
+      });
     });
 
     return 'Test screen';
@@ -273,7 +275,7 @@ it('sets initial options with setOptions', () => {
     <BaseNavigationContainer>
       <TestNavigator>
         <Screen name="foo" options={{ color: 'blue' }}>
-          {props => <TestScreen {...props} />}
+          {(props) => <TestScreen {...props} />}
         </Screen>
         <Screen name="bar" component={jest.fn()} />
       </TestNavigator>
@@ -315,12 +317,12 @@ it('updates options with setOptions', () => {
   };
 
   const TestScreen = ({ navigation }: any): any => {
-    navigation.setOptions({
-      title: 'Hello world',
-      description: 'Something here',
-    });
-
     React.useEffect(() => {
+      navigation.setOptions({
+        title: 'Hello world',
+        description: 'Something here',
+      });
+
       const timer = setTimeout(() =>
         navigation.setOptions({
           title: 'Hello again',
@@ -338,7 +340,7 @@ it('updates options with setOptions', () => {
     <BaseNavigationContainer>
       <TestNavigator>
         <Screen name="foo" options={{ color: 'blue' }}>
-          {props => <TestScreen {...props} />}
+          {(props) => <TestScreen {...props} />}
         </Screen>
         <Screen name="bar" component={jest.fn()} />
       </TestNavigator>

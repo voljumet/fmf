@@ -9,6 +9,7 @@ import {
   RouterFactory,
   PartialState,
   NavigationAction,
+  Route,
 } from '@react-navigation/routers';
 import { NavigationStateContext } from './BaseNavigationContainer';
 import NavigationRouteContext from './NavigationRouteContext';
@@ -31,6 +32,7 @@ import {
 } from './types';
 import useStateGetters from './useStateGetters';
 import useOnGetState from './useOnGetState';
+import useScheduleUpdate from './useScheduleUpdate';
 
 // This is to make TypeScript compiler happy
 // eslint-disable-next-line babel/no-unused-expressions
@@ -103,7 +105,7 @@ const getRouteConfigsFromChildren = <
   }, []);
 
   if (process.env.NODE_ENV !== 'production') {
-    configs.forEach(config => {
+    configs.forEach((config) => {
       const { name, children, component } = config as any;
 
       if (typeof name !== 'string' || !name) {
@@ -212,7 +214,7 @@ export default function useNavigationBuilder<
     return acc;
   }, {});
 
-  const routeNames = routeConfigs.map(config => config.name);
+  const routeNames = routeConfigs.map((config) => config.name);
   const routeParamList = routeNames.reduce<Record<string, object | undefined>>(
     (acc, curr) => {
       const { initialParams } = screens[curr];
@@ -241,12 +243,12 @@ export default function useNavigationBuilder<
   }
 
   const isStateValid = React.useCallback(
-    state => state.type === undefined || state.type === router.type,
+    (state) => state.type === undefined || state.type === router.type,
     [router.type]
   );
 
   const isStateInitialized = React.useCallback(
-    state =>
+    (state) =>
       state !== undefined && state.stale === false && isStateValid(state),
     [isStateValid]
   );
@@ -307,16 +309,13 @@ export default function useNavigationBuilder<
   }
 
   if (
-    previousRouteRef.current &&
-    route &&
-    route.params &&
-    typeof route.params.screen === 'string' &&
-    route.params !== previousRouteRef.current.params
+    typeof route?.params?.screen === 'string' &&
+    route.params !== previousRouteRef.current?.params
   ) {
     // If the route was updated with new name and/or params, we should navigate there
     // The update should be limited to current navigator only, so we call the router manually
     const updatedState = router.getStateForAction(
-      state,
+      nextState,
       CommonActions.navigate(route.params.screen, route.params.params),
       {
         routeNames,
@@ -330,17 +329,17 @@ export default function useNavigationBuilder<
             routeNames,
             routeParamList,
           })
-        : state;
+        : nextState;
   }
 
   const shouldUpdate = state !== nextState;
 
-  React.useEffect(() => {
+  useScheduleUpdate(() => {
     if (shouldUpdate) {
-      // If the state needs to be updated, we'll schedule an update with React
+      // If the state needs to be updated, we'll schedule an update
       setState(nextState);
     }
-  }, [nextState, setState, shouldUpdate]);
+  });
 
   // The up-to-date state will come in next render, but we don't need to wait for it
   // We can't use the outdated state since the screens have changed, which will cause error due to mismatched config
@@ -367,34 +366,49 @@ export default function useNavigationBuilder<
       : (initializedStateRef.current as State);
   }, [getCurrentState, isStateInitialized]);
 
-  const emitter = useEventEmitter(e => {
+  const emitter = useEventEmitter((e) => {
     let routeNames = [];
 
-    if (e.target) {
-      const name = state.routes.find(route => route.key === e.target)?.name;
+    let route: Route<string> | undefined;
 
-      if (name) {
-        routeNames.push(name);
+    if (e.target) {
+      route = state.routes.find((route) => route.key === e.target);
+
+      if (route?.name) {
+        routeNames.push(route.name);
       }
     } else {
-      routeNames.push(...Object.keys(screens));
+      route = state.routes[state.index];
+      routeNames.push(
+        ...Object.keys(screens).filter((name) => route?.name === name)
+      );
     }
+
+    if (route == null) {
+      return;
+    }
+
+    const navigation = descriptors[route.key].navigation;
 
     const listeners = ([] as (((e: any) => void) | undefined)[])
       .concat(
-        ...routeNames.map(name => {
+        ...routeNames.map((name) => {
           const { listeners } = screens[name];
+          const map =
+            typeof listeners === 'function'
+              ? listeners({ route: route as any, navigation })
+              : listeners;
 
-          return listeners
-            ? Object.keys(listeners)
-                .filter(type => type === e.type)
-                .map(type => listeners[type])
+          return map
+            ? Object.keys(map)
+                .filter((type) => type === e.type)
+                .map((type) => map?.[type])
             : undefined;
         })
       )
       .filter((cb, i, self) => cb && self.lastIndexOf(cb) === i);
 
-    listeners.forEach(listener => listener?.(e));
+    listeners.forEach((listener) => listener?.(e));
   });
 
   useFocusEvents({ state, emitter });

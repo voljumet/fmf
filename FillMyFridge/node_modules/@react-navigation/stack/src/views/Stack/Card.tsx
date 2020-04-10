@@ -44,6 +44,7 @@ type Props = ViewProps & {
   onGestureCanceled?: () => void;
   onGestureEnd?: () => void;
   children: React.ReactNode;
+  overlay: (props: { style: StyleProp<ViewStyle> }) => React.ReactNode;
   overlayEnabled: boolean;
   shadowEnabled: boolean;
   gestureEnabled: boolean;
@@ -80,6 +81,10 @@ export default class Card extends React.Component<Props> {
     shadowEnabled: true,
     gestureEnabled: true,
     gestureVelocityImpact: GESTURE_VELOCITY_IMPACT,
+    overlay: ({ style }: { style: StyleProp<ViewStyle> }) =>
+      style ? (
+        <Animated.View pointerEvents="none" style={[styles.overlay, style]} />
+      ) : null,
   };
 
   componentDidMount() {
@@ -241,11 +246,21 @@ export default class Card extends React.Component<Props> {
         this.handleStartInteraction();
         onGestureBegin?.();
         break;
-      case GestureState.CANCELLED:
+      case GestureState.CANCELLED: {
         this.isSwiping.setValue(FALSE);
         this.handleEndInteraction();
+
+        const velocity =
+          gestureDirection === 'vertical' ||
+          gestureDirection === 'vertical-inverted'
+            ? nativeEvent.velocityY
+            : nativeEvent.velocityX;
+
+        this.animate({ closing: this.props.closing, velocity });
+
         onGestureCanceled?.();
         break;
+      }
       case GestureState.END: {
         this.isSwiping.setValue(FALSE);
 
@@ -267,7 +282,8 @@ export default class Card extends React.Component<Props> {
         }
 
         const closing =
-          Math.abs(translation + velocity * gestureVelocityImpact) >
+          (translation + velocity * gestureVelocityImpact) *
+            getInvertedMultiplier(gestureDirection) >
           distance / 2
             ? velocity !== 0 || translation !== 0
             : false;
@@ -409,6 +425,7 @@ export default class Card extends React.Component<Props> {
       next,
       layout,
       insets,
+      overlay,
       overlayEnabled,
       shadowEnabled,
       gestureEnabled,
@@ -470,55 +487,55 @@ export default class Card extends React.Component<Props> {
       : false;
 
     return (
-      <View pointerEvents="box-none" {...rest}>
-        {overlayEnabled && overlayStyle ? (
+      <CardAnimationContext.Provider value={animationContext}>
+        <View pointerEvents="box-none" {...rest}>
+          {overlayEnabled ? (
+            <View pointerEvents="box-none" style={StyleSheet.absoluteFill}>
+              {overlay({ style: overlayStyle })}
+            </View>
+          ) : null}
           <Animated.View
-            pointerEvents="none"
-            style={[styles.overlay, overlayStyle]}
-          />
-        ) : null}
-        <Animated.View
-          style={[styles.container, containerStyle, customContainerStyle]}
-          pointerEvents="box-none"
-        >
-          <PanGestureHandler
-            ref={this.gestureRef}
-            enabled={layout.width !== 0 && gestureEnabled}
-            onGestureEvent={handleGestureEvent}
-            onHandlerStateChange={this.handleGestureStateChange}
-            {...this.gestureActivationCriteria()}
+            style={[styles.container, containerStyle, customContainerStyle]}
+            pointerEvents="box-none"
           >
-            <Animated.View style={[styles.container, cardStyle]}>
-              {shadowEnabled && shadowStyle && !isTransparent ? (
-                <Animated.View
-                  style={[
-                    styles.shadow,
-                    gestureDirection === 'horizontal'
-                      ? [styles.shadowHorizontal, styles.shadowLeft]
-                      : gestureDirection === 'horizontal-inverted'
-                      ? [styles.shadowHorizontal, styles.shadowRight]
-                      : gestureDirection === 'vertical'
-                      ? [styles.shadowVertical, styles.shadowTop]
-                      : [styles.shadowVertical, styles.shadowBottom],
-                    shadowStyle,
-                  ]}
-                  pointerEvents="none"
-                />
-              ) : null}
-              <View
-                ref={this.contentRef}
-                style={[styles.content, contentStyle]}
-              >
-                <StackGestureRefContext.Provider value={this.gestureRef}>
-                  <CardAnimationContext.Provider value={animationContext}>
+            <PanGestureHandler
+              ref={this.gestureRef}
+              enabled={layout.width !== 0 && gestureEnabled}
+              onGestureEvent={handleGestureEvent}
+              onHandlerStateChange={this.handleGestureStateChange}
+              {...this.gestureActivationCriteria()}
+            >
+              <Animated.View style={[styles.container, cardStyle]}>
+                {shadowEnabled && shadowStyle && !isTransparent ? (
+                  <Animated.View
+                    style={[
+                      styles.shadow,
+                      gestureDirection === 'horizontal'
+                        ? [styles.shadowHorizontal, styles.shadowLeft]
+                        : gestureDirection === 'horizontal-inverted'
+                        ? [styles.shadowHorizontal, styles.shadowRight]
+                        : gestureDirection === 'vertical'
+                        ? [styles.shadowVertical, styles.shadowTop]
+                        : [styles.shadowVertical, styles.shadowBottom],
+                      { backgroundColor },
+                      shadowStyle,
+                    ]}
+                    pointerEvents="none"
+                  />
+                ) : null}
+                <View
+                  ref={this.contentRef}
+                  style={[styles.content, contentStyle]}
+                >
+                  <StackGestureRefContext.Provider value={this.gestureRef}>
                     {children}
-                  </CardAnimationContext.Provider>
-                </StackGestureRefContext.Provider>
-              </View>
-            </Animated.View>
-          </PanGestureHandler>
-        </Animated.View>
-      </View>
+                  </StackGestureRefContext.Provider>
+                </View>
+              </Animated.View>
+            </PanGestureHandler>
+          </Animated.View>
+        </View>
+      </CardAnimationContext.Provider>
     );
   }
 }
@@ -532,12 +549,11 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   overlay: {
-    ...StyleSheet.absoluteFillObject,
+    flex: 1,
     backgroundColor: '#000',
   },
   shadow: {
     position: 'absolute',
-    backgroundColor: '#fff',
     shadowRadius: 5,
     shadowColor: '#000',
     shadowOpacity: 0.3,

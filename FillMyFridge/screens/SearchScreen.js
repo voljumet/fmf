@@ -20,7 +20,7 @@ export default class SearchScreen extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount= async () => {
     this.keyboardDidShow = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow)
     this.keyboardWillShow = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow)
     this.keyboardDidHide = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide)

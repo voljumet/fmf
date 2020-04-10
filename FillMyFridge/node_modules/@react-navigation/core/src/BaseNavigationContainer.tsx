@@ -9,14 +9,15 @@ import {
 } from '@react-navigation/routers';
 import EnsureSingleNavigator from './EnsureSingleNavigator';
 import NavigationBuilderContext from './NavigationBuilderContext';
+import { ScheduleUpdateContext } from './useScheduleUpdate';
 import useFocusedListeners from './useFocusedListeners';
 import useDevTools from './useDevTools';
 import useStateGetters from './useStateGetters';
+import useEventEmitter from './useEventEmitter';
+import useSyncState from './useSyncState';
 import isSerializable from './isSerializable';
 
 import { NavigationContainerRef, NavigationContainerProps } from './types';
-import useEventEmitter from './useEventEmitter';
-import useSyncState from './useSyncState';
 
 type State = NavigationState | PartialState<NavigationState> | undefined;
 
@@ -73,7 +74,7 @@ const getPartialState = (
   return {
     ...partialState,
     stale: true,
-    routes: state.routes.map(route => {
+    routes: state.routes.map((route) => {
       if (route.state === undefined) {
         return route as Route<string> & {
           state?: PartialState<NavigationState>;
@@ -102,7 +103,7 @@ const BaseNavigationContainer = React.forwardRef(
       independent,
       children,
     }: NavigationContainerProps,
-    ref: React.Ref<NavigationContainerRef>
+    ref?: React.Ref<NavigationContainerRef>
   ) {
     const parent = React.useContext(NavigationStateContext);
 
@@ -112,7 +113,13 @@ const BaseNavigationContainer = React.forwardRef(
       );
     }
 
-    const [state, getState, setState] = useSyncState<State>(() =>
+    const [
+      state,
+      getState,
+      setState,
+      scheduleUpdate,
+      flushUpdates,
+    ] = useSyncState<State>(() =>
       getPartialState(initialState == null ? undefined : initialState)
     );
 
@@ -136,6 +143,7 @@ const BaseNavigationContainer = React.forwardRef(
     );
 
     const { trackState, trackAction } = useDevTools({
+      enabled: false,
       name: '@react-navigation',
       reset,
       state,
@@ -155,7 +163,7 @@ const BaseNavigationContainer = React.forwardRef(
         throw new Error(NOT_INITIALIZED_ERROR);
       }
 
-      listeners[0](navigation => navigation.dispatch(action));
+      listeners[0]((navigation) => navigation.dispatch(action));
     };
 
     const canGoBack = () => {
@@ -163,7 +171,7 @@ const BaseNavigationContainer = React.forwardRef(
         return false;
       }
 
-      const { result, handled } = listeners[0](navigation =>
+      const { result, handled } = listeners[0]((navigation) =>
         navigation.canGoBack()
       );
 
@@ -217,6 +225,11 @@ const BaseNavigationContainer = React.forwardRef(
       [addFocusedListener, trackAction, addStateGetter]
     );
 
+    const scheduleContext = React.useMemo(
+      () => ({ scheduleUpdate, flushUpdates }),
+      [scheduleUpdate, flushUpdates]
+    );
+
     const context = React.useMemo(
       () => ({
         state,
@@ -262,11 +275,13 @@ const BaseNavigationContainer = React.forwardRef(
     }, [onStateChange, trackState, getRootState, emitter, state]);
 
     return (
-      <NavigationBuilderContext.Provider value={builderContext}>
-        <NavigationStateContext.Provider value={context}>
-          <EnsureSingleNavigator>{children}</EnsureSingleNavigator>
-        </NavigationStateContext.Provider>
-      </NavigationBuilderContext.Provider>
+      <ScheduleUpdateContext.Provider value={scheduleContext}>
+        <NavigationBuilderContext.Provider value={builderContext}>
+          <NavigationStateContext.Provider value={context}>
+            <EnsureSingleNavigator>{children}</EnsureSingleNavigator>
+          </NavigationStateContext.Provider>
+        </NavigationBuilderContext.Provider>
+      </ScheduleUpdateContext.Provider>
     );
   }
 );
