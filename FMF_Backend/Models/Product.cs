@@ -8,11 +8,11 @@ public class Product {
 
     public Product(string productName, string supplier, 
     double priceStore1, double priceStore2, double priceFMF){
-        productName = ProductName;
-        supplier = Supplier;
-        priceStore1 = PriceStore1;
-        priceStore2 = PriceStore2;
-        PriceFMF = PriceFMF;
+        ProductName = productName;
+        Supplier = supplier;
+        PriceStore1 = priceStore1;
+        PriceStore2 = priceStore2;
+        PriceFMF = priceFMF;
     }
     
     public long Id { get; set; }
