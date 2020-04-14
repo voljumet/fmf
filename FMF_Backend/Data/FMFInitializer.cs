@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using FMF_Backend.Models;
+using Newtonsoft.Json;
 
 namespace FMF_Backend.Data{
     public static class DbInitializer{
+
         public static void Initialize(FMFDbContext context){
             // Delete the database before we initialize it.
             // This is common to do during development.
@@ -29,28 +33,49 @@ namespace FMF_Backend.Data{
                 new Driver("Morteza","Haidari",96325874,"Motorsykkel")
             });
 
-            context.Store1s.AddRange(new List<Store1>{
-                new Store1("Melkesjokolade","Freia", 42),
-                new Store1("Lett Melk","Q-Meieriene", 23),
-                new Store1("Lett Melk","Tine", 24),
-                new Store1("Pilsner","CB", 34),
-                new Store1("Lyspære 10W","Osram", 23),
-                new Store1("Grandiosa","Stabburet", 45)
-            });
+            string store1 = new WebClient().DownloadString("https://my-json-server.typicode.com/voljumet/demo/Store1");
+            List<Store1> store1Items = JsonConvert.DeserializeObject<List<Store1>>(store1);
 
-            context.Store2s.AddRange(new List<Store2>{
-                new Store2("Melkesjokolade","Freia", 39),
-                new Store2("Lett Melk","Q-Meieriene", 24),
-                new Store2("Lett Melk","Tine", 25),
-                new Store2("Pilsner","CB", 32),
-                new Store2("Lyspære 10W","Osram", 25),
-                new Store2("Grandiosa","Stabburet", 49)
-            });
+            foreach (var item in store1Items){
+                context.Store1s.AddRange(new List<Store1>{
+                    new Store1(item.ProductName,item.Supplier, item.Price)
+                });
+            }
+
+            string store2 = new WebClient().DownloadString("https://my-json-server.typicode.com/voljumet/demo/Store2");
+            List<Store2> store2Items = JsonConvert.DeserializeObject<List<Store2>>(store2);
+
+            foreach (var item in store2Items){
+                context.Store2s.AddRange(new List<Store2>{
+                    new Store2(item.ProductName,item.Supplier, item.Price)
+                });
+            }
+
 
             context.SaveChanges();
             
             var store1s = context.Store1s.ToList();
             var store2s = context.Store2s.ToList();
+
+            foreach (var item1 in store2s){
+                foreach (var item2 in store1s){
+                    if (item2.ProductName == item1.ProductName && item2.Supplier == item1.Supplier){
+                        if(item1.Price <= item2.Price){
+                            context.Products.AddRange(new List<Product>{
+                                new Product(item1.ProductName, item1.Supplier, item2.Price)
+                            });
+                        } else {
+                            context.Products.AddRange(new List<Product>{
+                                new Product(item1.ProductName, item1.Supplier, item1.Price)
+                            });
+                        }       
+                    }
+                }
+            }
+
+            var drivers = context.Drivers.ToList();
+
+            context.SaveChanges();
 
 
         }
