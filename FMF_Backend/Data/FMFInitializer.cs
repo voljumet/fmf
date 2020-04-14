@@ -51,7 +51,6 @@ namespace FMF_Backend.Data{
                 });
             }
 
-
             context.SaveChanges();
             
             var store1s = context.Store1s.ToList();
