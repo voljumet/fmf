@@ -34,3 +34,8 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+# Node
+node_modules
+*.log
+.nvm
+/node_modules/
