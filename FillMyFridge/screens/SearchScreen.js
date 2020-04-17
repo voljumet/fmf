@@ -50,6 +50,8 @@ export default class SearchScreen extends React.Component {
     this.setState({ searchBarFocused: false })
 
   }
+
+  // Function for the Touchable Items
 Message = item =>  {
   alert(item.title)
 }
