@@ -38,6 +38,6 @@ msbuild.wrn
 # Node
 node_modules
 *.log
-.expo
+*.expo
 .nvm
 /node_modules/
