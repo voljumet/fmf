@@ -38,6 +38,29 @@ msbuild.wrn
 # Node
 node_modules
 *.log
-*.expo
+
 .nvm
 /node_modules/
+
+# Android
+.idea
+.gradle
+local.properties
+*.iml
+/android/
+
+# OS X
+.DS_Store
+
+node_modules/**/*
+.expo/*
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+web-report/
+
