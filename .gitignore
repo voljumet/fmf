@@ -34,3 +34,19 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+
+# Node
+node_modules
+*.log
+.nvm
+/node_modules/
+
+# Android
+.idea
+.gradle
+local.properties
+*.iml
+/android/
+
+# OS X
+.DS_Store
