@@ -39,8 +39,8 @@ msbuild.wrn
 node_modules
 *.log
 
-.expo
-.expo-shared
+.expo/*
+.expo-shared/*
 
 .nvm
 /node_modules/
@@ -67,5 +67,6 @@ npm-debug.*
 web-build/
 web-report/
 
-FillMyFridge/.expo/packager-info.json
-FillMyFridge/.expo/settings.json
+FillMyFridge/.expo/*
+FillMyFridge/.expo/*
+FillMyFridge/.expo/web/*
