@@ -1,16 +1,11 @@
 namespace FMF_Backend.Models{
-        public class Customer {
-                public Customer(){}
-
-                //comment
-
-                public Customer(string firstName, string lastName, string address){
+   public class Customer {
+      public Customer(string firstName, string lastName, string address){
                         FirstName = firstName;
                         LastName = lastName;
                         Address = address;
                         
                 }
-                
                 public long Id { get; set; }
                 public string FirstName { get; set; }
                 public string LastName { get; set; }

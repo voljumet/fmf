@@ -26,7 +26,7 @@ namespace FMF_Backend
                     using (var context = new FMFDbContext(
                         services.GetRequiredService<
                             DbContextOptions<FMFDbContext>>())){
-                                FMFDbInitializer.Initialize(context);
+                                DbInitializer.Initialize(context);
                             }
                 }
                 catch(Exception ex){
