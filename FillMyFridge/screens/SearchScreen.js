@@ -35,9 +35,7 @@ export default class SearchScreen extends React.Component {
                      this.keyboardDidHide
                    );
                    // Change the URL to Store's URL
-                   return fetch(
-                     "https://my-json-server.typicode.com/voljumet/demo/Store2"
-                   )
+                   return fetch("https://77ed828d.ngrok.io/api/product")
                      .then((response) => response.json())
                      .then((responseJson) => {
                        this.setState({
@@ -75,11 +73,11 @@ export default class SearchScreen extends React.Component {
                  //items will be displayed
                  renderItem = ({ item }) => (
                    //Change "title" with the corresponding name in API
-                   <View style={{ minHeight: 70, padding: 5 }}>
+                   <View style={{backgroundColor:'#abc123', padding:5,margin:10}}>
                      <TouchableOpacity onPress={(val) => this.Message(item)}>
-                       <Text>
-                         {item.ProductName} - {item.Supplier} - kr {item.Price},-
-                       </Text>
+                       <Text style={{color:'#fff', fontWeight:'bold', fontSize:13}}>{item.supplier}</Text>
+                       <Text style={{color:'#fff', fontWeight:'bold', fontSize:20}}>{item.productName}</Text>
+                       <Text style={{color:'#050', fontWeight:'bold', fontSize:20}}>kr {item.priceFMF},-</Text>
                      </TouchableOpacity>
                    </View>
                  );
@@ -98,7 +96,7 @@ export default class SearchScreen extends React.Component {
                        <View
                          style={{
                            padding: 50,
-                           backgroundColor: "#c45654",
+                           backgroundColor: "#vf45",
                            justifyContent: "center",
                            paddingHorizontal: 5,
                          }}
