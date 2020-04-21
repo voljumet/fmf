@@ -11,7 +11,10 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as Animatable from 'react-native-animatable';
-export default class SearchScreen extends React.Component {
+import {connect} from 'react-redux';
+import {Provider} from 'react-redux';
+class SearchScreen extends React.Component {
+
                  constructor() {
                    super();
                    this.state = {
@@ -35,7 +38,7 @@ export default class SearchScreen extends React.Component {
                      this.keyboardDidHide
                    );
                    // Change the URL to Store's URL
-                   return fetch("https://77ed828d.ngrok.io/api/product")
+                   return fetch("https://5913f5eb.ngrok.io/api/product")
                      .then((response) => response.json())
                      .then((responseJson) => {
                        this.setState({
@@ -57,12 +60,12 @@ export default class SearchScreen extends React.Component {
 
                  // Function for the Touchable Items
                  Message = (item) => {
-                   alert(item.ProductName);
+                   alert(item.productName);
                  };
                  serachitem = (value) => {
                    //Change "title" with the corresponding name in API
                    const filteredItems = this.state.inMemmory.filter((item) => {
-                     let itemLowerCase = item.ProductName.toLowerCase();
+                     let itemLowerCase = item.productName.toLowerCase();
                      let searchItemLowerCase = value.toLowerCase();
 
                      return itemLowerCase.indexOf(searchItemLowerCase) > -1;
@@ -74,7 +77,7 @@ export default class SearchScreen extends React.Component {
                  renderItem = ({ item }) => (
                    //Change "title" with the corresponding name in API
                    <View style={{backgroundColor:'#abc123', padding:5,margin:10}}>
-                     <TouchableOpacity onPress={(val) => this.Message(item)}>
+                     <TouchableOpacity onPress={(val) => this.props.addItemToCart(item)}>
                        <Text style={{color:'#fff', fontWeight:'bold', fontSize:13}}>{item.supplier}</Text>
                        <Text style={{color:'#fff', fontWeight:'bold', fontSize:20}}>{item.productName}</Text>
                        <Text style={{color:'#050', fontWeight:'bold', fontSize:20}}>kr {item.priceFMF},-</Text>
@@ -83,6 +86,7 @@ export default class SearchScreen extends React.Component {
                  );
 
                  render() {
+                  
                    if (this.state.isLoading) {
                      return (
                        <View style={styles.container}>
@@ -153,9 +157,25 @@ export default class SearchScreen extends React.Component {
                          </View>
                        </View>
                      </View>
+                     
                    );
+                   
+                   
                  }
+                 
                }
+               
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addItemToCart: (item) => dispatch({type:'ADD_TO_CART', payload:item.id})
+  }
+}
+
+export default connect(null,mapDispatchToProps)(SearchScreen)
+
+
+ 
 
 
 const styles = StyleSheet.create({
