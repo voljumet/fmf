@@ -6,6 +6,8 @@ import HomeScreen from '../screens/HomeScreen';
 import MapScreen from '../screens/MapScreen';
 import SearchScreen from '../screens/SearchScreen';
 import LoginScreen from '../screens/LoginScreen';
+import NewScreen from '../screens/NewScreen';
+
 
 
 
@@ -33,10 +35,10 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       />
       <BottomTab.Screen
-        name="Search"
-        component={SearchScreen}
+        name="New" 
+        component={NewScreen}
         options={{
-          title: 'Search',
+          title: 'new',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-search" />,
         }}
       />
@@ -65,8 +67,8 @@ function getHeaderTitle(route) {
 
   switch (routeName) {
     case 'Home':
-      return 'Home page';
-    case 'Search':
+      return 'How to get started';
+    case 'ShoppingCart':
       return 'Search for product';
     case 'Login':
       return 'Change profile information';
