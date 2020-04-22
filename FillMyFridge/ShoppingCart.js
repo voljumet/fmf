@@ -35,7 +35,8 @@ export default ShoppingCart;
 
 const AppStackNavigator = createStackNavigator({
 
-    Home: () => <SearchScreen/>
+    Home: () => <SearchScreen/>,
+    Cart: () => <CartScreen/>
     
 },{
         navigationOptions: {
