@@ -38,7 +38,7 @@ class SearchScreen extends React.Component {
                      this.keyboardDidHide
                    );
                    // Change the URL to Store's URL
-                   return fetch("https://5913f5eb.ngrok.io/api/product")
+                   return fetch("https://33c001d3.ngrok.io/api/product")
                      .then((response) => response.json())
                      .then((responseJson) => {
                        this.setState({
@@ -168,7 +168,7 @@ class SearchScreen extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addItemToCart: (item) => dispatch({type:'ADD_TO_CART', payload:item.id})
+    addItemToCart: (product) => dispatch({type:'ADD_TO_CART', payLoad:product})
   }
 }
 
