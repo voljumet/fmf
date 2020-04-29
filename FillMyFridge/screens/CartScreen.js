@@ -12,6 +12,7 @@ import Products  from '../Products';
 
 
 
+
 class CartScreen extends Component {
     render(){
         return(
@@ -37,7 +38,6 @@ const mapDispatchToProps = (dispatch) => {
         removeItem: (product) => dispatch({ type: 'REMOVE_FROM_CART', payLoad: product })
     }
 }
-
 
 export default connect(mapStateToProps,mapDispatchToProps) (CartScreen);
 const styles = StyleSheet.create({
