@@ -7,6 +7,7 @@ import MapScreen from '../screens/MapScreen';
 import SearchScreen from '../screens/SearchScreen';
 import LoginScreen from '../screens/LoginScreen';
 import NewScreen from '../screens/ShopScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 
 
 
