@@ -8,13 +8,24 @@ import {
 
 class Products extends Component {
 
+    addToCart = (e) => {
+ 
+        e.preventDefault();
+ 
+        this.props.addToCart(this.props.product)
+ 
+        this.setState({
+            inCart: true
+        })
+    }
+    
+
     renderProducts = (products) => {
         console.log(products)
         return products.map((item, index) => {
             return (
                 <View key={index} style={{ padding: 20 }}>
-                    
-                    <Button onPress={() => this.props.onPress(item)} title={item.productName + " - " + item.priceFMF} />
+                    <Button onPress={() => this.props.onPress(item)} title={item.productName + " - " + item.priceFMF + " QTY: " } />
                 </View>
             )
         })
@@ -29,6 +40,8 @@ class Products extends Component {
             </View>
         );
     }
+
+
 }
 export default Products;
 
