@@ -54,6 +54,8 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       />
 
+
+
       <BottomTab.Screen
         name="Profile"
         component={LoginScreen}
