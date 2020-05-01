@@ -1,17 +1,20 @@
-# Get base SDK Image from Microsoft
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 WORKDIR /app
+EXPOSE 80
+EXPOSE 443
 
-# Copy the CSPROJ file and restore ant dependencies (via NUGET)
-COPY *.csproj ./
-RUN dotnet restore
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+WORKDIR /src
+COPY ["FMF_Backend.csproj", "./"]
+RUN dotnet restore "./FMF_Backend.csproj"
+COPY . .
+WORKDIR "/src/."
+RUN dotnet build "FMF_Backend.csproj" -c Release -o /app/build
 
-# Copy the project files and build our release
-COPY . ./
-RUN dotnet publish -c Release -o out
+FROM build AS publish
+RUN dotnet publish "FMF_Backend.csproj" -c Release -o /app/publish
 
-# Generate runtime image (only uses aspnet, no need for the whole sdk)
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
-COPY bin/Release/netcoreapp3.1/publish/ App/
-WORKDIR /App
-ENTRYPOINT ["dotnet", "fmf_backend.dll"]
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "FMF_Backend.dll"]
