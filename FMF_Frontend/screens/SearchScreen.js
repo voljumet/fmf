@@ -35,7 +35,7 @@ export default class SearchScreen extends React.Component {
                      this.keyboardDidHide
                    );
                    // Change the URL to Store's URL
-                   return fetch("https://77ed828d.ngrok.io/api/product")
+                   return fetch("https://ffa7a10b.ngrok.io/api/product")
                      .then((response) => response.json())
                      .then((responseJson) => {
                        this.setState({

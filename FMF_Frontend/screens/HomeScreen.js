@@ -13,8 +13,8 @@ export default function HomeScreen() {
         <Image
             source={
               __DEV__
-                ? require('../assets/images/icon-01.png')
-                : require('../assets/images/icon-01.png')
+                ? require('../assets/images/icon.png')
+                : require('../assets/images/icon.png')
             }
             style={styles.welcomeImage}
           />
