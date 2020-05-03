@@ -1,6 +1,6 @@
 namespace FMF_Backend.Models{
-   public class Customer {
-      public Customer(string firstName, string lastName, string address){
+   public class Profile {
+      public Profile(string firstName, string lastName, string address){
                         FirstName = firstName;
                         LastName = lastName;
                         Address = address;
@@ -12,6 +12,9 @@ namespace FMF_Backend.Models{
                 public string Address { get; set; }
                 public int Phone { get; set; }
                 public int Rating { get; set; }
+                public string Vehicle { get; set; }
                 public string Notes { get; set; }
+                public bool Shopper { get; set;}
+                public bool Driver { get; set;}
         }
 }

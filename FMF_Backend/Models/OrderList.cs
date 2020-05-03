@@ -1,15 +1,15 @@
 namespace FMF_Backend.Models{
-    public class OrderLine{
-        public OrderLine() {}
+    public class OrderList{
+        public OrderList() {}
 
-        public OrderLine(Product product, double amount){
+        public OrderList(Product product, double quantity){
             Product = product;
-            Amount = amount;
+            Quantity = quantity;
         }
 
         public int Id { get; set; }
         public int ProductId { get; set; }
         public Product Product { get; set; }
-        public double Amount { get; set; }
+        public double Quantity { get; set; }
     }
 }

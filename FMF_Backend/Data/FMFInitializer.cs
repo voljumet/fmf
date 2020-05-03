@@ -17,20 +17,12 @@ namespace FMF_Backend.Data{
             // Make sure the database and tables exist
             context.Database.EnsureCreated();
 
-            context.Customers.AddRange(new List<Customer>{
-                new Customer("Rune Alexander","Laursen","Juice veien 69"),
-                new Customer("Ole","Gunvaldsen","Appveien 420"),
-                new Customer("Anne Lise","Skjæveland","UiA gate 42"),
-                new Customer("Peshang","Alo","Gullveien 1337"),
-                new Customer("Morteza","Haidari","Klepp 3")
-            });
-
-            context.Drivers.AddRange(new List<Driver>{
-                new Driver("Rune Alexander","Laursen",12345678,"Ryggsekk"),
-                new Driver("Ole","Gunvaldsen",78945612,"Personbil"),
-                new Driver("Anne Lise","Skjæveland",65412398,"Kassebil"),
-                new Driver("Peshang","Alo",46827913,"Sykkel"),
-                new Driver("Morteza","Haidari",96325874,"Motorsykkel")
+            context.Profiles.AddRange(new List<Profile>{
+                new Profile("Rune Alexander","Laursen","Juice veien 69"),
+                new Profile("Ole","Gunvaldsen","Appveien 420"),
+                new Profile("Anne Lise","Skjæveland","UiA gate 42"),
+                new Profile("Peshang","Alo","Gullveien 1337"),
+                new Profile("Morteza","Haidari","Klepp 3")
             });
 
             string store1 = new WebClient().DownloadString("https://my-json-server.typicode.com/voljumet/demo/Store1");
@@ -71,11 +63,38 @@ namespace FMF_Backend.Data{
                     }
                 }
             }
+            context.SaveChanges();
 
-            var drivers = context.Drivers.ToList();
+            var profiles = context.Profiles.ToList();
+            var products = context.Products.ToList();
+
+
+            context.OrderLists.AddRange(new List<OrderList>{
+                new OrderList(products[1], 3),
+                new OrderList(products[2], 10),
+                new OrderList(products[4], 6),
+                new OrderList(products[3], 1)
+
+            });
 
             context.SaveChanges();
 
+            double total1 = 
+            products[0].PriceFMF*3 +
+            products[2].PriceFMF*10 +
+            products[4].PriceFMF*6 +
+            products[3].PriceFMF*1;
+
+            
+            var orderList = context.OrderLists.ToList();
+            
+            context.SaveChanges();
+
+            context.Orders.AddRange(new List<Order>{
+                new Order(profiles[1], DateTime.UtcNow, orderList[0],total1)
+            });
+
+            context.SaveChanges();
 
         }
 

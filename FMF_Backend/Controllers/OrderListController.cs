@@ -5,55 +5,55 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using FMF_Backend.Data;
 using FMF_Backend.Models;
+using FMF_Backend.Data;
 
 namespace FMF_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomerController : ControllerBase
+    public class OrderListController : ControllerBase
     {
         private readonly FMFDbContext _context;
 
-        public CustomerController(FMFDbContext context)
+        public OrderListController(FMFDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Customer
+        // GET: api/OrderList
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Customer>>> GetCustomer()
+        public async Task<ActionResult<IEnumerable<OrderList>>> GetOrderLists()
         {
-            return await _context.Customers.ToListAsync();
+            return await _context.OrderLists.ToListAsync();
         }
 
-        // GET: api/Customer/5
+        // GET: api/OrderList/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Customer>> GetCustomer(long id)
+        public async Task<ActionResult<OrderList>> GetOrderList(int id)
         {
-            var customer = await _context.Customers.FindAsync(id);
+            var orderList = await _context.OrderLists.FindAsync(id);
 
-            if (customer == null)
+            if (orderList == null)
             {
                 return NotFound();
             }
 
-            return customer;
+            return orderList;
         }
 
-        // PUT: api/Customer/5
+        // PUT: api/OrderList/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCustomer(long id, Customer customer)
+        public async Task<IActionResult> PutOrderList(int id, OrderList orderList)
         {
-            if (id != customer.Id)
+            if (id != orderList.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(customer).State = EntityState.Modified;
+            _context.Entry(orderList).State = EntityState.Modified;
 
             try
             {
@@ -61,7 +61,7 @@ namespace FMF_Backend.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CustomerExists(id))
+                if (!OrderListExists(id))
                 {
                     return NotFound();
                 }
@@ -74,37 +74,37 @@ namespace FMF_Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/Customer
+        // POST: api/OrderList
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
+        public async Task<ActionResult<OrderList>> PostOrderList(OrderList orderList)
         {
-            _context.Customers.Add(customer);
+            _context.OrderLists.Add(orderList);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
+            return CreatedAtAction("GetOrderList", new { id = orderList.Id }, orderList);
         }
 
-        // DELETE: api/Customer/5
+        // DELETE: api/OrderList/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Customer>> DeleteCustomer(long id)
+        public async Task<ActionResult<OrderList>> DeleteOrderList(int id)
         {
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer == null)
+            var orderList = await _context.OrderLists.FindAsync(id);
+            if (orderList == null)
             {
                 return NotFound();
             }
 
-            _context.Customers.Remove(customer);
+            _context.OrderLists.Remove(orderList);
             await _context.SaveChangesAsync();
 
-            return customer;
+            return orderList;
         }
 
-        private bool CustomerExists(long id)
+        private bool OrderListExists(int id)
         {
-            return _context.Customers.Any(e => e.Id == id);
+            return _context.OrderLists.Any(e => e.Id == id);
         }
     }
 }

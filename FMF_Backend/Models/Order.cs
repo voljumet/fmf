@@ -4,28 +4,26 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FMF_Backend.Models {
 
-public class Order {
+    public class Order {
 
-    public Order(){}
+        public Order(){}
 
-    public Order(GroceryList groceryList, Driver driver, double finalCheck){
+        public Order(Profile profile, DateTime orderTime, OrderList orderList, double finalCheck){
 
-        groceryList = GroceryList;
-        driver = Driver;
-        OrderTime = DateTime.UtcNow;
-        OrderLines = new List<OrderLine>();
-        finalCheck = FinalCheck;
+            Profile = profile;
+            OrderTime = DateTime.UtcNow;
+            OrderLists = new List<OrderList>();
+            finalCheck = FinalCheck;
+        }
+
+        public long Id { get; set; }
+        public Profile Profile { get; set; }
+        
+        public double FinalCheck { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime OrderTime { get; set; }
+        public List<OrderList> OrderLists { get; set; }
+        
     }
-
-    public long Id { get; set; }
-    public Driver Driver { get; set; }
-    public GroceryList GroceryList { get; set; }
-    public Customer Customer { get; set; }
-    public double FinalCheck { get; set; }
-    [DataType(DataType.Date)]
-    public DateTime OrderTime { get; set; }
-    public List<OrderLine> OrderLines { get; set; }
-    
-    
-}
 }
