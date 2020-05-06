@@ -6,7 +6,6 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 
 export default class Profile extends Component {
 
