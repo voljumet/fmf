@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 
 namespace FMF_Backend.Data{
     public static class DbInitializer{
-
         public static void Initialize(FMFDbContext context){
             // Delete the database before we initialize it.
             // This is common to do during development.
@@ -18,11 +17,11 @@ namespace FMF_Backend.Data{
             context.Database.EnsureCreated();
 
             context.Profiles.AddRange(new List<Profile>{
-                new Profile("Rune Alexander","Laursen","Juice veien 69"),
-                new Profile("Ole","Gunvaldsen","Appveien 420"),
-                new Profile("Anne Lise","Skjæveland","UiA gate 42"),
-                new Profile("Peshang","Alo","Gullveien 1337"),
-                new Profile("Morteza","Haidari","Klepp 3")
+                new Profile("Rune Alexander","Laursen","Kristian IVs gate 17, 4612 Kristiansand"),
+                new Profile("Ole","Gunvaldsen","Jon Lilletuns Vei 17, 4879 Grimstad"),
+                new Profile("Anne Lise","Skjæveland","Lagerveien 12, 3030 Stavanger"),
+                new Profile("Peshang","Alo","Venneslaveien 7, 4688 Vennesla"),
+                new Profile("Morteza","Haidari","Tønnevoldsgate 44b, 4879 Grimstad")
             });
 
             string store1 = new WebClient().DownloadString("https://my-json-server.typicode.com/voljumet/demo/Store1");
@@ -30,7 +29,7 @@ namespace FMF_Backend.Data{
 
             foreach (var item in store1Items){
                 context.Store1s.AddRange(new List<Store1>{
-                    new Store1(item.ProductName,item.Supplier, item.Price)
+                    new Store1(item.ProductName,item.Supplier, item.Price, item.Weight)
                 });
             }
 
@@ -39,7 +38,7 @@ namespace FMF_Backend.Data{
 
             foreach (var item in store2Items){
                 context.Store2s.AddRange(new List<Store2>{
-                    new Store2(item.ProductName,item.Supplier, item.Price)
+                    new Store2(item.ProductName,item.Supplier, item.Price, item.Weight)
                 });
             }
 
@@ -53,11 +52,11 @@ namespace FMF_Backend.Data{
                     if (item2.ProductName == item1.ProductName && item2.Supplier == item1.Supplier){
                         if(item1.Price <= item2.Price){
                             context.Products.AddRange(new List<Product>{
-                                new Product(item1.ProductName, item1.Supplier, item2.Price)
+                                new Product(item1.ProductName, item1.Supplier, item2.Price, item1.Weight)
                             });
                         } else {
                             context.Products.AddRange(new List<Product>{
-                                new Product(item1.ProductName, item1.Supplier, item1.Price)
+                                new Product(item1.ProductName, item1.Supplier, item1.Price, item1.Weight)
                             });
                         }       
                     }
@@ -67,14 +66,18 @@ namespace FMF_Backend.Data{
 
             var profiles = context.Profiles.ToList();
             var products = context.Products.ToList();
+            var orderList = context.OrderLists.ToList();
+            var order = context.Orders.ToList();
+
+            var orderList1 = new OrderList();
+            var order1 = new Order();
 
 
-            context.OrderLists.AddRange(new List<OrderList>{
-                new OrderList(products[1], 3),
-                new OrderList(products[2], 10),
-                new OrderList(products[4], 6),
-                new OrderList(products[3], 1)
+            order1.Driver = profiles[0];
+            // orderList1.Products = products[0];
 
+            orderList.AddRange(new List<OrderList>{
+                new OrderList(products[1], 3, profiles[2], DateTime.UtcNow, 1337,55),
             });
 
             context.SaveChanges();
@@ -86,12 +89,11 @@ namespace FMF_Backend.Data{
             products[3].PriceFMF*1;
 
             
-            var orderList = context.OrderLists.ToList();
             
             context.SaveChanges();
 
             context.Orders.AddRange(new List<Order>{
-                new Order(profiles[1], DateTime.UtcNow, orderList[0],total1)
+                new Order(profiles[1], orderList[0], DateTime.UtcNow)
             });
 
             context.SaveChanges();
