@@ -37,11 +37,19 @@ export default class MapScreen extends Component {
 
 componentDidMount = async () => {
 
+  fetch("https://916c225a.ngrok.io/api/orderLine")
+                     .then((response) => response.json())
+                     .then((responseJson) => {
+                       console.log(responseJson)
+                     })
+                     .catch((error) => {
+                       console.log(error);
+                     });
+
   liste = []
 
   en = new GroceryList("Lundeleitet 11, 4323 Sandnes", "Melk", "Min første handleliste"),
-  liste.push(en);
-
+  liste.push(en)
   to = new GroceryList("Smebyveien 17A, 2319 Hamar", "Kakao", "Min andre handleliste"),
   liste.push(to)
   tre = new GroceryList("Storgata 65, 0182 Oslo", "Knekkebrød", "Min tredje handleliste"),
@@ -49,13 +57,14 @@ componentDidMount = async () => {
   fire = new GroceryList("Karl Johans Gate 25, 0159 Oslo", "Grillpølser", "Min fjerde handleliste"),
   liste.push(fire)
 
+  for(const list of liste){
     this.setState(prevState => ({
-      Lists: [...prevState.Lists, liste]
+      Lists: [...prevState.Lists, list],
     }))
+  }
 }
 
 getGeoData() {
-  console.log(this.state.Lists)
   for (const list of this.state.Lists) {
     Geocoder.from(list.address)
       .then((response) => {
