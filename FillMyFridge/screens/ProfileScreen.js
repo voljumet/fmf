@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default class Profile extends Component {
 
@@ -17,7 +18,6 @@ export default class Profile extends Component {
           <View style={styles.body}>
             <View style={styles.bodyContent}>
               <Text style={styles.name}>John Doe</Text>
-            
               <TouchableOpacity style={styles.buttonContainer}>
                 <Text>Placeholder-1</Text>  
               </TouchableOpacity>              
