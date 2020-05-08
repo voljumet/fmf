@@ -67,32 +67,30 @@ namespace FMF_Backend.Data{
             var products = context.Products.ToList();
             var orderList = context.OrderLists.ToList();
             var order = context.Orders.ToList();
-
             var profiles = context.Profiles.ToList();
 
-            var order1 = new Order();
-            var orderList1 = new OrderList();
 
-            order1.Driver = profiles[0];
-            orderList1.Shopper = profiles[1];
-            // orderList1.Products = products[0];
+
+
+
+
+
+            // var order1 = new Order();
+            // var orderList1 = new OrderList();
 
 
             orderList.AddRange(new List<OrderList>{
-                new OrderList(products[1], 3, profiles[2], DateTime.UtcNow, 1337,55),
+                new OrderList(products[1], 3, profiles[0], DateTime.UtcNow, 1337,55),
+                new OrderList(products[0], 5, profiles[1], DateTime.Now, 420,69)
             });
-
-
-           
             
+
             context.SaveChanges();
 
             context.Orders.AddRange(new List<Order>{
                 new Order(profiles[1], orderList[0], DateTime.UtcNow)
             });
             
-            context.Orders.Add(order1);
-
             context.SaveChanges();
 
         }

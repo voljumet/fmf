@@ -29,6 +29,28 @@ namespace FMF_Backend.Controllers
         }
 
         // GET: api/Order/5
+        [HttpGet("GO/{id}")]
+        public async Task<ActionResult<Order>> GetOrderDetails(long id)
+        {
+            var order = _context.Orders
+                .Include(ord => ord.Driver)
+                .Include(ord => ord.OrderList)
+                    .ThenInclude(orderList => orderList.Products)
+                    
+                .Where(ord => ord.Id == id)
+                .FirstOrDefault();
+
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+
+            return order;
+        }
+
+        // GET: api/Order/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrder(long id)
         {
