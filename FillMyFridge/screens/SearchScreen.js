@@ -8,14 +8,21 @@ import {
   ActivityIndicator,
   Keyboard,
   TouchableOpacity,
-  Button,
-  FlatButtom
+
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
 import { Provider } from 'react-redux';
 import Products from '../Products';
+import store from '../store';
+import {withNavigation} from 'react-navigation'
+import cartItems from '../reducers/cartItems';
+
+
+
+
+
 class SearchScreen extends React.Component {
 
   constructor() {
@@ -24,6 +31,7 @@ class SearchScreen extends React.Component {
       isLoading: true,
       dataSource: [],
       searchBarFocused: false,
+      qty: 0
     };
   }
 
@@ -41,7 +49,7 @@ class SearchScreen extends React.Component {
       this.keyboardDidHide
     );
     // Change the URL to Store's URL
-    return fetch("https://33c001d3.ngrok.io/api/product")
+    return fetch("https://58a29658.ngrok.io/api/product")
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({
@@ -78,6 +86,9 @@ class SearchScreen extends React.Component {
   };
   handlePress= (item) =>{
    this.props.addItemToCart(item)
+   console.log(item.quantity)
+
+  
    
   };
 
@@ -90,11 +101,23 @@ class SearchScreen extends React.Component {
         <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20 }}>{item.productName}</Text>
         <Text style={{ color: '#050', fontWeight: 'bold', fontSize: 20 }}>kr {item.priceFMF},-</Text>
         
+        
       </TouchableOpacity>
-      <TouchableOpacity >
+      <TouchableOpacity  >
         <Icon name="ios-add-circle" size={30} color={"green"} style={{left:300, bottom:50}}  />
       </TouchableOpacity>
-      <Text>{}</Text>
+    
+      <Text>
+      {'Quantity: ' } 
+      </Text>
+     
+      
+       
+     
+      
+      
+    
+        
       
       <TouchableOpacity >
         <Icon name="ios-remove-circle" size={30} color={"red"} style={{left:300, bottom:20}} />
@@ -111,6 +134,9 @@ class SearchScreen extends React.Component {
         </View>
       );
     }
+   
+
+   
 
     return (
       <View style={{ flex: 1 }}>
@@ -176,6 +202,7 @@ class SearchScreen extends React.Component {
       </View>
 
     );
+  
 
 
   }
@@ -188,8 +215,18 @@ const mapDispatchToProps = (dispatch) => {
 
   return {
     addItemToCart: (product) => dispatch({ type: 'ADD_TO_CART', payLoad: product }),
+  
+  
+    
+  }
+  
+}
+const mapStateToProps = (state) => {
+  return{
+      cartItems: state
   }
 }
+
 
 export default connect(null, mapDispatchToProps)(SearchScreen)
 

@@ -5,7 +5,7 @@ export const addItem = (product) => {
         type: 'ADD_TO_CART',
         payload: {
             product,
-            quantity: 1
+            quantity: 0
         }
     }
 };

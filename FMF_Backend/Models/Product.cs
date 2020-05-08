@@ -19,6 +19,7 @@ public class Product {
 
     [DataType(DataType.Currency)]
     public double PriceFMF { get; set; }
+    public double Quantity { get; set; }
 
     
 }
