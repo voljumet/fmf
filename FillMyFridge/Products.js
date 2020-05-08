@@ -6,26 +6,14 @@ import {
     Button
 } from "react-native";
 
-class Products extends Component {
-
-    addToCart = (e) => {
- 
-        e.preventDefault();
- 
-        this.props.addToCart(this.props.product)
- 
-        this.setState({
-            inCart: true
-        })
-    }
-    
+class Products extends Component {    
 
     renderProducts = (products) => {
         console.log(products)
         return products.map((item, index) => {
             return (
                 <View key={index} style={{ padding: 20 }}>
-                    <Button onPress={() => this.props.onPress(item)} title={item.productName + " - " + item.priceFMF + " QTY: " } />
+                    <Button onPress={() => this.props.onPress(item)} title={item.productName + " - " + item.priceFMF + " QTY: " + item.quantity } />
                 </View>
             )
         })
