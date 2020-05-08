@@ -25,7 +25,11 @@ namespace FMF_Backend{
         public void ConfigureServices(IServiceCollection services){
             services.AddDbContext<FMFDbContext>(opt =>
                opt.UseSqlite("Filename=FMF_Db.db"));
-            services.AddControllers();
+            services
+            .AddControllers()
+            .AddJsonOptions(options =>{
+                options.JsonSerializerOptions.WriteIndented = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
