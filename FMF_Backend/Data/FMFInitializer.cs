@@ -43,7 +43,9 @@ namespace FMF_Backend.Data{
             }
 
             context.SaveChanges();
-            
+
+            var profiles = context.Profiles.ToList();
+
             var store1s = context.Store1s.ToList();
             var store2s = context.Store2s.ToList();
 
@@ -65,33 +67,32 @@ namespace FMF_Backend.Data{
             context.SaveChanges();
 
             var products = context.Products.ToList();
-            var orderList = context.OrderLists.ToList();
-            var order = context.Orders.ToList();
-            var profiles = context.Profiles.ToList();
 
-
-
-
-
-
-
-            // var order1 = new Order();
-            // var orderList1 = new OrderList();
-
-
-            orderList.AddRange(new List<OrderList>{
-                new OrderList(products[1], 3, profiles[0], DateTime.UtcNow, 1337,55),
-                new OrderList(products[0], 5, profiles[1], DateTime.Now, 420,69)
+            context.OrderLists.AddRange(new List<OrderList>{
+                new OrderList(profiles[0], DateTime.Now, DateTime.UtcNow, 123, 6),
+                new OrderList(profiles[1], DateTime.Now, DateTime.UtcNow, 1337, 55),
+                new OrderList(profiles[2], DateTime.Now, DateTime.UtcNow, 420, 69),
+                new OrderList(profiles[3], DateTime.Now, DateTime.UtcNow, 20, 0.5),
+                new OrderList(profiles[4], DateTime.Now, DateTime.UtcNow, 101, 1)
             });
-            
 
             context.SaveChanges();
+            var orderList = context.OrderLists.ToList();
+
+
 
             context.Orders.AddRange(new List<Order>{
-                new Order(profiles[1], orderList[0], DateTime.UtcNow)
+                new Order(profiles[0], orderList[2], DateTime.UtcNow),
+                new Order(profiles[1], orderList[2], DateTime.UtcNow),
+                new Order(profiles[2], orderList[3], DateTime.UtcNow),
+                new Order(profiles[3], orderList[0], DateTime.UtcNow),
+                new Order(profiles[4], orderList[1], DateTime.UtcNow)
             });
-            
+
             context.SaveChanges();
+            
+            var order = context.Orders.ToList();
+            
 
         }
 

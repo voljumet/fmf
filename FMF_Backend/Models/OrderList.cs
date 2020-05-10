@@ -5,13 +5,15 @@ using System.ComponentModel.DataAnnotations;
 namespace FMF_Backend.Models{
     public class OrderList{
         public OrderList() {}
-        public OrderList(Product product, double quantity, Profile shopper, 
-        DateTime orderTime, double totalPrice, double totalWeight){
+        public OrderList(Profile shopper, DateTime orderTime, 
+        DateTime requestedTime, double totalPrice, double totalWeight){
 
             Products = new List<Product>();
+            Shopper = shopper;
             OrderTime = DateTime.UtcNow;
-            totalPrice = TotalPrice;
-            totalWeight = TotalWeight;
+            RequestedTime = DateTime.UtcNow;
+            TotalPrice = totalPrice;
+            TotalWeight = totalWeight;
         }
 
         public int Id { get; set; }

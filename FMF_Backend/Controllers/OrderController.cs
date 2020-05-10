@@ -35,7 +35,7 @@ namespace FMF_Backend.Controllers
             var order = _context.Orders
                 .Include(ord => ord.Driver)
                 .Include(ord => ord.OrderList)
-                    .ThenInclude(orderList => orderList.Products)
+                    .ThenInclude(orderList => orderList.Shopper)
                     
                 .Where(ord => ord.Id == id)
                 .FirstOrDefault();
