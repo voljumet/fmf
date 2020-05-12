@@ -1,15 +1,19 @@
 import React, { Component } from "react";
-import MapView from "react-native-maps";
+import MapView, { AnimatedRegion } from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import Geocoder from "react-native-geocoding";
+import redMarker from '../assets/images/dot.png'
+
+
 
 Geocoder.init("AIzaSyBh4LzOmbFVqu5wc_u_9S4yKT1rhbgHBuw");
 
 class GroceryList{
-  constructor(address, groceries, title){
+  constructor(address, groceries, title, key){
     this.address = address;
     this.title = title;
     this.groceries = groceries;
+    this.key = key;
   }
 }
 
@@ -17,55 +21,82 @@ export default class MapScreen extends Component {
   constructor() {
     super();
     this.state = {
+      longitude: 60.256771,
+      latitude: 7.909972,
+      latitudeDelta: 0.0001,
+      longitudeDelta: 0.0001,
       location: null,
-      addresses: ["Lundeleitet 11, 4323 Sandnes", "Eiffel Tower", "Mølleveien 2D, 4879 Grimstad"],
       locations: [],
-      Lists: [],
+      AllLists: [],
       title: null,
       description: null,
+      key: null,
     };
   }
-  renderMarkers(){
+
+  markerClick(e) {
+    console.log(e);
+  }
+
+  renderMarkers (){
     return this.state.locations.map(location => {
       return <MapView.Marker 
       coordinate={{ latitude: location.lat, longitude: location.lng }}
       title={this.state.title}
       description={this.state.description}
-      key={location.lat}/>
+      key={location.lat}
+      image={redMarker}
+      id={this.state.key}
+      onPress={this.markerClick}
+      />
+      
     })
 }
 
 componentDidMount = async () => {
 
-  fetch("https://916c225a.ngrok.io/api/orderLine")
+  navigator.geolocation.getCurrentPosition(
+    ({ coords }) => {
+      this.setState({
+        longitude: coords.longitude,
+        latitude: coords.latitude,
+        latitudeDelta: 0.005,
+        longitudeDelta: 0.005,
+      })
+    },
+    (error) => alert('Error: Are location services on?'),
+    { enableHighAccuracy: true }
+  )
+
+  /*fetch("http://bd4b4eb9.ngrok.io/api/orderLine")
                      .then((response) => response.json())
                      .then((responseJson) => {
                        console.log(responseJson)
                      })
                      .catch((error) => {
                        console.log(error);
-                     });
+                     });*/
 
   liste = []
 
-  en = new GroceryList("Lundeleitet 11, 4323 Sandnes", "Melk", "Min første handleliste"),
+  en = new GroceryList("Lundeleitet 11, 4323 Sandnes", "Melk", "Min første handleliste", 1),
   liste.push(en)
-  to = new GroceryList("Smebyveien 17A, 2319 Hamar", "Kakao", "Min andre handleliste"),
+  to = new GroceryList("Smebyveien 17A, 2319 Hamar", "Kakao", "Min andre handleliste", 2),
   liste.push(to)
-  tre = new GroceryList("Storgata 65, 0182 Oslo", "Knekkebrød", "Min tredje handleliste"),
+  tre = new GroceryList("Storgata 65, 0182 Oslo", "Knekkebrød", "Min tredje handleliste", 3),
   liste.push(tre)
-  fire = new GroceryList("Karl Johans Gate 25, 0159 Oslo", "Grillpølser", "Min fjerde handleliste"),
+  fire = new GroceryList("Karl Johans Gate 25, 0159 Oslo", "Grillpølser", "Min fjerde handleliste", 4),
   liste.push(fire)
 
   for(const list of liste){
     this.setState(prevState => ({
-      Lists: [...prevState.Lists, list],
+      AllLists: [...prevState.AllLists, list],
     }))
   }
 }
 
 getGeoData() {
-  for (const list of this.state.Lists) {
+  for (const list of this.state.AllLists) {
     Geocoder.from(list.address)
       .then((response) => {
         this.setState(prevState => ({
