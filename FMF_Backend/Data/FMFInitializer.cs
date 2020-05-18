@@ -68,13 +68,21 @@ namespace FMF_Backend.Data{
 
             var products = context.Products.ToList();
 
+            List<Product> produkter = new List<Product>();
+
+            produkter.Add(products[0]);
+            produkter.Add(products[2]);
+            produkter.Add(products[5]);
+
+
             context.OrderLists.AddRange(new List<OrderList>{
-                new OrderList(profiles[0], DateTime.Now, DateTime.UtcNow, 123, 6),
-                new OrderList(profiles[1], DateTime.Now, DateTime.UtcNow, 1337, 55),
-                new OrderList(profiles[2], DateTime.Now, DateTime.UtcNow, 420, 69),
-                new OrderList(profiles[3], DateTime.Now, DateTime.UtcNow, 20, 0.5),
-                new OrderList(profiles[4], DateTime.Now, DateTime.UtcNow, 101, 1)
+                new OrderList(produkter[0], profiles[0], DateTime.Now, DateTime.UtcNow, 123, 6),
+                new OrderList(produkter[0], profiles[1], DateTime.Now, DateTime.UtcNow, 1337, 55),
+                new OrderList(produkter[0], profiles[2], DateTime.Now, DateTime.UtcNow, 420, 69),
+                new OrderList(produkter[0], profiles[3], DateTime.Now, DateTime.UtcNow, 20, 0.5),
+                new OrderList(produkter[0], profiles[4], DateTime.Now, DateTime.UtcNow, 101, 1)
             });
+
 
             context.SaveChanges();
             var orderList = context.OrderLists.ToList();
@@ -91,8 +99,7 @@ namespace FMF_Backend.Data{
 
             context.SaveChanges();
             
-            var order = context.Orders.ToList();
-            
+            var order = context.Orders.ToList();            
 
         }
 

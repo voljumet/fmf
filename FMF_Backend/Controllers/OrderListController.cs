@@ -29,12 +29,13 @@ namespace FMF_Backend.Controllers
         }
 
         // GET: api/OrderList/5
-        [HttpGet("GOL/{id}")]
+        [HttpGet("GetOrderList/{id}")]
         public async Task<ActionResult<OrderList>> GetOrderListDetails(int id)
         {
             var orderList = _context.OrderLists
                 .Include(ordl => ordl.Shopper)
-                    // .ThenInclude(ordl => ordl.Shopper)
+                .Include(ordl => ordl.Product)
+                    // .ThenInclude(ordl => ordl.ProductName)
 
 
                 .Where(ordl => ordl.Id == id)

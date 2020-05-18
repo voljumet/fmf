@@ -29,7 +29,7 @@ namespace FMF_Backend.Controllers
         }
 
         // GET: api/Order/5
-        [HttpGet("GO/{id}")]
+        [HttpGet("GetOrder/{id}")]
         public async Task<ActionResult<Order>> GetOrderDetails(long id)
         {
             var order = _context.Orders

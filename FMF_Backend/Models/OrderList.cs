@@ -5,10 +5,11 @@ using System.ComponentModel.DataAnnotations;
 namespace FMF_Backend.Models{
     public class OrderList{
         public OrderList() {}
-        public OrderList(Profile shopper, DateTime orderTime, 
+        public OrderList(Product product, Profile shopper, DateTime orderTime, 
         DateTime requestedTime, double totalPrice, double totalWeight){
 
-            Products = new List<Product>();
+            // Products = new List<Product>();
+            Product = product;
             Shopper = shopper;
             OrderTime = DateTime.UtcNow;
             RequestedTime = DateTime.UtcNow;
@@ -18,7 +19,8 @@ namespace FMF_Backend.Models{
 
         public int Id { get; set; }
         public Profile Shopper { get; set; }
-        public List<Product> Products { get; set; }
+        public Product Product { get; set; }
+        // public List<Product> Products { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime OrderTime { get; set; }
