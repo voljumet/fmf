@@ -2,9 +2,9 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start --tunnel",
+    "ngrok": "cd .. && ./ngrok/ngrok http https://localhost:5001",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web",
     "eject": "expo eject",
     "test": "jest --watchAll"
   },

@@ -12,48 +12,48 @@ namespace FMF_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomerController : ControllerBase
+    public class ProfileController : ControllerBase
     {
         private readonly FMFDbContext _context;
 
-        public CustomerController(FMFDbContext context)
+        public ProfileController(FMFDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Customer
+        // GET: api/Profile
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Customer>>> GetCustomer()
+        public async Task<ActionResult<IEnumerable<Profile>>> GetProfile()
         {
-            return await _context.Customers.ToListAsync();
+            return await _context.Profiles.ToListAsync();
         }
 
-        // GET: api/Customer/5
+        // GET: api/Profile/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Customer>> GetCustomer(long id)
+        public async Task<ActionResult<Profile>> GetProfile(long id)
         {
-            var customer = await _context.Customers.FindAsync(id);
+            var profile = await _context.Profiles.FindAsync(id);
 
-            if (customer == null)
+            if (profile == null)
             {
                 return NotFound();
             }
 
-            return customer;
+            return profile;
         }
 
-        // PUT: api/Customer/5
+        // PUT: api/Profile/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCustomer(long id, Customer customer)
+        public async Task<IActionResult> PutProfile(long id, Profile profile)
         {
-            if (id != customer.Id)
+            if (id != profile.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(customer).State = EntityState.Modified;
+            _context.Entry(profile).State = EntityState.Modified;
 
             try
             {
@@ -61,7 +61,7 @@ namespace FMF_Backend.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CustomerExists(id))
+                if (!ProfileExists(id))
                 {
                     return NotFound();
                 }
@@ -74,37 +74,37 @@ namespace FMF_Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/Customer
+        // POST: api/Profile
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
+        public async Task<ActionResult<Profile>> PostProfile(Profile profile)
         {
-            _context.Customers.Add(customer);
+            _context.Profiles.Add(profile);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
+            return CreatedAtAction("GetProfile", new { id = profile.Id }, profile);
         }
 
-        // DELETE: api/Customer/5
+        // DELETE: api/Profile/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Customer>> DeleteCustomer(long id)
+        public async Task<ActionResult<Profile>> DeleteProfile(long id)
         {
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer == null)
+            var profile = await _context.Profiles.FindAsync(id);
+            if (profile == null)
             {
                 return NotFound();
             }
 
-            _context.Customers.Remove(customer);
+            _context.Profiles.Remove(profile);
             await _context.SaveChangesAsync();
 
-            return customer;
+            return profile;
         }
 
-        private bool CustomerExists(long id)
+        private bool ProfileExists(long id)
         {
-            return _context.Customers.Any(e => e.Id == id);
+            return _context.Profiles.Any(e => e.Id == id);
         }
     }
 }

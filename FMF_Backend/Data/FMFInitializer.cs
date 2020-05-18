@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 
 namespace FMF_Backend.Data{
     public static class DbInitializer{
-
         public static void Initialize(FMFDbContext context){
             // Delete the database before we initialize it.
             // This is common to do during development.
@@ -17,20 +16,12 @@ namespace FMF_Backend.Data{
             // Make sure the database and tables exist
             context.Database.EnsureCreated();
 
-            context.Customers.AddRange(new List<Customer>{
-                new Customer("Rune Alexander","Laursen","Juice veien 69"),
-                new Customer("Ole","Gunvaldsen","Appveien 420"),
-                new Customer("Anne Lise","Skjæveland","UiA gate 42"),
-                new Customer("Peshang","Alo","Gullveien 1337"),
-                new Customer("Morteza","Haidari","Klepp 3")
-            });
-
-            context.Drivers.AddRange(new List<Driver>{
-                new Driver("Rune Alexander","Laursen",12345678,"Ryggsekk"),
-                new Driver("Ole","Gunvaldsen",78945612,"Personbil"),
-                new Driver("Anne Lise","Skjæveland",65412398,"Kassebil"),
-                new Driver("Peshang","Alo",46827913,"Sykkel"),
-                new Driver("Morteza","Haidari",96325874,"Motorsykkel")
+            context.Profiles.AddRange(new List<Profile>{
+                new Profile("Rune Alexander","Laursen","Kristian IVs gate 17, 4612 Kristiansand"),
+                new Profile("Ole","Gunvaldsen","Jon Lilletuns Vei 17, 4879 Grimstad"),
+                new Profile("Anne Lise","Skjæveland","Lagerveien 12, 3030 Stavanger"),
+                new Profile("Peshang","Alo","Venneslaveien 7, 4688 Vennesla"),
+                new Profile("Morteza","Haidari","Tønnevoldsgate 44b, 4879 Grimstad")
             });
 
             string store1 = new WebClient().DownloadString("https://my-json-server.typicode.com/voljumet/demo/Store1");
@@ -38,7 +29,7 @@ namespace FMF_Backend.Data{
 
             foreach (var item in store1Items){
                 context.Store1s.AddRange(new List<Store1>{
-                    new Store1(item.ProductName,item.Supplier, item.Price)
+                    new Store1(item.ProductName,item.Supplier, item.Price, item.Weight)
                 });
             }
 
@@ -47,12 +38,14 @@ namespace FMF_Backend.Data{
 
             foreach (var item in store2Items){
                 context.Store2s.AddRange(new List<Store2>{
-                    new Store2(item.ProductName,item.Supplier, item.Price)
+                    new Store2(item.ProductName,item.Supplier, item.Price, item.Weight)
                 });
             }
 
             context.SaveChanges();
-            
+
+            var profiles = context.Profiles.ToList();
+
             var store1s = context.Store1s.ToList();
             var store2s = context.Store2s.ToList();
 
@@ -61,21 +54,52 @@ namespace FMF_Backend.Data{
                     if (item2.ProductName == item1.ProductName && item2.Supplier == item1.Supplier){
                         if(item1.Price <= item2.Price){
                             context.Products.AddRange(new List<Product>{
-                                new Product(item1.ProductName, item1.Supplier, item2.Price)
+                                new Product(item1.ProductName, item1.Supplier, item2.Price, item1.Weight)
                             });
                         } else {
                             context.Products.AddRange(new List<Product>{
-                                new Product(item1.ProductName, item1.Supplier, item1.Price)
+                                new Product(item1.ProductName, item1.Supplier, item1.Price, item1.Weight)
                             });
                         }       
                     }
                 }
             }
-
-            var drivers = context.Drivers.ToList();
-
             context.SaveChanges();
 
+            var products = context.Products.ToList();
+
+            List<Product> produkter = new List<Product>();
+
+            produkter.Add(products[0]);
+            produkter.Add(products[2]);
+            produkter.Add(products[5]);
+
+
+            context.OrderLists.AddRange(new List<OrderList>{
+                new OrderList(produkter[0], profiles[0], DateTime.Now, DateTime.UtcNow, 123, 6),
+                new OrderList(produkter[0], profiles[1], DateTime.Now, DateTime.UtcNow, 1337, 55),
+                new OrderList(produkter[0], profiles[2], DateTime.Now, DateTime.UtcNow, 420, 69),
+                new OrderList(produkter[0], profiles[3], DateTime.Now, DateTime.UtcNow, 20, 0.5),
+                new OrderList(produkter[0], profiles[4], DateTime.Now, DateTime.UtcNow, 101, 1)
+            });
+
+
+            context.SaveChanges();
+            var orderList = context.OrderLists.ToList();
+
+
+
+            context.Orders.AddRange(new List<Order>{
+                new Order(profiles[0], orderList[2], DateTime.UtcNow),
+                new Order(profiles[1], orderList[2], DateTime.UtcNow),
+                new Order(profiles[2], orderList[3], DateTime.UtcNow),
+                new Order(profiles[3], orderList[0], DateTime.UtcNow),
+                new Order(profiles[4], orderList[1], DateTime.UtcNow)
+            });
+
+            context.SaveChanges();
+            
+            var order = context.Orders.ToList();            
 
         }
 

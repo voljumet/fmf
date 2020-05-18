@@ -1,31 +1,23 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace FMF_Backend.Models {
+    public class Order {
+        public Order(){}
+        public Order(Profile driver, OrderList orderList, DateTime deliveryTime){
+            Driver = driver;
+            OrderList = orderList;
+            DeliveryTime = deliveryTime;
 
-public class Order {
+        }
 
-    public Order(){}
-
-    public Order(GroceryList groceryList, Driver driver, double finalCheck){
-
-        groceryList = GroceryList;
-        driver = Driver;
-        OrderTime = DateTime.UtcNow;
-        OrderLines = new List<OrderLine>();
-        finalCheck = FinalCheck;
+        public long Id { get; set; }
+        public Profile Driver { get; set; }
+        
+        [DataType(DataType.Date)]
+        public DateTime DeliveryTime { get; set; }
+        public OrderList OrderList { get; set; }
+    
     }
-
-    public long Id { get; set; }
-    public Driver Driver { get; set; }
-    public GroceryList GroceryList { get; set; }
-    public Customer Customer { get; set; }
-    public double FinalCheck { get; set; }
-    [DataType(DataType.Date)]
-    public DateTime OrderTime { get; set; }
-    public List<OrderLine> OrderLines { get; set; }
-    
-    
-}
 }
