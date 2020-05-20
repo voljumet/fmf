@@ -80,7 +80,7 @@ class SearchScreen extends React.Component {
   //items will be displayed
   renderItem = ({ item }) => (
     //Change "title" with the corresponding name in API
-    <View style={{ backgroundColor: 'white', padding: 5, margin: 10, borderWidth: 1, }}>
+    <View style={{ backgroundColor: 'white', padding: 5, margin: 10, borderWidth: 2, borderColor: '#61dafb'}}>
       <TouchableOpacity onPress={(val) => this.handlePress(item)}>
         <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 13 }}>{item.supplier}</Text>
         <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>{item.productName}</Text>
