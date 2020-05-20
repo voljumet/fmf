@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import MapView, { AnimatedRegion } from "react-native-maps";
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import { StyleSheet, Text, View, Dimensions, Button } from "react-native";
 import Geocoder from "react-native-geocoding";
 import redMarker from '../assets/images/dot.png'
-
-
+import Modal from 'react-native-modal';
 
 Geocoder.init("AIzaSyBh4LzOmbFVqu5wc_u_9S4yKT1rhbgHBuw");
 
@@ -31,27 +30,38 @@ export default class MapScreen extends Component {
       title: null,
       description: null,
       key: null,
+      modalVisible: false,
+      currentList: null,
     };
   }
 
-  markerClick(e) {
-    console.log(e);
+ShowModalFunction() {
+    console.log("vis modal")
+    this.setState({modalVisible: !this.state.modalVisible});
+}
+  
+  handleMarkerPress = (event) => {
+    const markerID = event.nativeEvent.id
+    const object = this.state.locations.find( ({ key }) => key === markerID )
+this.setState({
+currentList: object,
+})    
+this.ShowModalFunction()  
   }
 
   renderMarkers (){
     return this.state.locations.map(location => {
       return <MapView.Marker 
-      coordinate={{ latitude: location.lat, longitude: location.lng }}
-      title={this.state.title}
-      description={this.state.description}
-      key={location.lat}
+      coordinate={{ latitude: location.location.lat, longitude: location.location.lng }}
+      title={location.title}
+      description={location.description}
+      key={location.key}
       image={redMarker}
-      id={this.state.key}
-      onPress={this.markerClick}
+      identifier={location.key} onPress={(event) => this.handleMarkerPress(event)}
       />
-      
     })
 }
+
 
 componentDidMount = async () => {
 
@@ -79,13 +89,13 @@ componentDidMount = async () => {
 
   liste = []
 
-  en = new GroceryList("Lundeleitet 11, 4323 Sandnes", "Melk", "Min første handleliste", 1),
+  en = new GroceryList("Lundeleitet 11, 4323 Sandnes", "Melk", "Min første handleliste", "1"),
   liste.push(en)
-  to = new GroceryList("Smebyveien 17A, 2319 Hamar", "Kakao", "Min andre handleliste", 2),
+  to = new GroceryList("Smebyveien 17A, 2319 Hamar", "Kakao", "Min andre handleliste", "2"),
   liste.push(to)
-  tre = new GroceryList("Storgata 65, 0182 Oslo", "Knekkebrød", "Min tredje handleliste", 3),
+  tre = new GroceryList("Storgata 65, 0182 Oslo", "Knekkebrød", "Min tredje handleliste", "3"),
   liste.push(tre)
-  fire = new GroceryList("Karl Johans Gate 25, 0159 Oslo", "Grillpølser", "Min fjerde handleliste", 4),
+  fire = new GroceryList("Karl Johans Gate 25, 0159 Oslo", "Grillpølser", "Min fjerde handleliste", "4"),
   liste.push(fire)
 
   for(const list of liste){
@@ -99,14 +109,17 @@ getGeoData() {
   for (const list of this.state.AllLists) {
     Geocoder.from(list.address)
       .then((response) => {
-        this.setState(prevState => ({
-          locations: [...prevState.locations, response.results[0].geometry.location]
-        }))
-        this.setState({
+        console.log(response.results[0].geometry.location)
+        const object = {
+          location: response.results[0].geometry.location,
           title: list.title,
           description: list.groceries,
+          key: list.key
+        }
+        this.setState(prevState => ({
+          locations: [...prevState.locations, object]
+        }))
         })
-      })
       .catch((error) => console.warn(error));
   }
 }
@@ -118,8 +131,21 @@ componentDidUpdate(prevProps, prevState) {
 }
 
   render() {
+    if(this.state.currentList != null){
       return (
         <View style={styles.container}>
+          <Modal
+          transparent={true}
+          animationType={"slide"}
+          visible={this.state.modalVisible}
+          onRequestClose={ () => { this.ShowModalFunction} } >
+          
+          <View style={{ flex:1, justifyContent: 'center', alignItems: 'center' }}>   
+          <View style={styles.ModalInsideView}>
+          <Text style={styles.TextStyle}>{this.state.currentList.title}</Text>
+            </View>           
+          </View>
+        </Modal>
           <MapView
             style={styles.mapStyle}
             region={{
@@ -137,6 +163,26 @@ componentDidUpdate(prevProps, prevState) {
         </View>
       );
   }
+  else{
+  return (
+    <View style={styles.container}>
+      <MapView
+        style={styles.mapStyle}
+        region={{
+          latitude: this.state.latitude, 
+          longitude: this.state.longitude, 
+          latitudeDelta: this.state.latitudeDelta,
+          longitudeDelta: this.state.longitudeDelta}}
+        showsUserLocation={true}
+        showsMyLocationButton={true}
+        onMarkerPress={this._onMarkerPress}
+
+      >
+        {this.renderMarkers()}
+      </MapView>
+    </View>
+  );
+}}
 }
 
 const styles = StyleSheet.create({
@@ -150,4 +196,24 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
   },
+  ModalInsideView:{
+    justifyContent: 'center',
+    alignItems: 'center', 
+    backgroundColor : "#00BCD4", 
+    height: 300 ,
+    width: '90%',
+    borderRadius:10,
+    borderWidth: 1,
+    borderColor: '#fff'
+   
+  },
+  TextStyle:{
+ 
+    fontSize: 20, 
+    marginBottom: 20, 
+    color: "#fff",
+    padding: 20,
+    textAlign: 'center'
+   
+  }
 });
