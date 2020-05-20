@@ -1,5 +1,3 @@
-import {addItemToCart} from './cart.utils'
-
 
 const cartItems  = (state = [] , action) => {
     switch(action.type){

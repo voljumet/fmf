@@ -8,21 +8,13 @@ import {
   ActivityIndicator,
   Keyboard,
   TouchableOpacity,
+  Image
+ 
 
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
-import { Provider } from 'react-redux';
-import Products from '../Products';
-import store from '../store';
-import {withNavigation} from 'react-navigation'
-import cartItems from '../reducers/cartItems';
-
-
-
-
-
 class SearchScreen extends React.Component {
 
   constructor() {
@@ -34,6 +26,7 @@ class SearchScreen extends React.Component {
       qty: 0
     };
   }
+
 
   componentDidMount = async () => {
     this.keyboardDidShow = Keyboard.addListener(
@@ -49,7 +42,7 @@ class SearchScreen extends React.Component {
       this.keyboardDidHide
     );
     // Change the URL to Store's URL
-    return fetch("https://58a29658.ngrok.io/api/product")
+    return fetch("https://bhunter.online/api/ProductApi/getproductmodels")
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({
@@ -69,11 +62,6 @@ class SearchScreen extends React.Component {
     this.setState({ searchBarFocused: false });
   };
  
-
-  // Function for the Touchable Items
-  Message = (item) => {
-    alert(item.productName);
-  };
   serachitem = (value) => {
     //Change "title" with the corresponding name in API
     const filteredItems = this.state.inMemmory.filter((item) => {
@@ -84,41 +72,33 @@ class SearchScreen extends React.Component {
     });
     this.setState({ dataSource: filteredItems });
   };
+
   handlePress= (item) =>{
    this.props.addItemToCart(item)
-   console.log(item.quantity)
-
-  
-   
   };
 
   //items will be displayed
   renderItem = ({ item }) => (
     //Change "title" with the corresponding name in API
-    <View style={{ backgroundColor: '#abc123', padding: 5, margin: 10 }}>
+    <View style={{ backgroundColor: 'white', padding: 5, margin: 10, borderWidth: 1, }}>
       <TouchableOpacity onPress={(val) => this.handlePress(item)}>
         <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 13 }}>{item.supplier}</Text>
-        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20 }}>{item.productName}</Text>
+        <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>{item.productName}</Text>
         <Text style={{ color: '#050', fontWeight: 'bold', fontSize: 20 }}>kr {item.priceFMF},-</Text>
-        
+        <Image
+        source={{
+            uri: item.picture,
+        }}
+        style={{ width: 90, height: 90 }}/>
         
       </TouchableOpacity>
       <TouchableOpacity  >
         <Icon name="ios-add-circle" size={30} color={"green"} style={{left:300, bottom:50}}  />
       </TouchableOpacity>
-    
+
       <Text>
       {'Quantity: ' } 
-      </Text>
-     
-      
-       
-     
-      
-      
-    
-        
-      
+      </Text> 
       <TouchableOpacity >
         <Icon name="ios-remove-circle" size={30} color={"red"} style={{left:300, bottom:20}} />
       </TouchableOpacity>
@@ -134,10 +114,6 @@ class SearchScreen extends React.Component {
         </View>
       );
     }
-   
-
-   
-
     return (
       <View style={{ flex: 1 }}>
         <View
@@ -200,24 +176,14 @@ class SearchScreen extends React.Component {
           </View>
         </View>
       </View>
-
     );
-  
-
-
   }
-
 }
-
-
 
 const mapDispatchToProps = (dispatch) => {
 
   return {
     addItemToCart: (product) => dispatch({ type: 'ADD_TO_CART', payLoad: product }),
-  
-  
-    
   }
   
 }
@@ -226,13 +192,7 @@ const mapStateToProps = (state) => {
       cartItems: state
   }
 }
-
-
 export default connect(null, mapDispatchToProps)(SearchScreen)
-
-
-
-
 
 const styles = StyleSheet.create({
   container: {
