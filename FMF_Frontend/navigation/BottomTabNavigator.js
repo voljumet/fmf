@@ -6,7 +6,7 @@ import HomeScreen from '../screens/HomeScreen';
 import MapScreen from '../screens/MapScreen';
 import SearchScreen from '../screens/SearchScreen';
 import LoginScreen from '../screens/LoginScreen';
-import NewScreen from '../screens/NewScreen';
+import NewScreen from '../screens/ShopScreen';
 
 
 
@@ -38,7 +38,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         name="New" 
         component={NewScreen}
         options={{
-          title: 'new',
+          title: 'Search',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-search" />,
         }}
       />

@@ -17,7 +17,7 @@ const ShoppingCartIcon = (props) => (
             height: 20,
             width:20,
             borderRadius: 15,
-            backgroundColor: '#abc123',
+            backgroundColor: '#61dafb',
             right: 25,
             bottom: 20,
             alignItems: 'center',

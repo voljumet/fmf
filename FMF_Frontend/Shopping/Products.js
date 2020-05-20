@@ -13,7 +13,7 @@ class Products extends Component {
         return products.map((item, index) => {
             return (
                 <View key={index} style={{ padding: 20 }}>
-                    <Button onPress={() => this.props.onPress(item)} title={item.productName + " - " + item.priceFMF + " QTY: " + item.quantity } />
+                    <Button onPress={() => this.props.onPress(item)} title={item.productName + " - " + item.priceFMF + " - " +  " QTY: " + item.quantity } />
                 </View>
             )
         })
