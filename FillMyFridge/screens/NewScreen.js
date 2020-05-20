@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import ShoppingCart from '../ShoppingCart';
+import ShoppingCart from '../Shopping/ShoppingCart';
 import { Provider } from 'react-redux';
-import store from '../store';
+import store from '../Shopping/store';
 
 export default class NewScreen extends React.Component {
   render() {
@@ -13,7 +13,6 @@ export default class NewScreen extends React.Component {
     );
   }
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

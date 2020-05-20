@@ -8,7 +8,7 @@ import{
 } from "react-native";
 import {connect} from 'react-redux';
 import SearchScreen  from './SearchScreen';
-import Products  from '../Products';
+import Products  from '../Shopping/Products';
 
 
 
@@ -19,8 +19,10 @@ class CartScreen extends Component {
             <View style={styles.container}>
             {this.props.cartItems.length > 0 ?
                 <Products
+                
                     onPress={this.props.removeItem}
                     products={this.props.cartItems} />
+                    
                 : <Text>No items in your cart</Text>
             }
         </View>

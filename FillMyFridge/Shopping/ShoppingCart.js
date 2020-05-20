@@ -1,22 +1,14 @@
 import React, {Component} from "react";
 import{
-    View,
-    Text,
     StyleSheet
 } from "react-native";
 
 
-
-import ShoppingCartIcon from "./screens/ShoppingCartIcon";
+import ShoppingCartIcon from "./ShoppingCartIcon";
 import {createStackNavigator} from 'react-navigation';
 
-import {Provider} from 'react-redux';
-import store from './store';
-import SearchScreen from './screens/SearchScreen';
-import HomeScreen from './screens/HomeScreen';
-import NewScreen from './screens/NewScreen';
-import LinksScreen from "./screens/LinksScreen";
-import CartScreen from "./screens/CartScreen";
+import SearchScreen from '../screens/SearchScreen';
+import CartScreen from "../screens/CartScreen";
 
 
 
@@ -28,8 +20,6 @@ class ShoppingCart extends Component {
     }
 }
 export default ShoppingCart;
-
-
 
 
 

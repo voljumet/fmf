@@ -18,6 +18,7 @@ export default function HomeScreen() {
             }
             style={styles.welcomeImage}
           />
+          
         </View>
 
         <View style={styles.getStartedContainer}>
@@ -28,7 +29,7 @@ export default function HomeScreen() {
           <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
             <MonoText>screens/HomeScreen.js</MonoText>
           </View>
-
+            
           <Text style={styles.getStartedText}>
             Change any of the text, save the file, and your app will automatically reload.
           </Text>
@@ -49,6 +50,7 @@ export default function HomeScreen() {
         </View>
       </View>
     </View>
+    
   );
 }
 
