@@ -5,7 +5,12 @@ import * as WebBrowser from 'expo-web-browser';
 
 import { MonoText } from '../components/StyledText';
 
-export default function HomeScreen() {
+export default function HomeScreen({ route, navigation }) {
+  const { id } = route.params;
+  // const { email } = route.params;
+  // const { lastName } = route.params;
+  // const { firstName } = route.params;
+  // const { picture } = route.params;
   return (
     <View style={styles.container}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -24,7 +29,11 @@ export default function HomeScreen() {
       </ScrollView>
 
       <View style={styles.tabBarInfoContainer}>
-        <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
+        <Text style={styles.tabBarInfoText}>Info fra login:</Text>
+        {/* <Text style={styles.tabBarInfoText}>email: {email}</Text> */}
+        {/* <Text style={styles.tabBarInfoText}>id: {id}</Text> */}
+          {/* <Text style={styles.tabBarInfoText}>navn: {firstName}, {lastName}</Text> */}
+        {/* <Text style={styles.tabBarInfoText}>id: {picture}</Text> */}
 
         <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
           <MonoText style={styles.codeHighlightText}>navigation/BottomTabNavigator.js</MonoText>
