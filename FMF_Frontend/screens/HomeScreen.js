@@ -15,7 +15,7 @@ function wait(timeout) {
   });
 }
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({ route,navigation }) {
   const [refreshing, setRefreshing] = React.useState(false);
   
   const onRefresh = React.useCallback(() => {
@@ -24,6 +24,12 @@ export default function HomeScreen({ navigation }) {
     wait(2000).then(() => setRefreshing(false));
   }, [refreshing]);
   
+
+  // const { id } = route.params;
+  // const { email } = route.params;
+  // const { lastName } = route.params;
+  // const { firstName } = route.params;
+  // const { picture } = route.params;
   return (
     <View style={styles.container}>
       <ScrollView
@@ -47,6 +53,12 @@ export default function HomeScreen({ navigation }) {
             What do you want to continue as today?
           </Text>
 
+          <Text style={styles.tabBarInfoText}>Info fra login:</Text>
+        {/* <Text style={styles.tabBarInfoText}>email: {email}</Text> */}
+        {/* <Text style={styles.tabBarInfoText}>id: {id}</Text> */}
+          {/* <Text style={styles.tabBarInfoText}>navn: {firstName}, {lastName}</Text> */}
+        {/* <Text style={styles.tabBarInfoText}>id: {picture}</Text> */}
+      
           <View>
             <View marginTop={20}>
               <Button

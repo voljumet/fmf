@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Component } from 'react';
 import { AsyncStorage, Button, StyleSheet, Text, View, Image } from 'react-native';
 import * as AppAuth from 'expo-app-auth';
 import { ScrollView } from 'react-native-gesture-handler';
 
-
-export default function Login({ navigation }) {
+export default function Login() {
   let [authState, setAuthState] = useState(null);
 
   useEffect(() => {
@@ -30,7 +29,7 @@ export default function Login({ navigation }) {
       <Button
         title="Google Signin"
         onPress={async () => {
-          const _authState = await signInAsync({ navigation });
+          const _authState = await signInAsync();
           setAuthState(_authState);
         }}
       />
@@ -44,6 +43,8 @@ export default function Login({ navigation }) {
     </View>
   );
 }
+
+
 
 let config = {
   issuer: 'https://accounts.google.com',
@@ -59,26 +60,35 @@ let config = {
 
 let StorageKey = 'AIzaSyDQIiRi5UWFD7qbHpVcIk_Sj8kHaMQ85s8';
 
-export async function signInAsync({ navigation }) {
-  const authState = await AppAuth.authAsync(config);
-  const result = await fetchUserInfo(authState.accessToken);
+const authState = await AppAuth.authAsync(config);
+const result = await fetchUserInfo(authState.accessToken);
 
-  var email = result["email"];
+var email = result["email"];
+var firstName = result["email"];
+var family_name = result["family_name"];
+var given_name = result["given_name"];
+var picture = result["picture"];
+var id = result["id"];
 
-  await cacheAuthAsync(authState);
 
-  if (email != null) {
-    console.log("logger inn");
+export default class signInAsync extends Component {
+   signin = async () => {
+     await cacheAuthAsync(authState);
 
-    navigation.navigate("Home", {
-      id: result["id"],
-      email: result["email"],
-      lastName: result["family_name"],
-      firstName: result["given_name"],
-      picture: result["picture"],
-    });
-  }
-}
+     if (email != null) {
+       console.log("logger inn");
+       console.log("user info: ", email);
+
+       props.navigation.navigate("Home", {
+          id: id,
+       });
+
+     } else {
+       return;
+     }
+   };
+ }
+
 
 async function fetchUserInfo(accessToken) {
   const response = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
