@@ -6,33 +6,159 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import DialogInput from 'react-native-dialog-input';
+
+import * as AppAuth from 'expo-app-auth';
+import { TextInput } from 'react-native-gesture-handler';
+import Dialog from 'react-native-dialog';
 
 export default class Profile extends Component {
+  constructor(){
+     
+    super();
+    this.state = {
+      dataSource: [],
 
-  render() {
-    return (
-      <View style={styles.container}>
+      display: 'Info',
+
+      isDialogVisible: true,
+      showdialognow: true
+    };
+  }
+
+
+//Henter en profil fra customer og gjør dataen tilgjengelig i dataSource
+componentDidMount = async () => {
+  this.userid = 2; 
+  return fetch('https://f2ec46f6.ngrok.io/api/customer/' + this.userid)
+  .then((response) => response.json())
+  .then((responseJson) => {
+    this.setState({
+      dataSource: responseJson,
+    });
+  })
+  .catch((error) => {
+    alert(error);
+  });
+}
+
+  showDialog = () => {
+    this.setState({isDialogVisible: true})
+  }
+
+  closeDialog = () => {
+    this.setState({display: 'Info'})
+  }
+
+  PutFirstname=(inputText)=> {
+    {
+      fetch('https://f2ec46f6.ngrok.io/api/customer/' + this.userid, {
+          method: 'PUT',
+          headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              "firstName": inputText,
+          })
+      })
+  }
+  }
+  PutTLF=()=> {
+    
+  }
+  PutAdress=()=> {
+    
+  }
+
+  changeFirstName = () =>{
+    this.setState({display: 'FirstName'})
+  }
+  changeTLF = () =>{
+    this.setState({display: 'TLF'})
+  }
+  changeAdress = () =>{
+    this.setState({display: 'Adress'})
+  }
+
+  renderForm = ()=>{
+    switch(this.state.display){
+      case 'FirstName':
+        return(
+          <View>
+          <DialogInput
+            isDialogVisible = {this.showdialognow}
+            title={"Profile info"}
+            message={"Change your name"}
+            hintInput ={this.state.dataSource.firstName}
+            submitInput={ (inputText) => {this.PutFirstname(inputText)} }
+            closeDialog={this.closeDialog}>
+        </DialogInput> 
+        </View>
+        )
+      case 'TLF':
+        return(
+          <View>
+          <DialogInput
+            isDialogVisible = {this.showdialognow}
+            title={"Profile info"}
+            message={"Change your TLF"}
+            hintInput ={this.state.dataSource.phone}
+            submitInput={ (inputText) => {this.PutTLF(inputText)} }
+            closeDialog={this.closeDialog}>
+        </DialogInput> 
+        </View>
+        )
+      case 'Adress':
+        return(
+          <View>
+          <DialogInput
+            isDialogVisible = {this.showdialognow}
+            title={"Profile info"}
+            message={"Change your Adress"}
+            hintInput ={this.state.dataSource.address}
+            submitInput={ (inputText) => {this.PutAdress(inputText)} }
+            closeDialog={this.closeDialog}>
+        </DialogInput> 
+        </View>
+        )
+      case 'Info':
+        return(
+          <View style={styles.container}>
           <View style={styles.header}></View>
-          <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
+          {/* Henter bilde for avatar. Kan endres senere for å hente bilde fra google bruker */}
+          <Image style={styles.avatar} source={{uri: 'https://vectorified.com/images/pickle-rick-icon-2.png'}}/>
           <View style={styles.body}>
             <View style={styles.bodyContent}>
-              <Text style={styles.name}>John Doe</Text>
-              <TouchableOpacity style={styles.buttonContainer}>
-                <Text>Placeholder-1</Text>  
-              </TouchableOpacity>              
-              <TouchableOpacity style={styles.buttonContainer}>
-                <Text>Placeholder-2</Text> 
+
+              <TouchableOpacity style={styles.buttonContainer} onPress = {this.changeFirstName}>
+              <Text>{this.state.dataSource.firstName}</Text>  
+              </TouchableOpacity>      
+
+              <TouchableOpacity style={styles.buttonContainer} onPress = {this.changeTLF}>
+                <Text>{this.state.dataSource.phone}</Text> 
               </TouchableOpacity>
+
+              <TouchableOpacity style={styles.buttonContainer} onPress = {this.changeAdress}>
+                <Text>{this.state.dataSource.address}</Text>  
+              </TouchableOpacity>
+
               <TouchableOpacity style={styles.buttonContainer}>
-                <Text>Placeholder-3</Text>  
-              </TouchableOpacity>              
-              <TouchableOpacity style={styles.buttonContainer}>
-                <Text>Placeholder-4</Text> 
+              <Text>{"Rating: " + this.state.dataSource.rating}</Text> 
               </TouchableOpacity>
             </View>
         </View>
       </View>
+        )
+    }
+  }
+
+  render() {
+    return (
+      <View>
+      {this.renderForm()}
+      </View>
+
     );
   }
 }
@@ -85,6 +211,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop:10,
     height:45,
+    textAlign: "center",
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
