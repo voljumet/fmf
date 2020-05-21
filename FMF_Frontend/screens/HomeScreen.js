@@ -6,7 +6,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { MonoText } from '../components/StyledText';
 
 export default function HomeScreen({ route, navigation }) {
-  const { id } = route.params;
+  // const { id } = route.params;
   // const { email } = route.params;
   // const { lastName } = route.params;
   // const { firstName } = route.params;
