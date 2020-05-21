@@ -1,7 +1,7 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "ngrok": "cd .. && ./ngrok/ngrok http https://localhost:5001",
+    "ngrok": "cd .. && ./ngrok/ngrok http https://localhost:5001/",
     "start": "expo start --tunnel",
     "android": "expo start --android",
     "ios": "expo start --ios",
