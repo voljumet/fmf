@@ -2,8 +2,8 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 6458,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "packagerPid": 83248,
+  "expoServerNgrokUrl": "https://b6-py2.anonymous.fmf-frontend.exp.direct",
+  "packagerNgrokUrl": "https://packager.b6-py2.anonymous.fmf-frontend.exp.direct",
+  "ngrokPid": 83261
 }

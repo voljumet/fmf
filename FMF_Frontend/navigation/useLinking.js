@@ -9,9 +9,9 @@ export default function(containerRef) {
         path: 'root',
         screens: {
           Home: 'home',
-          Links: 'links',
-          Search: 'search',
-          Settings: 'settings',
+          Driver: 'driver',
+          Store: 'store',
+          Profile: 'profile',
         },
       },
     },

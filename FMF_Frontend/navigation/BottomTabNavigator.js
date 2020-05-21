@@ -2,9 +2,7 @@ import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-// import LinksScreen from '../screens/LinksScreen';
 import MapScreen from '../screens/MapScreen';
-import SearchScreen from '../screens/SearchScreen';
 import LoginScreen from '../screens/LoginScreen';
 import NewScreen from '../screens/ShopScreen';
 
@@ -25,37 +23,44 @@ export default function BottomTabNavigator({ navigation, route }) {
 
   return (
     <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
-
       <BottomTab.Screen
         name="Home"
         component={HomeScreen}
         options={{
-          title: 'Home',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-home" />,
+          title: "Home",
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="md-home" />
+          ),
         }}
       />
       <BottomTab.Screen
-        name="New" 
+        name="Store"
         component={NewScreen}
         options={{
-          title: 'Search',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-search" />,
+          title: "Store",
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="md-cart" />
+          ),
         }}
       />
       <BottomTab.Screen
-        name="Login"
+        name="Profile"
         component={LoginScreen}
         options={{
-          title: 'Login',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-person" />,
+          title: "Profile",
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="md-person" />
+          ),
         }}
       />
       <BottomTab.Screen
-        name="Map"
+        name="Driver"
         component={MapScreen}
         options={{
-          title: 'Map',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+          title: "Driver",
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="md-globe" />
+          ),
         }}
       />
     </BottomTab.Navigator>
@@ -67,12 +72,12 @@ function getHeaderTitle(route) {
 
   switch (routeName) {
     case 'Home':
-      return 'How to get started';
+      return 'Home';
     case 'ShoppingCart':
-      return 'Search for product';
-    case 'Login':
+      return 'Search for products';
+    case 'Profile':
       return 'Change profile information';
-    case 'Maps': 
+    case 'Driver': 
       return 'Discover shop locations';  
   }
 }
