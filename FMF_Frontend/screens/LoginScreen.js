@@ -3,8 +3,7 @@ import { AsyncStorage, Button, StyleSheet, Text, View, Image } from 'react-nativ
 import * as AppAuth from 'expo-app-auth';
 import { ScrollView } from 'react-native-gesture-handler';
 
-
-export default function Login() {
+export default function Login({ navigation }) {
   let [authState, setAuthState] = useState(null);
 
   useEffect(() => {
@@ -19,47 +18,31 @@ export default function Login() {
   return (
     <View style={styles.container}>
       <Image
-            source={
-              __DEV__
-                ? require('../assets/images/icon.png')
-                : require('../assets/images/icon.png')
-            }
-            style={styles.loginImg}
-          />
-          <Button
-            title="Google Signin "
-            onPress={async () => {
-              const _authState = await signInAsync();
-              setAuthState(_authState);
-            }}
-          />
-          {/* <Button
-            title="Sign Out "
-            onPress={async () => {
-              await signOutAsync(authState);
-              setAuthState(null);
-            }}
-          /> */}
-          {/* <Text>{JSON.stringify(authState, null, 2)}</Text> */}
-        </View>
+        source={
+          __DEV__
+            ? require("../assets/images/icon.png")
+            : require("../assets/images/icon.png")
+        }
+        style={styles.loginImg}
+      />
+
+      <Button
+        title="Google Signin"
+        onPress={async () => {
+          const _authState = await signInAsync({ navigation });
+          setAuthState(_authState);
+        }}
+      />
+      <Button
+        title="Sign Out "
+        onPress={async () => {
+          await signOutAsync(authState);
+          setAuthState(null);
+        }}
+      />
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  loginImg:{
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginBottom: 50,
-  },
-});
 
 let config = {
   issuer: 'https://accounts.google.com',
@@ -67,19 +50,45 @@ let config = {
   'openid', 
   'profile',
   'email',
-  ''
+/*   'https://www.googleapis.com/oauth2/v2/userinfo', */
 ],
   /* This is a ios clientid from console.developers.google.com*/
   clientId: '763542689360-jj5ibnjo9rtf0lhf6lpd9cs6j7iqq9k6.apps.googleusercontent.com',
 };
 
-let StorageKey = '@MyApp:CustomGoogleOAuthKey';
+let StorageKey = 'AIzaSyDQIiRi5UWFD7qbHpVcIk_Sj8kHaMQ85s8';
 
-export async function signInAsync() {
-  let authState = await AppAuth.authAsync(config);
+export async function signInAsync({ navigation }) {
+  const authState = await AppAuth.authAsync(config);
+  const result = await fetchUserInfo(authState.accessToken);
+
+  var email = result["email"];
+
   await cacheAuthAsync(authState);
-  console.log('signInAsync', authState);
-  return authState;
+
+  if (email != null) {
+    console.log("logger inn");
+
+    navigation.navigate("Home", {
+      id: result["id"],
+      email: result["email"],
+      lastName: result["family_name"],
+      firstName: result["given_name"],
+      picture: result["picture"],
+    });
+  }
+}
+
+async function fetchUserInfo(accessToken) {
+  const response = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    },
+  });
+  return await response.json();
 }
 
 async function cacheAuthAsync(authState) {
@@ -89,7 +98,7 @@ async function cacheAuthAsync(authState) {
 export async function getCachedAuthAsync() {
   let value = await AsyncStorage.getItem(StorageKey);
   let authState = JSON.parse(value);
-  console.log('getCachedAuthAsync', authState);
+  // console.log('getCachedAuthAsync', authState);
   if (authState) {
     if (checkIfTokenExpired(authState)) {
       return refreshAuthAsync(authState);
@@ -100,26 +109,46 @@ export async function getCachedAuthAsync() {
   return null;
 }
 
+
 function checkIfTokenExpired({ accessTokenExpirationDate }) {
   return new Date(accessTokenExpirationDate) < new Date();
 }
 
 async function refreshAuthAsync({ refreshToken }) {
   let authState = await AppAuth.refreshAsync(config, refreshToken);
-  console.log('refreshAuth', authState);
+  // console.log('refreshAuth', authState);
   await cacheAuthAsync(authState);
   return authState;
 }
 
 export async function signOutAsync({ accessToken }) {
   try {
+    
     await AppAuth.revokeAsync(config, {
       token: accessToken,
       isClientIdProvided: true,
     });
     await AsyncStorage.removeItem(StorageKey);
+    console.log('logger out');
     return null;
   } catch (e) {
+    
     alert(`Failed to revoke token: ${e.message}`);
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  loginImg: {
+    width: 100,
+    height: 80,
+    resizeMode: "contain",
+    marginTop: 3,
+    marginBottom: 50,
+  },
+});

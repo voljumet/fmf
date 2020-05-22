@@ -39,6 +39,8 @@ msbuild.wrn
 node_modules
 *.log
 
+.expo/packager-info.json
+.expo/settings.json
 *.expo/*
 *.expo-shared/*
 
@@ -56,8 +58,8 @@ local.properties
 .DS_Store
 
 node_modules/**/*
-FillMyFridge/.expo/*
-FillMyFridge/.expo-shared/*
+FMF_Frontend/.expo/*
+FMF_Frontend/.expo-shared/*
 npm-debug.*
 *.jks
 *.p8
