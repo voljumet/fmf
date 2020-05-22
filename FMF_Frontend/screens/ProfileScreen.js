@@ -16,9 +16,7 @@ export default class Profile extends Component {
   constructor(){
     super();
     this.state = {
-
       dataSource: [],
-      
       display: 'Info',
       isDialogVisible: true,
       showdialognow: true
