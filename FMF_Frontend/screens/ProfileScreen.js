@@ -99,6 +99,7 @@ componentDidMount = async () => {
   }
   changeAdress = () =>{
     this.setState({display: 'Adress'})
+    
   }
 
   renderForm = ()=>{
