@@ -14,7 +14,6 @@ import Dialog from 'react-native-dialog';
 
 export default class Profile extends Component {
   constructor(){
-     
     super();
     this.state = {
       dataSource: [],
@@ -30,7 +29,7 @@ export default class Profile extends Component {
 //Henter en profil fra customer og gjør dataen tilgjengelig i dataSource
 componentDidMount = async () => {
   this.userid = 2; 
-  return fetch('https://f2ec46f6.ngrok.io/api/customer/' + this.userid)
+  return fetch('http://188.166.53.175/api/profile/' + this.userid)
   .then((response) => response.json())
   .then((responseJson) => {
     this.setState({
@@ -52,23 +51,44 @@ componentDidMount = async () => {
 
   PutFirstname=(inputText)=> {
     {
-      fetch('https://f2ec46f6.ngrok.io/api/customer/' + this.userid, {
+      fetch('http://188.166.53.175/api/profile/' + this.userid, {
           method: 'PUT',
           headers: {
               Accept: 'application/json',
               'Content-Type': 'application/json'
           },
           body: JSON.stringify({
+              "Id": this.userid, 
               "firstName": inputText,
           })
       })
   }
   }
-  PutTLF=()=> {
-    
+  PutTLF=(inputText)=> {
+    fetch('http://188.166.53.175/api/profile/' + this.userid, {
+      method: 'PUT',
+      headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          "Id": this.userid, 
+          "phone": inputText,
+      })
+  })
   }
-  PutAdress=()=> {
-    
+  PutAdress=(inputText)=> {
+    fetch('http://188.166.53.175/api/profile/' + this.userid, {
+      method: 'PUT',
+      headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          "Id": this.userid, 
+          "address": inputText,
+      })
+  })
   }
 
   changeFirstName = () =>{
