@@ -76,6 +76,8 @@ class Products extends Component {
 
             body: JSON.stringify(this.replacer(products))
         })
+        alert("Post successfully done")
+            
 
 
     }
@@ -88,7 +90,7 @@ class Products extends Component {
             <ScrollView >
 
                 {this.renderProducts(this.props.products)}
-                <TouchableOpacity onPress={this.post(this.props.products)} style={styles.btn}>
+                <TouchableOpacity onPress={()=>this.post(this.props.products)} style={styles.btn}>
                     <Text style={styles.plus}>+</Text>
                 </TouchableOpacity>
 

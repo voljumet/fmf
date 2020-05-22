@@ -96,7 +96,7 @@ class SearchScreen extends React.Component {
       </TouchableOpacity>
 
       <Text>
-      {'Quantity: ' } 
+      {'Quantity: '} 
       </Text> 
       <TouchableOpacity >
         <Icon name="ios-remove-circle" size={30} color={"red"} style={{left:300, bottom:20}} />
