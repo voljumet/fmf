@@ -76,7 +76,6 @@ class SearchScreen extends React.Component {
   handlePress= (item) =>{
    this.props.addItemToCart(item)
   };
-
   //items will be displayed
   renderItem = ({ item }) => (
     //Change "title" with the corresponding name in API

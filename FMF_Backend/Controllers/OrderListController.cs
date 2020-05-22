@@ -34,7 +34,7 @@ namespace FMF_Backend.Controllers
         {
             var orderList = _context.OrderLists
                 .Include(ordl => ordl.Shopper)
-                .Include(ordl => ordl.Product)
+                .Include(ordl => ordl.Products)
                     // .ThenInclude(ordl => ordl.ProductName)
 
 
