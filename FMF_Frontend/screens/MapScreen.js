@@ -44,7 +44,6 @@ export default class MapScreen extends Component {
   }
 
 ShowModalFunction() {
-    console.log("vis modal")
     this.setState({modalVisible: !this.state.modalVisible});
 }
   
@@ -53,7 +52,7 @@ ShowModalFunction() {
     let object = this.state.AllLists.find(list => list.id === parseInt(markerID, 10))
     this.setState({
       currentList: object
-    }, () => console.log(this.state.currentList));    
+    });    
     this.ShowModalFunction()  
   }
 
