@@ -76,7 +76,7 @@ class Products extends Component {
 
             body: JSON.stringify(this.replacer(products))
         })
-        alert("Post successfully done")
+        alert("Post successfully done!")
             
 
 
