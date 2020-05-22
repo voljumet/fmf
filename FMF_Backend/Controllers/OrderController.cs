@@ -32,13 +32,13 @@ namespace FMF_Backend.Controllers
         [HttpGet("GetOrder/{id}")]
         public async Task<ActionResult<Order>> GetOrderDetails(long id)
         {
-            var order = _context.Orders
+            var order = await _context.Orders
                 .Include(ord => ord.Driver)
                 .Include(ord => ord.OrderList)
                     .ThenInclude(orderList => orderList.Shopper)
                     
                 .Where(ord => ord.Id == id)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
 
             if (order == null)
