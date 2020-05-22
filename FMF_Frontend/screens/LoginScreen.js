@@ -3,7 +3,6 @@ import { AsyncStorage, Button, StyleSheet, Text, View, Image } from 'react-nativ
 import * as AppAuth from 'expo-app-auth';
 import { ScrollView } from 'react-native-gesture-handler';
 
-
 export default function Login({ navigation }) {
   let [authState, setAuthState] = useState(null);
 
