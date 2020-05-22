@@ -76,7 +76,6 @@ class SearchScreen extends React.Component {
   handlePress= (item) =>{
    this.props.addItemToCart(item)
   };
-
   //items will be displayed
   renderItem = ({ item }) => (
     //Change "title" with the corresponding name in API
@@ -97,7 +96,7 @@ class SearchScreen extends React.Component {
       </TouchableOpacity>
 
       <Text>
-      {'Quantity: ' } 
+      {'Quantity: '} 
       </Text> 
       <TouchableOpacity >
         <Icon name="ios-remove-circle" size={30} color={"red"} style={{left:300, bottom:20}} />

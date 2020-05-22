@@ -16,19 +16,26 @@ import Products  from '../Shopping/Products';
 class CartScreen extends Component {
     render(){
         return(
+            
             <View style={styles.container}>
+                
             {this.props.cartItems.length > 0 ?
                 <Products
-                
                     onPress={this.props.removeItem}
-                    products={this.props.cartItems} />
+                    products={this.props.cartItems} 
+                 />
                     
                 : <Text>No items in your cart</Text>
             }
+            
         </View>
         );
+      
+        
     }
 }
+
+
 
 const mapStateToProps = (state) => {
     return{
