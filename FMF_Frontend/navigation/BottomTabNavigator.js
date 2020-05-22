@@ -5,6 +5,8 @@ import HomeScreen from '../screens/HomeScreen';
 import MapScreen from '../screens/MapScreen';
 import LoginScreen from '../screens/LoginScreen';
 import NewScreen from '../screens/ShopScreen';
+import SearchScreen from '../screens/SearchScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 
 
 
@@ -43,6 +45,16 @@ export default function BottomTabNavigator({ navigation, route }) {
           ),
         }}
       />
+
+        <BottomTab.Screen
+        name="ProfileScreen" s
+        component={ProfileScreen}
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+        }}
+      />
+
       <BottomTab.Screen
         name="Profile"
         component={LoginScreen}

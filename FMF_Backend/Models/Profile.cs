@@ -1,9 +1,15 @@
 namespace FMF_Backend.Models{
    public class Profile {
-      public Profile(string firstName, string lastName, string address){
+
+           public Profile(){}
+      public Profile( string firstName, string lastName, string address, int phone, int rating, string notes){
+              
                         FirstName = firstName;
                         LastName = lastName;
                         Address = address;
+                        Phone = phone;
+                        Rating = rating;
+                        notes = Notes;
                         
                 }
                 public long Id { get; set; }
