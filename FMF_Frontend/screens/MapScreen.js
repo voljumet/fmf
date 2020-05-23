@@ -60,7 +60,7 @@ ShowModalFunction() {
     let liste = Array.from(newSet)*/
 
     return this.state.locations.map(location => {
-      //newSet.add(location)
+      console.log(location.key)
       return <MapView.Marker 
       coordinate={{ latitude: location.location.lat, longitude: location.location.lng }}
       key={location.key}
@@ -96,10 +96,12 @@ componentDidMount = async () => {
                         fetch("http://188.166.53.175/api/orderList/getOrderList/" + list.id)
                         .then((response) => response.json())
                         .then((resJson) => {
+                          if(resJson.shopper != null || resJson.shopper != undefined){
+                          this.getGeoData(resJson)
                           this.setState(prevState => ({
                             AllLists: [...prevState.AllLists, resJson],
                           }))
-                        })                        
+                        }})                        
                           .catch((error) => {
                           console.log(error);
                         });
@@ -126,9 +128,10 @@ componentDidMount = async () => {
   }*/
 
 
-getGeoData() {
+getGeoData(list) {
+  console.log(list.shopper.address)
   console.log(this.state.AllLists.length)
-  for (const list of this.state.AllLists) {
+  //for (const list of this.state.AllLists) {
     console.log("her kjører koden mange ganger")
     if(list.shopper != null || list.shopper != undefined){
     Geocoder.from(list.shopper.address)
@@ -144,7 +147,7 @@ getGeoData() {
         },
           )
       .catch((error) => console.warn(error)); }
-  }
+ // }
 }
 
 constructList(){
@@ -168,9 +171,9 @@ renderSeparator = () => {
 };
 
 componentDidUpdate = async (prevProps, prevState) => {
- if (this.state.AllLists !== prevState.AllLists) {
+/* if (this.state.AllLists !== prevState.AllLists) {
     this.getGeoData();
-  }
+  }*/
 }
 
   render() {
