@@ -64,13 +64,13 @@ ShowModalFunction() {
 
     return this.state.locations.map(location => {
       //newSet.add(location)
-      return <MapView.Marker 
+      /*return <MapView.Marker 
       coordinate={{ latitude: location.location.lat, longitude: location.location.lng }}
       key={location.key}
       title={location.title}
       image={redMarker}
       identifier={location.key.toString()} onPress={(event) => this.handleMarkerPress(event)}
-      />
+      />*/
     })
 }
 
@@ -92,28 +92,28 @@ componentDidMount = async () => {
 
   liste = []
 
- await fetch("http://188.166.53.175/api/orderList/getorderlist/1")
+ await fetch("http://188.166.53.175/api/orderList/")
                      .then((response) => response.json())
                      .then((responseJson) => {
-                      /*for(const list of responseJson){ 
+                      for(const list of responseJson){ 
                         fetch("http://188.166.53.175/api/orderList/getOrderList/" + list.id)
                         .then((response) => response.json())
-                        .then((responseJson) => {
+                        .then((resJson) => {
                           this.setState(prevState => ({
-                            AllLists: [...prevState.AllLists, responseJson],
+                            AllLists: [...prevState.AllLists, resJson],
                           }))
                         })                        
                           .catch((error) => {
                           console.log(error);
                         });
-                        }}*/
-                        this.setState(prevState => ({
-                          AllLists: [...prevState.AllLists, responseJson],
-                        }))})
+                        } this.getGeoData();})
                      .catch((error) => {
                        console.log(error);
                      });
+
+
                     }
+
                      
   /*en = new GroceryList("Lundeleitet 11, 4323 Sandnes", "Melk", "Min første handleliste", "1"),
   liste.push(en)
@@ -132,8 +132,9 @@ componentDidMount = async () => {
 
 
 getGeoData() {
-
+  console.log(this.state.AllLists.length)
   for (const list of this.state.AllLists) {
+    console.log("her kjører koden mange ganger")
     if(list.shopper != null || list.shopper != undefined){
     Geocoder.from(list.shopper.address)
       .then((response) => {
@@ -148,11 +149,7 @@ getGeoData() {
         },
           )
       .catch((error) => console.warn(error)); }
-
   }
-
-  
-
 }
 
 constructList(){
@@ -175,11 +172,11 @@ renderSeparator = () => {
   );
 };
 
-componentDidUpdate(prevProps, prevState) {
-  if (this.state.AllLists !== prevState.AllLists) {
+/*componentDidUpdate = async (prevProps, prevState) => {
+ if (this.state.AllLists !== prevState.AllLists) {
     this.getGeoData();
   }
-}
+}*/
 
   render() {
     if(this.state.currentList != null){
@@ -202,6 +199,13 @@ componentDidUpdate(prevProps, prevState) {
           horizontal={false}
           ItemSeparatorComponent={this.renderSeparator}
           numColumns={3}/>
+
+          <Button title="knapp"
+          style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+          onPress={() => {
+            this.setState({
+              modalVisible: !this.state.modalVisible
+            });}}>Lukk</Button>
 
           </View>
         </View>
