@@ -36,10 +36,7 @@ export default class MapScreen extends Component {
       key: null,
       modalVisible: false,
       currentList: null,
-      FlatListItems: [
-        { title: "Skptricks",subTitle:"Asdasd" },
-        { title: "melons",subTitle:"melons are great" }
-      ]
+      listLenght: null,
     };
   }
 
@@ -64,13 +61,13 @@ ShowModalFunction() {
 
     return this.state.locations.map(location => {
       //newSet.add(location)
-      /*return <MapView.Marker 
+      return <MapView.Marker 
       coordinate={{ latitude: location.location.lat, longitude: location.location.lng }}
       key={location.key}
       title={location.title}
       image={redMarker}
       identifier={location.key.toString()} onPress={(event) => this.handleMarkerPress(event)}
-      />*/
+      />
     })
 }
 
@@ -106,12 +103,10 @@ componentDidMount = async () => {
                           .catch((error) => {
                           console.log(error);
                         });
-                        } })
+                        }})
                      .catch((error) => {
                        console.log(error);
                      });
-
-
                     }
 
                      
@@ -172,11 +167,11 @@ renderSeparator = () => {
   );
 };
 
-/*componentDidUpdate = async (prevProps, prevState) => {
+componentDidUpdate = async (prevProps, prevState) => {
  if (this.state.AllLists !== prevState.AllLists) {
     this.getGeoData();
   }
-}*/
+}
 
   render() {
     if(this.state.currentList != null){
