@@ -106,7 +106,7 @@ componentDidMount = async () => {
                           .catch((error) => {
                           console.log(error);
                         });
-                        } this.getGeoData();})
+                        } })
                      .catch((error) => {
                        console.log(error);
                      });
