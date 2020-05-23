@@ -1,8 +1,18 @@
+/* ----------------------------- Import part --------------------------------------- */
 import React, { useEffect, useState } from 'react';
 import { AsyncStorage, Button, StyleSheet, Text, View, Image } from 'react-native';
 import * as AppAuth from 'expo-app-auth';
-import { ScrollView } from 'react-native-gesture-handler';
 
+/* ----------------------------- Global variables --------------------------------------- */
+let config = {
+  issuer: 'https://accounts.google.com',
+  scopes:[ 'openid', 'profile', 'email',],
+  clientId: '763542689360-jj5ibnjo9rtf0lhf6lpd9cs6j7iqq9k6.apps.googleusercontent.com',};
+
+let StorageKey = 'AIzaSyDQIiRi5UWFD7qbHpVcIk_Sj8kHaMQ85s8';
+/* ----------------------------- Global variables --------------------------------------- */
+
+/* ----------------------------- Main default function --------------------------------------- */
 export default function Login({ navigation }) {
   let [authState, setAuthState] = useState(null);
 
@@ -43,27 +53,13 @@ export default function Login({ navigation }) {
     </View>
   );
 }
+/* ----------------------------- Main default function --------------------------------------- */
 
-let config = {
-  issuer: 'https://accounts.google.com',
-  scopes:[ 
-  'openid', 
-  'profile',
-  'email',
-/*   'https://www.googleapis.com/oauth2/v2/userinfo', */
-],
-  /* This is a ios clientid from console.developers.google.com*/
-  clientId: '763542689360-jj5ibnjo9rtf0lhf6lpd9cs6j7iqq9k6.apps.googleusercontent.com',
-};
-
-let StorageKey = 'AIzaSyDQIiRi5UWFD7qbHpVcIk_Sj8kHaMQ85s8';
-
+/* ----------------------------- SignIn function --------------------------------------- */
 export async function signInAsync({ navigation }) {
   const authState = await AppAuth.authAsync(config);
   const result = await fetchUserInfo(authState.accessToken);
-
   var email = result["email"];
-
   await cacheAuthAsync(authState);
 
   if (email != null) {
@@ -79,6 +75,7 @@ export async function signInAsync({ navigation }) {
   }
 }
 
+/* ----------------------------- fetch user function --------------------------------------- */
 async function fetchUserInfo(accessToken) {
   const response = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
     method: 'GET',
@@ -91,10 +88,12 @@ async function fetchUserInfo(accessToken) {
   return await response.json();
 }
 
+/* ----------------------------- Storage of accesstoken function --------------------------------------- */
 async function cacheAuthAsync(authState) {
   return await AsyncStorage.setItem(StorageKey, JSON.stringify(authState));
 }
 
+/* ----------------------------- get accesstoken function --------------------------------------- */
 export async function getCachedAuthAsync() {
   let value = await AsyncStorage.getItem(StorageKey);
   let authState = JSON.parse(value);
@@ -109,7 +108,7 @@ export async function getCachedAuthAsync() {
   return null;
 }
 
-
+/* ----------------------------- check if token expired function --------------------------------------- */
 function checkIfTokenExpired({ accessTokenExpirationDate }) {
   return new Date(accessTokenExpirationDate) < new Date();
 }
@@ -121,9 +120,9 @@ async function refreshAuthAsync({ refreshToken }) {
   return authState;
 }
 
+/* ----------------------------- Sign out function --------------------------------------- */
 export async function signOutAsync({ accessToken }) {
   try {
-    
     await AppAuth.revokeAsync(config, {
       token: accessToken,
       isClientIdProvided: true,
@@ -132,11 +131,13 @@ export async function signOutAsync({ accessToken }) {
     console.log('logger out');
     return null;
   } catch (e) {
-    
     alert(`Failed to revoke token: ${e.message}`);
   }
 }
 
+/* ----------------------------- function --------------------------------------- */
+
+/* ----------------------------- Styles --------------------------------------- */
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -152,3 +153,4 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
 });
+/* ----------------------------- Styles --------------------------------------- */
