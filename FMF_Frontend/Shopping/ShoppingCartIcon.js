@@ -24,7 +24,6 @@ const ShoppingCartIcon = (props) => (
             justifyContent: 'center',
             zIndex: 2000
 
-
         }}>
             <Text style={{color: 'white', fontWeight:'bold'}}>
                 {props.cartItems.length}

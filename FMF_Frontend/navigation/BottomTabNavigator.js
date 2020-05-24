@@ -4,12 +4,9 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import MapScreen from '../screens/MapScreen';
 import LoginScreen from '../screens/LoginScreen';
-import NewScreen from '../screens/ShopScreen';
-import SearchScreen from '../screens/SearchScreen';
+import ShopScreen from "../screens/ShopScreen";
 import ProfileScreen from '../screens/ProfileScreen';
-
-
-
+import Stakk from '../screens/ProfileN';
 
 const BottomTab = createBottomTabNavigator(
 
@@ -37,7 +34,7 @@ export default function BottomTabNavigator({ navigation, route }) {
       />
       <BottomTab.Screen
         name="Store"
-        component={NewScreen}
+        component={ShopScreen}
         options={{
           title: "Store",
           tabBarIcon: ({ focused }) => (
@@ -46,32 +43,46 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       />
 
-        <BottomTab.Screen
-        name="ProfileScreen" s
-        component={ProfileScreen}
-        options={{
-          title: 'Profile',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
-        }}
-      />
-
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="Profile"
-        component={LoginScreen}
+        component={ProfileScreen}
         options={{
           title: "Profile",
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-person" />
           ),
         }}
+      /> */}
+
+      <BottomTab.Screen
+        name="Stakk"
+        component={Stakk}
+        options={{
+          title: "Stakk",
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="md-hammer" />
+          ),
+        }}
       />
+ 
+      <BottomTab.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{
+          title: "Login",
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="md-book" />
+          ),
+        }}
+      />
+
       <BottomTab.Screen
         name="Driver"
         component={MapScreen}
         options={{
           title: "Driver",
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-globe" />
+            <TabBarIcon focused={focused} name="md-list-box" />
           ),
         }}
       />

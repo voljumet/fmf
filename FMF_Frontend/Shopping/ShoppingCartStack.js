@@ -2,11 +2,9 @@ import React, {Component} from "react";
 import{
     StyleSheet
 } from "react-native";
-
-
-import ShoppingCartIcon from "./ShoppingCartIcon";
 import {createStackNavigator} from 'react-navigation';
 
+import ShoppingCartIcon from "./ShoppingCartIcon";
 import SearchScreen from '../screens/SearchScreen';
 import CartScreen from "../screens/CartScreen";
 
@@ -22,13 +20,13 @@ class ShoppingCart extends Component {
 export default ShoppingCart;
 
 
-
 const AppStackNavigator = createStackNavigator({
 
     Home: () => <SearchScreen/>,
     Cart: () => <CartScreen/>
     
-},{
+},
+{
         navigationOptions: {
             headerRight: (
                 <ShoppingCartIcon/>

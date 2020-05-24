@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { AsyncStorage, Button, StyleSheet, Text, View, Image } from 'react-native';
+import { AsyncStorage, Button, StyleSheet, Text, View, Image, processColor } from 'react-native';
 import * as AppAuth from 'expo-app-auth';
 import { ScrollView } from 'react-native-gesture-handler';
+import { NavigationContainer } from "@react-navigation/native";
+import { navigationRef } from "./RootNavigation";
 
 export default function Login({ navigation }) {
   let [authState, setAuthState] = useState(null);
@@ -25,12 +27,11 @@ export default function Login({ navigation }) {
         }
         style={styles.loginImg}
       />
-
       <Button
         title="Google Signin"
-        onPress={async () => {
+        onPress={ async () => {
           const _authState = await signInAsync({ navigation });
-          setAuthState(_authState);
+          setAuthState(_authState);          
         }}
       />
       <Button
@@ -67,15 +68,17 @@ export async function signInAsync({ navigation }) {
   await cacheAuthAsync(authState);
 
   if (email != null) {
-    console.log("logger inn");
-
-    navigation.navigate("Home", {
-      id: result["id"],
-      email: result["email"],
-      lastName: result["family_name"],
-      firstName: result["given_name"],
-      picture: result["picture"],
-    });
+     console.log("Goback");
+      navigation.goBack(authState,result);
+    //  navigation.navigate('ProfileN', {
+      //  authState: authState,
+      //  result: result,
+        // googleId: result["id"],
+    //   email: result["email"],
+    //   lastName: result["family_name"],
+    //   firstName: result["given_name"],
+    //   picture: result["picture"],
+      // });
   }
 }
 

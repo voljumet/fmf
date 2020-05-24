@@ -1,43 +1,57 @@
-import * as React from 'react';
+import React, { Component } from "react";
 import {
-  Image,
-  ScrollView,
   StyleSheet,
   Text,
+  ScrollView,
   View,
-  RefreshControl,
+  Button,
+  Image,
+  TouchableOpacity,
+  AsyncStorage,
 } from "react-native";
-import { Button } from "react-native-elements";
+import DialogInput from "react-native-dialog-input";
+import signInAsync from "./LoginScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { navigationRef } from "./RootNavigation";
 
-function wait(timeout) {
-  return new Promise(resolve => {
-    setTimeout(resolve, timeout);
+async function juice(){
+const DEMO_TOKEN = await AsyncStorage.getItem();
+if (DEMO_TOKEN === null) {
+  navigation.navigate("Login", {
+    onGoBack: () => this.refresh(),
   });
 }
+}
 
-export default function HomeScreen({ route,navigation }) {
-  const [refreshing, setRefreshing] = React.useState(false);
-  
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
+export default function ProfileN({ route,navigation }) {
 
-    wait(2000).then(() => setRefreshing(false));
-  }, [refreshing]);
-  
+  const authorized = null;
 
-  // const { googleId } = route.params;
+   if (authorized != null) {
+     console.log("ikke null");
+     // const { authState } = route.params;
+     // const { result } = route.params;
+     const { googleId } = route.params;
+     const { authState } = route.params;
+
+     authorized = authState;
+    //  console.log({googleId});
+
+    } else {
+      console.log("null")
+      juice();
+      console.log("nav done")
+
+    }
+
+//   const { googleId } = route.params;
   // const { email } = route.params;
   // const { lastName } = route.params;
   // const { firstName } = route.params;
   // const { picture } = route.params;
   return (
     <View style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.contentContainer}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
+      <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.logoContainer}>
           <Image
             source={
@@ -54,11 +68,11 @@ export default function HomeScreen({ route,navigation }) {
           </Text>
 
           {/* <Text style={styles.tabBarInfoText}>Info fra login:</Text> */}
-        {/* <Text style={styles.tabBarInfoText}>id: {googleId}</Text> */}
-        {/* <Text style={styles.tabBarInfoText}>email: {email}</Text> */}
+          {/* <Text style={styles.tabBarInfoText}>id: {googleId}</Text> */}
+          {/* <Text style={styles.tabBarInfoText}>email: {email}</Text> */}
           {/* <Text style={styles.tabBarInfoText}>navn: {firstName}, {lastName}</Text> */}
-        {/* <Text style={styles.tabBarInfoText}>id: {picture}</Text> */}
-      
+          {/* <Text style={styles.tabBarInfoText}>id: {picture}</Text> */}
+
           <View>
             <View marginTop={20}>
               <Button

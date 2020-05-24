@@ -3,14 +3,11 @@ import {
   StyleSheet,
   Text,
   View,
+  Button,
   Image,
-  TouchableOpacity
-} from 'react-native';
+  TouchableOpacity,
+} from "react-native";
 import DialogInput from 'react-native-dialog-input';
-
-import * as AppAuth from 'expo-app-auth';
-import { TextInput } from 'react-native-gesture-handler';
-import Dialog from 'react-native-dialog';
 
 export default class Profile extends Component {
   constructor(){
@@ -23,21 +20,24 @@ export default class Profile extends Component {
     };
   }
 
+  // static navigationOptions = {
+  //   title: 'Profile',
+  // };
 
-//Henter en profil fra customer og gjør dataen tilgjengelig i dataSource
-componentDidMount = async () => {
-  this.userid = 2; 
-  return fetch('http://188.166.53.175/api/profile/' + this.userid)
-  .then((response) => response.json())
-  .then((responseJson) => {
-    this.setState({
-      dataSource: responseJson,
+  //Henter en profil fra customer og gjør dataen tilgjengelig i dataSource
+  componentDidMount = async () => {
+    this.userid = 2; 
+    return fetch('http://188.166.53.175/api/profile/' + this.userid)
+    .then((response) => response.json())
+    .then((responseJson) => {
+      this.setState({
+        dataSource: responseJson,
+      });
+    })
+    .catch((error) => {
+      alert(error);
     });
-  })
-  .catch((error) => {
-    alert(error);
-  });
-}
+  }
 
   showDialog = () => {
     this.setState({isDialogVisible: true})
@@ -100,7 +100,11 @@ componentDidMount = async () => {
     
   }
 
+
   renderForm = ()=>{
+    // const { id } = route.params;
+    // console.log({id})
+
     switch(this.state.display){
       case 'FirstName':
         return(
@@ -108,6 +112,22 @@ componentDidMount = async () => {
           <DialogInput
             isDialogVisible = {this.showdialognow}
             title={"Profile info"}
+            message={"Change your name"}
+            hintInput ={this.state.dataSource.firstName}
+            submitInput={ (inputText) => {this.PutFirstname(inputText)} }
+            closeDialog={this.closeDialog}>
+        </DialogInput> 
+        </View>
+        )
+      case 'Test':
+        if (condition) {
+          
+        }
+        return(
+          <View>
+          <DialogInput
+            isDialogVisible = {this.showdialognow}
+            title={"Juice"}
             message={"Change your name"}
             hintInput ={this.state.dataSource.firstName}
             submitInput={ (inputText) => {this.PutFirstname(inputText)} }
@@ -150,8 +170,8 @@ componentDidMount = async () => {
           <View style={styles.body}>
             <View style={styles.bodyContent}>
 
-              <TouchableOpacity style={styles.buttonContainer} onPress = {this.changeFirstName}>
-              <Text>{this.state.dataSource.firstName}</Text>  
+              <TouchableOpacity style={styles.buttonContainer}  >
+              <Text> TEST </Text>  
               </TouchableOpacity>      
 
               <TouchableOpacity style={styles.buttonContainer} onPress = {this.changeTLF}>
@@ -173,11 +193,18 @@ componentDidMount = async () => {
   }
 
   render() {
+    // const {navigate} = this.props.navigation;
+
     return (
-      <View>
+      <View style={styles.container}>
+        {/* <Button
+        title="go to login"
+        onPress={() => navigate(
+          'Login',{ name: 'Jane'}
+        )}
+        /> */}
       {this.renderForm()}
       </View>
-
     );
   }
 }
