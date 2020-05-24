@@ -60,8 +60,9 @@ export default function HomeScreen({ route,navigation }) {
         {/* <Text style={styles.tabBarInfoText}>id: {picture}</Text> */}
       
           <View>
+          <Button onPress={() => navigation.navigate("Profile")}>Profil</Button>
             <View marginTop={20}>
-              <Button
+              <Button 
                 titleStyle={{
                   color: "white",
                   marginTop: 25,

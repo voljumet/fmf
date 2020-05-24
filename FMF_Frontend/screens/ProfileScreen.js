@@ -6,6 +6,7 @@ import {
   Button,
   Image,
   TouchableOpacity,
+  TextInput,
 } from "react-native";
 import DialogInput from 'react-native-dialog-input';
 
@@ -16,13 +17,14 @@ export default class Profile extends Component {
       dataSource: [],
       display: 'Info',
       isDialogVisible: true,
-      showdialognow: true
+      showdialognow: true,
+      username: "hei"
     };
   }
 
-  // static navigationOptions = {
-  //   title: 'Profile',
-  // };
+  static navigationOptions = {
+   title: 'Profile',
+ };
 
   //Henter en profil fra customer og gjør dataen tilgjengelig i dataSource
   componentDidMount = async () => {
@@ -193,16 +195,10 @@ export default class Profile extends Component {
   }
 
   render() {
-    // const {navigate} = this.props.navigation;
+    const {navigate} = this.props.navigation;
 
     return (
       <View style={styles.container}>
-        {/* <Button
-        title="go to login"
-        onPress={() => navigate(
-          'Login',{ name: 'Jane'}
-        )}
-        /> */}
       {this.renderForm()}
       </View>
     );

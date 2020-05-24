@@ -6,7 +6,6 @@ import MapScreen from '../screens/MapScreen';
 import LoginScreen from '../screens/LoginScreen';
 import ShopScreen from "../screens/ShopScreen";
 import ProfileScreen from '../screens/ProfileScreen';
-import Stakk from '../screens/ProfileN';
 
 const BottomTab = createBottomTabNavigator(
 
@@ -43,7 +42,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       />
 
-      {/* <BottomTab.Screen
+    <BottomTab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
@@ -52,19 +51,7 @@ export default function BottomTabNavigator({ navigation, route }) {
             <TabBarIcon focused={focused} name="md-person" />
           ),
         }}
-      /> */}
-
-      <BottomTab.Screen
-        name="Stakk"
-        component={Stakk}
-        options={{
-          title: "Stakk",
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-hammer" />
-          ),
-        }}
       />
- 
       <BottomTab.Screen
         name="Login"
         component={LoginScreen}
