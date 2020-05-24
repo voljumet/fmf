@@ -42,7 +42,7 @@ class SearchScreen extends React.Component {
       this.keyboardDidHide
     );
     // Change the URL to Store's URL
-    return fetch("https://bhunter.online/api/ProductApi/getproductmodels")
+    return fetch("https://bhunter.online/api/PostAPI/GetPostModels")
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({
@@ -82,11 +82,11 @@ class SearchScreen extends React.Component {
     <View style={{ backgroundColor: 'white', padding: 5, margin: 10, borderWidth: 2, borderColor: '#61dafb'}}>
       <TouchableOpacity onPress={(val) => this.handlePress(item)}>
         <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 13 }}>{item.supplier}</Text>
-        <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>{item.productName}</Text>
-        <Text style={{ color: '#050', fontWeight: 'bold', fontSize: 20 }}>kr {item.priceFMF},-</Text>
+        <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>{item.productModel.productName}</Text>
+        <Text style={{ color: '#050', fontWeight: 'bold', fontSize: 20 }}>kr {item.price},-</Text>
         <Image
         source={{
-            uri: item.picture,
+            url: item.productModel.picture,
         }}
         style={{ width: 90, height: 90 }}/>
         
