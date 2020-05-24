@@ -108,7 +108,7 @@ namespace FMF_Backend.Controllers
             
             if(ModelState.IsValid)
             {
-                var time = DateTime.Now.ToString("dd.MM.yyy");
+                var time = DateTime.Now.ToString("dd.MM.yyy HH':'mm':'ss 'GTM'");
                 orderList.OrderTime =time ;
                 _context.Update(orderList);
                 await _context.SaveChangesAsync();
