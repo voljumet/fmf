@@ -11,15 +11,6 @@ import { List, ListItem } from "react-native-elements";
 
 Geocoder.init("AIzaSyBh4LzOmbFVqu5wc_u_9S4yKT1rhbgHBuw");
 
-class GroceryList{
-  constructor(address, groceries, title, key){
-    this.address = address;
-    this.title = title;
-    this.groceries = groceries;
-    this.key = key;
-  }
-}
-
 export default class MapScreen extends Component {
   constructor() {
     super();
@@ -36,15 +27,11 @@ export default class MapScreen extends Component {
       key: null,
       modalVisible: false,
       currentList: null,
-      FlatListItems: [
-        { title: "Skptricks",subTitle:"Asdasd" },
-        { title: "melons",subTitle:"melons are great" }
-      ]
+      listData: []
     };
   }
 
-ShowModalFunction() {
-    console.log("vis modal")
+ShowModalFunction = async () => {
     this.setState({modalVisible: !this.state.modalVisible});
 }
   
@@ -52,18 +39,21 @@ ShowModalFunction() {
     const markerID = event.nativeEvent.id
     let object = this.state.AllLists.find(list => list.id === parseInt(markerID, 10))
     this.setState({
-      currentList: object
-    }, () => console.log(this.state.currentList));    
-    this.ShowModalFunction()  
+      currentList: object,
+    }, () => this.constructList());   
+    this.ShowModalFunction()
+    
+  }
+
+  constructList (){
+    this.setState({
+      listData: this.state.currentList.product
+    })
+    console.log(this.state.listData)
   }
 
   renderMarkers (){
-    
-    /*const newSet = new Set(this.state.locations)
-    let liste = Array.from(newSet)*/
-
     return this.state.locations.map(location => {
-      //newSet.add(location)
       return <MapView.Marker 
       coordinate={{ latitude: location.location.lat, longitude: location.location.lng }}
       key={location.key}
@@ -92,48 +82,30 @@ componentDidMount = async () => {
 
   liste = []
 
- await fetch("http://188.166.53.175/api/orderList/getorderlist/1")
+ await fetch("http://188.166.53.175/api/orderList/")
                      .then((response) => response.json())
                      .then((responseJson) => {
-                      /*for(const list of responseJson){ 
+                      for(const list of responseJson){ 
                         fetch("http://188.166.53.175/api/orderList/getOrderList/" + list.id)
                         .then((response) => response.json())
-                        .then((responseJson) => {
+                        .then((resJson) => {
+                          if(resJson.shopper != null || resJson.shopper != undefined){
+                          this.getGeoData(resJson)
                           this.setState(prevState => ({
-                            AllLists: [...prevState.AllLists, responseJson],
+                            AllLists: [...prevState.AllLists, resJson],
                           }))
-                        })                        
+                        }})                        
                           .catch((error) => {
                           console.log(error);
                         });
-                        }}*/
-                        this.setState(prevState => ({
-                          AllLists: [...prevState.AllLists, responseJson],
-                        }))})
+                        }})
                      .catch((error) => {
                        console.log(error);
                      });
                     }
-                     
-  /*en = new GroceryList("Lundeleitet 11, 4323 Sandnes", "Melk", "Min første handleliste", "1"),
-  liste.push(en)
-  to = new GroceryList("Smebyveien 17A, 2319 Hamar", "Kakao", "Min andre handleliste", "2"),
-  liste.push(to)
-  tre = new GroceryList("Storgata 65, 0182 Oslo", "Knekkebrød", "Min tredje handleliste", "3"),
-  liste.push(tre)
-  fire = new GroceryList("Karl Johans Gate 25, 0159 Oslo", "Grillpølser", "Min fjerde handleliste", "4"),
-  liste.push(fire)*/
-
-  /*for(const list of liste){
-    this.setState(prevState => ({
-      AllLists: [...prevState.AllLists, list],
-    }))
-  }*/
 
 
-getGeoData() {
-
-  for (const list of this.state.AllLists) {
+getGeoData(list) {
     if(list.shopper != null || list.shopper != undefined){
     Geocoder.from(list.shopper.address)
       .then((response) => {
@@ -148,19 +120,8 @@ getGeoData() {
         },
           )
       .catch((error) => console.warn(error)); }
-
-  }
-
-  
-
 }
 
-constructList(){
-  return this.state.currentList.product.map(product => {
-    this.setState({
-    })
-  })
-}
 
 renderSeparator = () => {
   return (
@@ -175,16 +136,13 @@ renderSeparator = () => {
   );
 };
 
-componentDidUpdate(prevProps, prevState) {
-  if (this.state.AllLists !== prevState.AllLists) {
-    this.getGeoData();
-  }
+componentDidUpdate = async (prevProps, prevState) => {
 }
 
   render() {
     if(this.state.currentList != null){
       return (
-        <View style={styles.centeredView}>
+        <View style={styles.container}>
         <Modal
         animationType="slide"
         transparent={true}
@@ -196,15 +154,33 @@ componentDidUpdate(prevProps, prevState) {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
           <FlatList
-          data={[{key: this.state.currentList.product.quantity}, {key:this.state.currentList.product.productName}, {key:this.state.currentList.product.priceFMF}]}
-          renderItem={({item}) => <Text>{item.key}</Text>}
+          data={[{key:this.state.currentList.product.quantity}, {key:this.state.currentList.product.productName}, {key:this.state.currentList.product.priceFMF + ",-"}]}
+          renderItem={({item}) => <Text style={styles.modalText}>{item.key}</Text>}
           scrollEnabled
           horizontal={false}
-          ItemSeparatorComponent={this.renderSeparator}
           numColumns={3}/>
-
+          <TouchableHighlight
+              style={{ ...styles.closeButton, backgroundColor: "#2196F3" }}
+              onPress={() => {
+                this.setState({
+                  modalVisible: !this.state.modalVisible
+                });
+              }}
+            >
+            <Text style={styles.textStyle}> Book liste</Text>
+            </TouchableHighlight>
+          <TouchableHighlight
+              style={{ ...styles.closeButton, backgroundColor: "#2196F3" }}
+              onPress={() => {
+                this.setState({
+                  modalVisible: !this.state.modalVisible
+                });
+              }}
+            >
+            <Text style={styles.textStyle}> Lukk</Text>
+            </TouchableHighlight>
+            </View>
           </View>
-        </View>
       </Modal>
 
           <MapView
@@ -260,7 +236,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
   },
   modalView: {
     margin: 10,
@@ -278,11 +254,12 @@ const styles = StyleSheet.create({
     elevation: 5,
     width: "70%"
   },
-  openButton: {
+  closeButton: {
     backgroundColor: "#F194FF",
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
+    alignSelf: "center"
   },
   textStyle: {
     color: "white",
@@ -290,7 +267,14 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   modalText: {
-    marginBottom: 15,
-    textAlign: "center"
-  }
+    marginLeft: 13,
+    fontSize: 20
+  },
+  listContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
+    marginBottom: 40
+}
 });
