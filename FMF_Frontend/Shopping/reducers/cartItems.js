@@ -28,12 +28,31 @@ const cartItems  = (state = [] , action) => {
             if (existingCartItem){
                 return state.map(cartItem =>
                     cartItem.id === action.payLoad.id
-                    ? {...cartItem, quantity: cartItem.quantity +=1}
-                    : cartItem 
+                    ? {...cartItem, quantity: cartItem.quantity }
+                    : cartItem ,
+                    alert("Already added ")
                     );
+                    
             }else{
                 return[...state,  {...action.payLoad, quantity: 1}]
             }
+
+            case 'ADD_TO_CART_TWO':
+                let existingCartItem1 = state.find(
+                    cartItem => cartItem.id === action.payLoad.id
+                );
+              
+                if (existingCartItem1){
+                    return state.map(cartItem =>
+                        cartItem.id === action.payLoad.id
+                        ? {...cartItem, quantity: cartItem.quantity +=1}
+                        : cartItem ,
+                        );
+                        
+                }else{
+                    return[...state,  {...action.payLoad, quantity: 1}]
+                }
+               
            
 
 

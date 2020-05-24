@@ -9,7 +9,7 @@ import {
   Keyboard,
   TouchableOpacity,
   Image
- 
+
 
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -23,7 +23,8 @@ class SearchScreen extends React.Component {
       isLoading: true,
       dataSource: [],
       searchBarFocused: false,
-      qty: 0
+      qty: 0,
+      ItemsAddedToCart:true
     };
   }
 
@@ -55,17 +56,29 @@ class SearchScreen extends React.Component {
         alert(error);
       });
   };
+
+
+  
+  buttonISable=()=>{
+    this.setState({ItemsAddedToCart: true})
+  }
+  buttonISdisable=()=>{
+    this.setState({ItemsAddedToCart: false})
+  }
+
+
+
   keyboardDidShow = () => {
     this.setState({ searchBarFocused: true });
   };
   keyboardDidHide = () => {
     this.setState({ searchBarFocused: false });
   };
- 
+
   serachitem = (value) => {
     //Change "title" with the corresponding name in API
     const filteredItems = this.state.inMemmory.filter((item) => {
-      let itemLowerCase = item.productName.toLowerCase();
+      let itemLowerCase = item.productModel.productName.toLowerCase();
       let searchItemLowerCase = value.toLowerCase();
 
       return itemLowerCase.indexOf(searchItemLowerCase) > -1;
@@ -73,34 +86,32 @@ class SearchScreen extends React.Component {
     this.setState({ dataSource: filteredItems });
   };
 
-  handlePress= (item) =>{
-   this.props.addItemToCart(item)
+  handlePress = (item) => {
+    this.props.addItemToCart(item)
+
   };
   //items will be displayed
   renderItem = ({ item }) => (
     //Change "title" with the corresponding name in API
-    <View style={{ backgroundColor: 'white', padding: 5, margin: 10, borderWidth: 2, borderColor: '#61dafb'}}>
-      <TouchableOpacity onPress={(val) => this.handlePress(item)}>
+    <View style={{ backgroundColor: 'white', padding: 5, margin: 10, borderWidth: 2, borderColor: '#61dafb' }}>
+      <View>
         <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 13 }}>{item.supplier}</Text>
         <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>{item.productModel.productName}</Text>
         <Text style={{ color: '#050', fontWeight: 'bold', fontSize: 20 }}>kr {item.price},-</Text>
         <Image
-        source={{
+          source={{
             url: item.productModel.picture,
-        }}
-        style={{ width: 90, height: 90 }}/>
-        
-      </TouchableOpacity>
-      <TouchableOpacity  >
-        <Icon name="ios-add-circle" size={30} color={"green"} style={{left:300, bottom:50}}  />
-      </TouchableOpacity>
+          }}
+          style={{ width: 90, height: 90 }} />
 
-      <Text>
-      {'Quantity: '} 
-      </Text> 
-      <TouchableOpacity >
-        <Icon name="ios-remove-circle" size={30} color={"red"} style={{left:300, bottom:20}} />
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button}  onPress={(val) => this.handlePress(item)}>
+          <Text style={styles.text} >Add to your cart</Text>
+        </TouchableOpacity>
+
+      </View>
+
+
+
     </View>
   );
 
@@ -184,11 +195,11 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addItemToCart: (product) => dispatch({ type: 'ADD_TO_CART', payLoad: product }),
   }
-  
+
 }
 const mapStateToProps = (state) => {
-  return{
-      cartItems: state
+  return {
+    cartItems: state
   }
 }
 export default connect(null, mapDispatchToProps)(SearchScreen)
@@ -217,8 +228,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
   },
-  icon:{
+  icon: {
 
+  }, text: {
+    fontSize: 18,
+    color: 'white',
+    textAlign: 'center'
+  },
+  button: {
+    width: 250,
+    height: 50,
+   backgroundColor: "#61dafb",
+    borderRadius: 30,
+    justifyContent: 'center',
+    marginTop: 15
   }
 });
 

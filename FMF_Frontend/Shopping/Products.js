@@ -66,7 +66,7 @@ class Products extends Component {
                         <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 13 }}>{item.supplier}</Text>
                         <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>{item.productModel.productName}</Text>
                         <Text style={{ color: '#050', fontWeight: 'bold', fontSize: 20 }}>kr {item.price},-</Text>
-                        <Text style={{ color: 'red', fontWeight: 'bold', fontSize: 20 }}>Quantity: {item.quantity}</Text>
+                        <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>Quantity: {item.quantity}</Text>
                         <Image
                             source={{
                                 url: item.productModel.picture,
@@ -172,7 +172,7 @@ class Products extends Component {
 const mapDispatchToProps = (dispatch) => {
 
     return {
-      addItemToCart: (product) => dispatch({ type: 'ADD_TO_CART', payLoad: product }),
+      addItemToCart: (product) => dispatch({ type: 'ADD_TO_CART_TWO', payLoad: product }),
       removeItem: (product) => dispatch({ type: 'REMOVE_FROM_CART', payLoad: product })
     }
 }
