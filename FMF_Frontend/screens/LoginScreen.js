@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { AsyncStorage, Button, StyleSheet, Text, View, Image, processColor } from 'react-native';
 import * as AppAuth from 'expo-app-auth';
 import { ScrollView } from 'react-native-gesture-handler';
-import { NavigationContainer } from "@react-navigation/native";
-import { navigationRef } from "./RootNavigation";
 
 export default function Login({ navigation }) {
   let [authState, setAuthState] = useState(null);
@@ -68,7 +66,7 @@ export async function signInAsync({ navigation }) {
   await cacheAuthAsync(authState);
 
   if (email != null) {
-     console.log("Goback");
+     console.log("Go back with auth and result");
       navigation.goBack(authState,result);
     //  navigation.navigate('ProfileN', {
       //  authState: authState,

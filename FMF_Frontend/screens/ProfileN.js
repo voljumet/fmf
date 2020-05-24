@@ -11,21 +11,14 @@ import {
 } from "react-native";
 import DialogInput from "react-native-dialog-input";
 import signInAsync from "./LoginScreen";
-import { NavigationContainer } from "@react-navigation/native";
-import { navigationRef } from "./RootNavigation";
 
-async function juice(){
-const DEMO_TOKEN = await AsyncStorage.getItem();
-if (DEMO_TOKEN === null) {
-  navigation.navigate("Login", {
-    onGoBack: () => this.refresh(),
-  });
-}
-}
+
 
 export default function ProfileN({ route,navigation }) {
 
   const authorized = null;
+
+  console.log("ProfileN");
 
    if (authorized != null) {
      console.log("ikke null");
@@ -38,11 +31,13 @@ export default function ProfileN({ route,navigation }) {
     //  console.log({googleId});
 
     } else {
-      console.log("null")
-      juice();
-      console.log("nav done")
-
+      console.log("auth = null")
+      navigation.navigate("Login", {
+        onGoBack: () => this.refresh()
+      });
+      
     }
+    console.log("nav done")
 
 //   const { googleId } = route.params;
   // const { email } = route.params;
