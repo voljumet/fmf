@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FMF_Backend.Models;
 using FMF_Backend.Data;
 
+
 namespace FMF_Backend.Controllers
 {
     [Route("api/[controller]")]
@@ -104,6 +105,15 @@ namespace FMF_Backend.Controllers
         {
             _context.OrderLists.Add(orderList);
             await _context.SaveChangesAsync();
+            
+            if(ModelState.IsValid)
+            {
+                var time = DateTime.Now.ToString("dd.MM.yyy");
+                orderList.OrderTime =time ;
+                _context.Update(orderList);
+                await _context.SaveChangesAsync();
+            }
+           
 
             return CreatedAtAction("GetOrderList", new { id = orderList.Id }, orderList);
         }
