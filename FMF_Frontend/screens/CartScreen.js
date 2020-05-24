@@ -21,7 +21,7 @@ class CartScreen extends Component {
                 
             {this.props.cartItems.length > 0 ?
                 <Products
-                    onPress={this.props.removeItem}
+                   
                     products={this.props.cartItems} 
                  />
                     
