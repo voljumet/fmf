@@ -1,18 +1,28 @@
 import * as React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, Button } from 'react-native';
 import { SplashScreen } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import loginNavigation from './navigation/loginNavigation';
+// import loginNavigation from './navigation/loginNavigation';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import useLinking from './navigation/useLinking';
+import MapScreen from './screens/MapScreen';
+import HomeScreen from './screens/HomeScreen';
+import Profile from './screens/ProfileScreen';
+import Login from './screens/LoginScreen';
+import ShopScreen from './screens/ShopScreen';
+import SearchScreen from './screens/SearchScreen';
+
+
 
 const Stack = createStackNavigator();
 
+
 export default function App(props) {
+
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [initialNavigationState, setInitialNavigationState] = React.useState();
   const containerRef = React.useRef();
@@ -52,9 +62,16 @@ export default function App(props) {
       <View style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
-          <Stack.Navigator>
-            <Stack.Screen name="Store" component={BottomTabNavigator} />
-
+          <Stack.Navigator screenOptions={{
+          headerShown: false
+          }}>
+            <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Home" component={HomeScreen} 
+            />
+            <Stack.Screen name="Driver" component={MapScreen} />
+            <Stack.Screen name="Profile" component={Profile}/>
+            <Stack.Screen name="Store" component={ShopScreen} />
+            <Stack.Screen name="Shop" component={SearchScreen} />
           </Stack.Navigator>
         </NavigationContainer>
         
