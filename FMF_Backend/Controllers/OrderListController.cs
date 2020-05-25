@@ -68,7 +68,7 @@ namespace FMF_Backend.Controllers
         // PUT: api/OrderList/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
+        [HttpPut("PutOrderList/{id}")]
         public async Task<IActionResult> PutOrderList(int id, OrderList orderList)
         {
             if (id != orderList.Id)
@@ -117,6 +117,39 @@ namespace FMF_Backend.Controllers
 
             return CreatedAtAction("GetOrderList", new { id = orderList.Id }, orderList);
         }
+
+        // PUT: api/Profile/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // more details see https://aka.ms/RazorPagesCRUD.
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutOrder(int id, OrderList orderlist)
+        {
+            if (id != orderlist.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(orderlist).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!OrderListExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
 
         // DELETE: api/OrderList/5
         [HttpDelete("{id}")]
