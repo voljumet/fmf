@@ -25,6 +25,8 @@ export default function Login({ navigation }) {
     })();
   }, []);
 
+
+  
   return (
     <View style={styles.container}>
       <Image

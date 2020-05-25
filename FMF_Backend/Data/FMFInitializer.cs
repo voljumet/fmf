@@ -24,6 +24,9 @@ namespace FMF_Backend.Data{
                 new Profile("Morteza","Haidari","Tønnevoldsgate 44b, 4879 Grimstad", 93598, 7, "blablabla")
             });
 
+
+// store 1
+/* Må kjøres en gang om dagen */
             string store1 = new WebClient().DownloadString("https://my-json-server.typicode.com/voljumet/demo/Store1");
             List<Store1> store1Items = JsonConvert.DeserializeObject<List<Store1>>(store1);
 
@@ -33,6 +36,7 @@ namespace FMF_Backend.Data{
                 });
             }
 
+// Store 2
             string store2 = new WebClient().DownloadString("https://my-json-server.typicode.com/voljumet/demo/Store2");
             List<Store2> store2Items = JsonConvert.DeserializeObject<List<Store2>>(store2);
 
@@ -49,6 +53,7 @@ namespace FMF_Backend.Data{
             var store1s = context.Store1s.ToList();
             var store2s = context.Store2s.ToList();
 
+            // sammenligner store 1 og store 2 si pris.
             foreach (var item1 in store2s){
                 foreach (var item2 in store1s){
                     if (item2.ProductName == item1.ProductName && item2.Supplier == item1.Supplier){
@@ -65,6 +70,7 @@ namespace FMF_Backend.Data{
                 }
             }
             context.SaveChanges();
+            /*  Slutt på blokken som må kjøres en gang om dagen. */
 
             var products = context.Products.ToList();
 
