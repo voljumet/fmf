@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import MapView, { AnimatedRegion } from "react-native-maps";
-import { StyleSheet, ScrollView ,Text, View, Dimensions, Button, FlatList,  TouchableHighlight,} from "react-native";
+import { StyleSheet, ScrollView ,Text, View, Dimensions, Button, FlatList,  TouchableHighlight, Item} from "react-native";
 import Geocoder from "react-native-geocoding";
 import redMarker from '../assets/images/dot.png'
 import Modal from 'react-native-modal';
 import { Table, Row, Rows } from 'react-native-table-component';
 import { List, ListItem } from "react-native-elements";
+import { Header } from "react-native-elements";
 
 
 
@@ -40,16 +41,9 @@ ShowModalFunction = async () => {
     let object = this.state.AllLists.find(list => list.id === parseInt(markerID, 10))
     this.setState({
       currentList: object,
-    }, () => this.constructList());   
+    });   
     this.ShowModalFunction()
     
-  }
-
-  constructList (){
-    this.setState({
-      listData: this.state.currentList.product
-    })
-    console.log(this.state.listData)
   }
 
   renderMarkers (){
@@ -82,23 +76,25 @@ componentDidMount = async () => {
 
   liste = []
 
- await fetch("http://188.166.53.175/api/orderList/")
+ await fetch("http://f58d5968.ngrok.io/api/orderList/")
                      .then((response) => response.json())
                      .then((responseJson) => {
-                      for(const list of responseJson){ 
-                        fetch("http://188.166.53.175/api/orderList/getOrderList/" + list.id)
+                      //for(const list of responseJson){ 
+                        fetch("http://f58d5968.ngrok.io/api/orderList/getOrderList/50")
                         .then((response) => response.json())
                         .then((resJson) => {
                           if(resJson.shopper != null || resJson.shopper != undefined){
                           this.getGeoData(resJson)
                           this.setState(prevState => ({
                             AllLists: [...prevState.AllLists, resJson],
-                          }))
+                          }
+                          ))
                         }})                        
                           .catch((error) => {
                           console.log(error);
                         });
-                        }})
+                        //}
+                      })
                      .catch((error) => {
                        console.log(error);
                      });
@@ -136,6 +132,13 @@ renderSeparator = () => {
   );
 };
 
+/*renderItem = ({item}) => (
+  <View>
+  <Text>{item.productName}</Text>
+  </View>
+
+);
+*/
 componentDidUpdate = async (prevProps, prevState) => {
 }
 
@@ -160,11 +163,20 @@ componentDidUpdate = async (prevProps, prevState) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
           <FlatList
-          data={[{key:this.state.currentList.product.quantity}, {key:this.state.currentList.product.productName}, {key:this.state.currentList.product.priceFMF + ",-"}]}
-          renderItem={({item}) => <Text style={styles.modalText}>{item.key}</Text>}
+          data={this.state.currentList.products}
+          renderItem={({item, index, separators}) => (
+              <View style={{backgroundColor: 'white'}}>
+                <Text style={styles.modalText}>{item.quantity}</Text>
+                <Text style={styles.modalText}>{item.productName}</Text>
+                <Text style={styles.modalText}>{item.priceFMF}</Text>
+              </View>
+          )}
           scrollEnabled
           horizontal={false}
-          numColumns={3}/>
+          numColumns={4}
+          keyExtractor={(item, index) => index.toString()}/>
+
+          {console.log(this.state.currentList.products[0].productName)}
           <TouchableHighlight
               style={{ ...styles.closeButton, backgroundColor: "#2196F3" }}
               onPress={() => {
