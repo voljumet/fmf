@@ -76,14 +76,15 @@ componentDidMount = async () => {
 
   liste = []
 
- await fetch("http://f58d5968.ngrok.io/api/orderList/")
+ await fetch("http://7c753338.ngrok.io/api/orderList/")
                      .then((response) => response.json())
                      .then((responseJson) => {
-                      //for(const list of responseJson){ 
-                        fetch("http://f58d5968.ngrok.io/api/orderList/getOrderList/50")
+                      for(const list of responseJson){ 
+                        fetch("http://7c753338.ngrok.io/api/orderList/getOrderList/" + list.id)
                         .then((response) => response.json())
                         .then((resJson) => {
-                          if(resJson.shopper != null || resJson.shopper != undefined){
+                          if(resJson.shopper != null || resJson.shopper != undefined && resJson.available){
+                            console.log(resJson)
                           this.getGeoData(resJson)
                           this.setState(prevState => ({
                             AllLists: [...prevState.AllLists, resJson],
@@ -93,7 +94,7 @@ componentDidMount = async () => {
                           .catch((error) => {
                           console.log(error);
                         });
-                        //}
+                        }
                       })
                      .catch((error) => {
                        console.log(error);
@@ -132,6 +133,28 @@ renderSeparator = () => {
   );
 };
 
+putBackend= async () => {
+
+  this.setState(prevState => ({
+    currentList: {                  
+        ...prevState.currentList,    
+        available: false       
+    }
+}))
+
+    await fetch('http://7c753338.ngrok.io/api/orderList/PutOrderList/' + this.state.currentList.id, {
+      method: 'PUT',
+      headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          "id": this.state.currentList.id, 
+          "available": false,
+      })
+  })
+}
+
 /*renderItem = ({item}) => (
   <View>
   <Text>{item.productName}</Text>
@@ -168,22 +191,17 @@ componentDidUpdate = async (prevProps, prevState) => {
               <View style={{backgroundColor: 'white'}}>
                 <Text style={styles.modalText}>{item.quantity}</Text>
                 <Text style={styles.modalText}>{item.productName}</Text>
-                <Text style={styles.modalText}>{item.priceFMF}</Text>
+                <Text style={styles.modalText}>{item.priceFMF},-</Text>
               </View>
           )}
           scrollEnabled
           horizontal={false}
-          numColumns={4}
+          numColumns={3}
           keyExtractor={(item, index) => index.toString()}/>
 
-          {console.log(this.state.currentList.products[0].productName)}
           <TouchableHighlight
               style={{ ...styles.closeButton, backgroundColor: "#2196F3" }}
-              onPress={() => {
-                this.setState({
-                  modalVisible: !this.state.modalVisible
-                });
-              }}
+              onPress={this.putBackend}
             >
             <Text style={styles.textStyle}> Book liste</Text>
             </TouchableHighlight>
