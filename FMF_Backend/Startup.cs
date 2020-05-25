@@ -15,21 +15,42 @@ using FMF_Backend.Data;
 
 namespace FMF_Backend{
     public class Startup{
-        public Startup(IConfiguration configuration){
+        public Startup(IConfiguration configuration, IHostEnvironment environment){
             Configuration = configuration;
+            Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
+        public IHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services){
-            services.AddDbContext<FMFDbContext>(opt =>
-               opt.UseSqlite("Filename=FMF_Db.db"));
-            services
-                .AddControllers()
-                .AddJsonOptions(options =>{
-                    options.JsonSerializerOptions.WriteIndented = true;
-            });
+
+            // Database used during development
+            if (Environment.IsDevelopment()) {
+                // Register the database context as a service. Use the SQLite for this
+                services.AddDbContext<FMFDbContext>(options =>
+                    options.UseSqlite("Filename=FMF_Db.db"));
+                    services
+                        .AddControllers()
+                        .AddJsonOptions(options =>{
+                            options.JsonSerializerOptions.WriteIndented = true;
+                        });
+            }
+            // Database used in all other environments (production etc)
+            else {
+                // Register the database context as a service. Use PostgreSQL server for this
+                services.AddDbContext<FMFDbContext>(options =>
+                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            }
+            
+            // services.AddDbContext<FMFDbContext>(opt =>
+            //    opt.UseSqlite("Filename=FMF_Db.db"));
+            // services
+            //     .AddControllers()
+            //     .AddJsonOptions(options =>{
+            //         options.JsonSerializerOptions.WriteIndented = true;
+            // });
          }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -4,11 +4,19 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using FMF_Backend.Models;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace FMF_Backend.Data{
     public static class DbInitializer{
-        public static void Initialize(FMFDbContext context){
+        public static void Initialize(FMFDbContext context, bool development){
+
+            if (!development){
+                context.Database.Migrate();
+                return;
+            }
+
+
             // Delete the database before we initialize it.
             // This is common to do during development.
             context.Database.EnsureDeleted();
@@ -17,11 +25,11 @@ namespace FMF_Backend.Data{
             context.Database.EnsureCreated();
 
             context.Profiles.AddRange(new List<Profile>{
-                new Profile("Rune Alexander","Laursen","Kristian IVs gate 17, 4612 Kristiansand", 93598, 7, "blablabla"),
-                new Profile("Ole","Gunvaldsen","Jon Lilletuns Vei 17, 4879 Grimstad", 93598, 7, "blablabla"),
-                new Profile("Anne Lise","Skjæveland","Lagerveien 12, 3030 Stavanger", 93598, 7, "blablabla"),
-                new Profile("Peshang","Alo","Venneslaveien 7, 4688 Vennesla", 93598, 7, "blablabla"),
-                new Profile("Morteza","Haidari","Tønnevoldsgate 44b, 4879 Grimstad", 93598, 7, "blablabla")
+                new Profile("Rune Alexander","Laursen","Kristian IVs gate 17, 4612 Kristiansand", 93598, 7, "blablabla",4456784),
+                new Profile("Ole","Gunvaldsen","Jon Lilletuns Vei 17, 4879 Grimstad", 93598, 7, "blablabla",5345234583),
+                new Profile("Anne Lise","Skjæveland","Lagerveien 12, 3030 Stavanger", 93598, 7, "blablabla",127345734),
+                new Profile("Peshang","Alo","Venneslaveien 7, 4688 Vennesla", 93598, 7, "blablabla",127734),
+                new Profile("Morteza","Haidari","Tønnevoldsgate 44b, 4879 Grimstad", 93598, 7, "blablabla",123534)
             });
 
             string store1 = new WebClient().DownloadString("https://my-json-server.typicode.com/voljumet/demo/Store1");

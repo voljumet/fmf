@@ -28,6 +28,24 @@ namespace FMF_Backend.Controllers
             return await _context.Profiles.ToListAsync();
         }
 
+        public class GoogleIdCl{
+             public long Id {get; set;}
+             public long GoogleId {get; set; }
+        }
+
+        // GET: api/Profile
+        [HttpGet("googleid")]
+        public async Task<ActionResult<IEnumerable<GoogleIdCl>>> GetProfileGoogleId()
+        {
+            var proflist = await _context.Profiles
+            .Select(prof => new GoogleIdCl{
+                Id = prof.Id,
+                GoogleId = prof.GoogleId
+            })
+            .ToListAsync();
+            return proflist;
+        }
+
         // GET: api/Profile/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Profile>> GetProfile(long id)
@@ -41,6 +59,16 @@ namespace FMF_Backend.Controllers
 
             return profile;
         }
+
+        // GET: api/Profile/test
+        // [HttpGet("test")]
+        // public async Task<ActionResult<Profile>> GetProfileTo(){
+        //     var profile = await _context.Profiles.ToListAsync();
+
+        //     if (profile == null){ return NotFound(); }
+
+        //     return profile;
+        // }
 
         // PUT: api/Profile/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for

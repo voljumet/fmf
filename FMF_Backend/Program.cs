@@ -21,18 +21,13 @@ namespace FMF_Backend
             using (var scope = host.Services.CreateScope()){
                 var services = scope.ServiceProvider;
 
-                try
-                {
-                    using (var context = new FMFDbContext(
-                        services.GetRequiredService<
-                            DbContextOptions<FMFDbContext>>())){
-                                DbInitializer.Initialize(context);
-                            }
-                }
-                catch(Exception ex){
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occoured seeding the Db.");
-                }
+                
+                var context = services.GetRequiredService<FMFDbContext>();
+
+                var environment = services.GetService<IHostEnvironment>();
+
+                DbInitializer.Initialize(context, environment.IsDevelopment());
+
             }
             host.Run();
         }
