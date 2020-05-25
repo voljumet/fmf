@@ -56,7 +56,7 @@ class Products extends Component {
 
 
             const json = JSON.stringify(test);
-            console.log(json);
+            // console.log(json);
             
         }
         return test
@@ -84,9 +84,8 @@ class Products extends Component {
 
 
     render() {
+        
         return (
-
-
             <ScrollView >
 
                 {this.renderProducts(this.props.products)}
