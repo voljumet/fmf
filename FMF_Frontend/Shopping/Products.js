@@ -67,7 +67,7 @@ class Products extends Component {
     post = (products) => {
 
 
-        fetch('https://bfe85d7f.ngrok.io/api/orderlist', {
+        fetch('https://7c753338.ngrok.io/api/orderlist', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
