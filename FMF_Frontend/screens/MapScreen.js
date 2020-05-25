@@ -140,9 +140,15 @@ componentDidUpdate = async (prevProps, prevState) => {
 }
 
   render() {
+    const {navigate} = this.props.navigation;
     if(this.state.currentList != null){
       return (
         <View style={styles.container}>
+          <Header
+        leftComponent={{ icon: 'home', color: '#fff', onPress: () => navigate("Home")}}
+        centerComponent={{ text: 'Available Shopping Lists', style: { color: '#fff' } }}
+        rightComponent={{ icon: 'person', color: '#fff', onPress: () => navigate("Profile")}}
+        />
         <Modal
         animationType="slide"
         transparent={true}
@@ -202,6 +208,11 @@ componentDidUpdate = async (prevProps, prevState) => {
   else{
   return (
     <View style={styles.container}>
+      <Header
+        leftComponent={{ icon: 'home', color: '#fff', onPress: () => navigate("Home")}}
+        centerComponent={{ text: 'Available Shopping Lists', style: { color: '#fff' } }}
+        rightComponent={{ icon: 'person', color: '#fff', onPress: () => navigate("Profile")}}
+        />
       <MapView
         style={styles.mapStyle}
         region={{
