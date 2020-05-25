@@ -7,6 +7,8 @@ import {
   TouchableOpacity
 } from 'react-native';
 import DialogInput from 'react-native-dialog-input';
+import { Header } from "react-native-elements";
+
 
 import * as AppAuth from 'expo-app-auth';
 import { TextInput } from 'react-native-gesture-handler';
@@ -173,8 +175,14 @@ componentDidMount = async () => {
   }
 
   render() {
+    const {navigate} = this.props.navigation;
     return (
       <View>
+        <Header
+        leftComponent={{ icon: 'home', color: '#fff', onPress: () => navigate("Home")}}
+        centerComponent={{ text: 'Available Shopping Lists', style: { color: '#fff' } }}
+        rightComponent={{ icon: 'person', color: '#fff', onPress: () => navigate("Profile")}}
+        />
       {this.renderForm()}
       </View>
 
