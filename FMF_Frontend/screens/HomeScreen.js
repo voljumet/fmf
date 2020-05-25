@@ -1,43 +1,38 @@
-import * as React from 'react';
+import React, { Component } from "react";
 import {
   Image,
   ScrollView,
   StyleSheet,
   Text,
   View,
-  RefreshControl,
+
 } from "react-native";
-import { Button } from "react-native-elements";
+import { Button, Header, Icon } from "react-native-elements";
 
-function wait(timeout) {
-  return new Promise(resolve => {
-    setTimeout(resolve, timeout);
-  });
-}
-
-export default function HomeScreen({ route,navigation }) {
-  const [refreshing, setRefreshing] = React.useState(false);
-  
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-
-    wait(2000).then(() => setRefreshing(false));
-  }, [refreshing]);
+export default class HomeScreen extends Component {
+  constructor(){
+    super();
+    this.state = {
+    };
+  }
   
 
-  // const { id } = route.params;
+
+  // const { googleId } = route.params;
   // const { email } = route.params;
   // const { lastName } = route.params;
   // const { firstName } = route.params;
   // const { picture } = route.params;
+  render(){
+    console.log(this.navigationOptions)
+    const {navigate} = this.props.navigation;
   return (
     <View style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.contentContainer}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
+        <Header
+        leftComponent={{ icon: 'home', color: '#fff', onPress: () => navigate("Home")}}
+        centerComponent={{ text: 'Home', style: { color: '#fff' } }}
+        rightComponent={{ icon: 'person', color: '#fff', onPress: () => navigate("Profile")}}
+        />        
         <View style={styles.logoContainer}>
           <Image
             source={
@@ -53,15 +48,15 @@ export default function HomeScreen({ route,navigation }) {
             What do you want to continue as today?
           </Text>
 
-          <Text style={styles.tabBarInfoText}>Info fra login:</Text>
+          {/* <Text style={styles.tabBarInfoText}>Info fra login:</Text> */}
+        {/* <Text style={styles.tabBarInfoText}>id: {googleId}</Text> */}
         {/* <Text style={styles.tabBarInfoText}>email: {email}</Text> */}
-        {/* <Text style={styles.tabBarInfoText}>id: {id}</Text> */}
           {/* <Text style={styles.tabBarInfoText}>navn: {firstName}, {lastName}</Text> */}
         {/* <Text style={styles.tabBarInfoText}>id: {picture}</Text> */}
       
           <View>
             <View marginTop={20}>
-              <Button
+              <Button 
                 titleStyle={{
                   color: "white",
                   marginTop: 25,
@@ -73,7 +68,11 @@ export default function HomeScreen({ route,navigation }) {
                 // Text inside button-------------
                 title="Driver"
                 // Text inside button-------------
-                onPress={() => navigation.navigate("Driver")}
+                onPress={() =>
+                  navigate('Driver', {
+                    Data: "hei",
+                  })
+                }
               />
             </View>
 
@@ -90,14 +89,14 @@ export default function HomeScreen({ route,navigation }) {
                 // Text inside button-------------
                 title="Shopper"
                 // Text inside button-------------
-                onPress={() => navigation.navigate("Store")}
+                onPress={() => navigate("Store")}
               />
             </View>
           </View>
         </View>
-      </ScrollView>
     </View>
   );
+}
 }
 
 const styles = StyleSheet.create({
