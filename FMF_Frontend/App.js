@@ -53,8 +53,7 @@ export default function App(props) {
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
           <Stack.Navigator>
-            <Stack.Screen name="Map" component={BottomTabNavigator} />
-
+            <Stack.Screen name="Store" component={BottomTabNavigator} />
 
           </Stack.Navigator>
         </NavigationContainer>

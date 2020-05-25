@@ -30,6 +30,7 @@ const AppStackNavigator = createStackNavigator({
     
 },{
         navigationOptions: {
+            headerTitle:"Search for groceries",
             headerRight: (
                 <ShoppingCartIcon/>
             )

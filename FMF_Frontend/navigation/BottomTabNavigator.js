@@ -4,7 +4,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import MapScreen from '../screens/MapScreen';
 import LoginScreen from '../screens/LoginScreen';
-import NewScreen from '../screens/ShopScreen';
+import ShopScreen from '../screens/ShopScreen';
 import SearchScreen from '../screens/SearchScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 
@@ -37,7 +37,7 @@ export default function BottomTabNavigator({ navigation, route }) {
       />
       <BottomTab.Screen
         name="Store"
-        component={NewScreen}
+        component={ShopScreen}
         options={{
           title: "Store",
           tabBarIcon: ({ focused }) => (

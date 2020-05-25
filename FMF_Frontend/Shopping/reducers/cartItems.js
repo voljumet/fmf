@@ -1,4 +1,4 @@
-
+import {Alert} from "react-native";
 const cartItems  = (state = [] , action) => {
     switch(action.type){
         case 'REMOVE_FROM_CART':
@@ -30,7 +30,7 @@ const cartItems  = (state = [] , action) => {
                     cartItem.id === action.payLoad.id
                     ? {...cartItem, quantity: cartItem.quantity }
                     : cartItem ,
-                    alert("Already added ")
+                    Alert.alert("Already added ")
                     );
                     
             }else{
@@ -52,6 +52,10 @@ const cartItems  = (state = [] , action) => {
                 }else{
                     return[...state,  {...action.payLoad, quantity: 1}]
                 }
+
+
+            case 'EMPTY_CART':
+                return[...state = []]
                
            
 
