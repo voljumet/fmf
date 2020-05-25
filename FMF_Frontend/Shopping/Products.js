@@ -138,8 +138,8 @@ class Products extends Component {
 
             test.products.push(test2);
             const json = JSON.stringify(test);
-            console.log(json);
-
+            // console.log(json);
+            
         }
         test.totalPrice = tprice
 
@@ -181,6 +181,7 @@ class Products extends Component {
 
 
     render() {
+        
         return (
 
 

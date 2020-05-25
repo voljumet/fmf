@@ -25,10 +25,10 @@ namespace FMF_Backend.Data{
             context.Database.EnsureCreated();
 
             context.Profiles.AddRange(new List<Profile>{
-                new Profile("Rune Alexander","Laursen","Kristian IVs gate 17, 4612 Kristiansand", 93598, 7, "blablabla", "1111111111"),
+                new Profile("Rune Alexander","Laursen","Kristian IVs gate 17, 4612 Kristiansand", 93598, 7, "blablabla", "105797538915471218890"),
                 new Profile("Ole","Gunvaldsen","Jon Lilletuns Vei 17, 4879 Grimstad", 93598, 7, "blablabla", "22222222222"),
                 new Profile("Anne Lise","Skjæveland","Lagerveien 12, 3030 Stavanger", 93598, 7, "blablabla", "33333333333"),
-                new Profile("Peshang","Alo","Venneslaveien 7, 4688 Vennesla", 93598, 7, "blablabla", "44444444444"),
+                new Profile("Peshang","Alo","Venneslaveien 7, 4688 Vennesla", 93598, 7, "blablabla", "113995679427151429881"),
                 new Profile("Morteza","Haidari","Tønnevoldsgate 44b, 4879 Grimstad", 93598, 7, "blablabla", "555555555")
             });
 

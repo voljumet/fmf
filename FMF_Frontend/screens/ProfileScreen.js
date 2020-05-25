@@ -9,206 +9,262 @@ import {
 import DialogInput from 'react-native-dialog-input';
 import { Header } from "react-native-elements";
 
-
 import * as AppAuth from 'expo-app-auth';
 import { TextInput } from 'react-native-gesture-handler';
 import Dialog from 'react-native-dialog';
 
 export default class Profile extends Component {
-  constructor(){
+  constructor() {
     super();
     this.state = {
       dataSource: [],
-      display: 'Info',
+      display: "Info",
       isDialogVisible: true,
       showdialognow: true,
-      storedGoogleId: []
+      storedGoogleId: null,
+      userId: null,
     };
   }
 
+  // henter alle google id, sammenligner med den man får fra loginscreen å ser om den eksisterer i Db, 
+  // bruker så id til å hente profil fra Db
 
-//Henter en profil fra customer og gjør dataen tilgjengelig i dataSource
-componentDidMount = async () => {
+  async componentDidMount() {
 
-  const google= await fetch('https://630589b8.ngrok.io/api/profile/googleid')
-  .then((response) => response.json())
-  .then((responseJson) => {
-    this.setState({
-      storedGoogleId: responseJson,
-    },  () => console.log(this.state.storedGoogleId));
-  })
-  .catch((error) => {
-    alert(error);
-  });
-  console.log(google.json())
+// 1. ------------------------------------------------------------------------------------------
+    const requestGoogle = async () => {
+      const response = await fetch("https://3b19a865.ngrok.io/api/profile/googleid");
+      const json = await response.json();
+      let googleIdFromLogin = this.props.route.params.googleId;
 
-  return fetch('https://630589b8.ngrok.io/api/profile/' + this.userid)
-  .then((response) => response.json())
-  .then((responseJson) => {
-    this.setState({
-      dataSource: responseJson,
-    });
-  })
-  .catch((error) => {
-    alert(error);
-  });
-}
-getIdbyGoogleId=()=>{
-  var userId = this.state.storedGoogleId.find(Item=>Item.googleId == this.props.route.params.googleId)
-  console.log(this.state.storedGoogleId)
-  console.log("USER GOOGLEID" + this.props.route.params.googleId)
-  console.log("ITEM.GOOGLEID"+ this.state.storedGoogleId.googleId)
-  console.log("HEI HEI SE PÅ MEG :" + userId)
+      // Bruk denne til å printe googleId fra login, så legg den inn i initializer!
+      // console.log("googleId fra loginScreen: "+googleIdFromLogin)
+      // -------------------------------------------------------------------------
 
-  return userId
-}
+      for (var i = 0; i < json.length; i++) {
+        if (json[i].googleId == googleIdFromLogin) {
+          this.setState({
+            userId: json[i].id,
 
-  showDialog = () => {
-    this.setState({isDialogVisible: true})
-  }
+            // Saving as array, all googleId's from FMF_Db
+            storedGoogleId :json
+          });
 
-  closeDialog = () => {
-    this.setState({display: 'Info'})
-  }
+          console.log("Existing googleId in FMF_Db!")
+        } else {
+          // If googleId from login does not exist in FMF_Db
+          // Do stuff to make the user POST info to Db
+        }
+      }
+    };
 
-  PutFirstname=(inputText)=> {
-    {
-      fetch('http://188.166.53.175/api/profile/' + this.userid, {
-          method: 'PUT',
-          headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-              "Id": this.userid, 
-              "firstName": inputText,
-          })
-      })
-  }
-  }
-  PutTLF=(inputText)=> {
-    fetch('http://188.166.53.175/api/profile/' + this.userid, {
-      method: 'PUT',
-      headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-          "Id": this.userid, 
-          "phone": inputText,
-      })
-  })
-  }
-  PutAdress=(inputText)=> {
-    fetch('http://188.166.53.175/api/profile/' + this.userid, {
-      method: 'PUT',
-      headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-          "Id": this.userid, 
-          "address": inputText,
-      })
-  })
-  }
+// 2. ------------------------------------------------------------------------------------------
+    requestGoogle();
 
-  changeFirstName = () =>{
-    this.setState({display: 'FirstName'})
-  }
-  changeTLF = () =>{
-    this.setState({display: 'TLF'})
-  }
-  changeAdress = () =>{
-    this.setState({display: 'Adress'})
+// 3. ------------------------------------------------------------------------------------------
+    const requestProfile = async () => {
+       const response = await fetch("https://3b19a865.ngrok.io/api/profile/" + this.state.userid );
+       const json = await response.json();
+       this.setState({
+        dataSource: json,
+       });
+
+      // NOE FEIL HER, går ikke å printe profile som blir hentet???!?!?!?!
+      //  ----------------------------->>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-------------
+      //  ----------------------------->>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-------------
+    
+    };
+
+// 4. ------------------------------------------------------------------------------------------
+    requestProfile();
     
   }
 
-  renderForm = ()=>{
-    switch(this.state.display){
-      case 'FirstName':
-        return(
-          <View>
-          <DialogInput
-            isDialogVisible = {this.showdialognow}
-            title={"Profile info"}
-            message={"Change your name"}
-            hintInput ={this.state.dataSource.firstName}
-            submitInput={ (inputText) => {this.PutFirstname(inputText)} }
-            closeDialog={this.closeDialog}>
-        </DialogInput> 
-        </View>
-        )
-      case 'TLF':
-        return(
-          <View>
-          <DialogInput
-            isDialogVisible = {this.showdialognow}
-            title={"Profile info"}
-            message={"Change your TLF"}
-            hintInput ={this.state.dataSource.phone}
-            submitInput={ (inputText) => {this.PutTLF(inputText)} }
-            closeDialog={this.closeDialog}>
-        </DialogInput> 
-        </View>
-        )
-      case 'Adress':
-        return(
-          <View>
-          <DialogInput
-            isDialogVisible = {this.showdialognow}
-            title={"Profile info"}
-            message={"Change your Adress"}
-            hintInput ={this.state.dataSource.address}
-            submitInput={ (inputText) => {this.PutAdress(inputText)} }
-            closeDialog={this.closeDialog}>
-        </DialogInput> 
-        </View>
-        )
-      case 'Info':
-        this.getIdbyGoogleId();
-        return(
-          <View style={styles.container}>
-          <View style={styles.header}></View>
-          {/* Henter bilde for avatar. Kan endres senere for å hente bilde fra google bruker */}
-          <Image style={styles.avatar} source={{uri: 'https://vectorified.com/images/pickle-rick-icon-2.png'}}/>
-          <View style={styles.body}>
-            <View style={styles.bodyContent}>
 
-              <TouchableOpacity style={styles.buttonContainer} onPress = {this.changeFirstName}>
-              <Text>{this.state.dataSource.firstName}</Text>  
-              </TouchableOpacity>      
 
-              <TouchableOpacity style={styles.buttonContainer} onPress = {this.changeTLF}>
-                <Text>{this.state.dataSource.phone}</Text> 
-              </TouchableOpacity>
+  getIdbyGoogleId = () => {
+    // var userId = this.state.storedGoogleId.find(Item=>Item.googleId == this.props.route.params.googleId)
+    // console.log("datasource: "+this.state.dataSource.length);
+    // console.log("USER GOOGLEID: " + this.props.route.params.googleId)
+    
+    // console.log("USER ID: " + userId)
+  };
 
-              <TouchableOpacity style={styles.buttonContainer} onPress = {this.changeAdress}>
-                <Text>{this.state.dataSource.address}</Text>  
-              </TouchableOpacity>
+  showDialog = () => {
+    this.setState({ isDialogVisible: true });
+  };
 
-              <TouchableOpacity style={styles.buttonContainer}>
-              <Text>{"Rating: " + this.state.dataSource.rating}</Text> 
-              </TouchableOpacity>
-            </View>
-        </View>
-      </View>
-        )
+  closeDialog = () => {
+    this.setState({ display: "Info" });
+  };
+
+  PutFirstname = (inputText) => {
+    {
+      fetch("https://ed6e1b85.ngrok.io/api/profile/" + this.state.userid, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          Id: this.userid,
+          firstName: inputText,
+        }),
+      });
     }
-  }
+  };
+  PutTLF = (inputText) => {
+    fetch("https://ed6e1b85.ngrok.io/api/profile/" + this.state.userid, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        Id: this.userid,
+        phone: inputText,
+      }),
+    });
+  };
+  PutAdress = (inputText) => {
+    fetch("https://ed6e1b85.ngrok.io/api/profile/" + this.state.userid, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        Id: this.userid,
+        address: inputText,
+      }),
+    });
+  };
+
+  changeFirstName = () => {
+    this.setState({ display: "FirstName" });
+  };
+  changeTLF = () => {
+    this.setState({ display: "TLF" });
+  };
+  changeAdress = () => {
+    this.setState({ display: "Adress" });
+  };
+
+  renderForm = () => {
+    switch (this.state.display) {
+      case "FirstName":
+        return (
+          <View>
+            <DialogInput
+              isDialogVisible={this.showdialognow}
+              title={"Profile info"}
+              message={"Change your name"}
+              hintInput={this.state.dataSource.firstName}
+              submitInput={(inputText) => {
+                this.PutFirstname(inputText);
+              }}
+              closeDialog={this.closeDialog}
+            ></DialogInput>
+          </View>
+        );
+      case "TLF":
+        return (
+          <View>
+            <DialogInput
+              isDialogVisible={this.showdialognow}
+              title={"Profile info"}
+              message={"Change your TLF"}
+              hintInput={this.state.dataSource.phone}
+              submitInput={(inputText) => {
+                this.PutTLF(inputText);
+              }}
+              closeDialog={this.closeDialog}
+            ></DialogInput>
+          </View>
+        );
+      case "Adress":
+        return (
+          <View>
+            <DialogInput
+              isDialogVisible={this.showdialognow}
+              title={"Profile info"}
+              message={"Change your Adress"}
+              hintInput={this.state.dataSource.address}
+              submitInput={(inputText) => {
+                this.PutAdress(inputText);
+              }}
+              closeDialog={this.closeDialog}
+            ></DialogInput>
+          </View>
+        );
+      case "Info":
+        return (
+          <View style={styles.container}>
+            <View style={styles.header}></View>
+            {/* Henter bilde for avatar. Kan endres senere for å hente bilde fra google bruker */}
+            <Image
+              style={styles.avatar}
+              source={{
+                uri: "https://vectorified.com/images/pickle-rick-icon-2.png",
+              }}
+            />
+            <View style={styles.body}>
+              <View style={styles.bodyContent}>
+                <TouchableOpacity
+                  style={styles.buttonContainer}
+                  onPress={this.changeFirstName}
+                >
+                  <Text>{this.state.dataSource.firstName}</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.buttonContainer}
+                  onPress={this.changeTLF}
+                >
+                  <Text>{this.state.dataSource.phone}</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.buttonContainer}
+                  onPress={this.changeAdress}
+                >
+                  <Text>{this.state.dataSource.address}</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.buttonContainer}>
+                  <Text>{"Rating: " + this.state.dataSource.rating}</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        );
+    }
+  };
 
   render() {
-    const {navigate} = this.props.navigation;
+    this.getIdbyGoogleId();
+
+    const { navigate } = this.props.navigation;
     return (
       <View>
         <Header
-        leftComponent={{ icon: 'home', color: '#fff', onPress: () => navigate("Home")}}
-        centerComponent={{ text: 'Available Shopping Lists', style: { color: '#fff' } }}
-        rightComponent={{ icon: 'person', color: '#fff', onPress: () => navigate("Profile")}}
+          leftComponent={{
+            icon: "home",
+            color: "#fff",
+            onPress: () => navigate("Home"),
+          }}
+          centerComponent={{
+            text: "Available Shopping Lists",
+            style: { color: "#fff" },
+          }}
+          rightComponent={{
+            icon: "person",
+            color: "#fff",
+            onPress: () => navigate("Profile"),
+          }}
         />
-      {this.renderForm()}
+        {this.renderForm()}
       </View>
-
     );
   }
 }
