@@ -21,15 +21,28 @@ export default class Profile extends Component {
       dataSource: [],
       display: 'Info',
       isDialogVisible: true,
-      showdialognow: true
+      showdialognow: true,
+      storedGoogleId: []
     };
   }
 
 
 //Henter en profil fra customer og gjør dataen tilgjengelig i dataSource
 componentDidMount = async () => {
-  this.userid = 2; 
-  return fetch('http://188.166.53.175/api/profile/' + this.userid)
+
+  const google= await fetch('https://630589b8.ngrok.io/api/profile/googleid')
+  .then((response) => response.json())
+  .then((responseJson) => {
+    this.setState({
+      storedGoogleId: responseJson,
+    },  () => console.log(this.state.storedGoogleId));
+  })
+  .catch((error) => {
+    alert(error);
+  });
+  console.log(google.json())
+
+  return fetch('https://630589b8.ngrok.io/api/profile/' + this.userid)
   .then((response) => response.json())
   .then((responseJson) => {
     this.setState({
@@ -39,6 +52,15 @@ componentDidMount = async () => {
   .catch((error) => {
     alert(error);
   });
+}
+getIdbyGoogleId=()=>{
+  var userId = this.state.storedGoogleId.find(Item=>Item.googleId == this.props.route.params.googleId)
+  console.log(this.state.storedGoogleId)
+  console.log("USER GOOGLEID" + this.props.route.params.googleId)
+  console.log("ITEM.GOOGLEID"+ this.state.storedGoogleId.googleId)
+  console.log("HEI HEI SE PÅ MEG :" + userId)
+
+  return userId
 }
 
   showDialog = () => {
@@ -144,6 +166,7 @@ componentDidMount = async () => {
         </View>
         )
       case 'Info':
+        this.getIdbyGoogleId();
         return(
           <View style={styles.container}>
           <View style={styles.header}></View>

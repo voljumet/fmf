@@ -35,7 +35,7 @@ export default class Login extends Component {
       
   
       this.props.navigation.navigate("Profile", {
-        id: result["id"],
+        googleId: result["id"],
         email: result["email"],
         lastName: result["family_name"],
         firstName: result["given_name"],

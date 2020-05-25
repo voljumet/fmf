@@ -30,7 +30,7 @@ namespace FMF_Backend.Controllers
 
         public class GoogleIdCl{
              public long Id {get; set;}
-             public long GoogleId {get; set; }
+             public string GoogleId {get; set; }
         }
 
         // GET: api/Profile
@@ -58,6 +58,23 @@ namespace FMF_Backend.Controllers
             }
 
             return profile;
+        }
+        public class GoogleIdCl{
+             public long Id {get; set;}
+             public string GoogleId {get; set; }
+        }
+
+        // GET: api/Profile
+        [HttpGet("googleid")]
+        public async Task<ActionResult<IEnumerable<GoogleIdCl>>> GetProfileGoogleId()
+        {
+            var proflist = await _context.Profiles
+            .Select(prof => new GoogleIdCl{
+                Id = prof.Id,
+                GoogleId = prof.GoogleId
+            })
+            .ToListAsync();
+            return proflist;
         }
 
         // GET: api/Profile/test

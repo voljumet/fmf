@@ -25,11 +25,11 @@ namespace FMF_Backend.Data{
             context.Database.EnsureCreated();
 
             context.Profiles.AddRange(new List<Profile>{
-                new Profile("Rune Alexander","Laursen","Kristian IVs gate 17, 4612 Kristiansand", 93598, 7, "blablabla",4456784),
-                new Profile("Ole","Gunvaldsen","Jon Lilletuns Vei 17, 4879 Grimstad", 93598, 7, "blablabla",5345234583),
-                new Profile("Anne Lise","Skjæveland","Lagerveien 12, 3030 Stavanger", 93598, 7, "blablabla",127345734),
-                new Profile("Peshang","Alo","Venneslaveien 7, 4688 Vennesla", 93598, 7, "blablabla",127734),
-                new Profile("Morteza","Haidari","Tønnevoldsgate 44b, 4879 Grimstad", 93598, 7, "blablabla",123534)
+                new Profile("Rune Alexander","Laursen","Kristian IVs gate 17, 4612 Kristiansand", 93598, 7, "blablabla", "1111111111"),
+                new Profile("Ole","Gunvaldsen","Jon Lilletuns Vei 17, 4879 Grimstad", 93598, 7, "blablabla", "22222222222"),
+                new Profile("Anne Lise","Skjæveland","Lagerveien 12, 3030 Stavanger", 93598, 7, "blablabla", "33333333333"),
+                new Profile("Peshang","Alo","Venneslaveien 7, 4688 Vennesla", 93598, 7, "blablabla", "44444444444"),
+                new Profile("Morteza","Haidari","Tønnevoldsgate 44b, 4879 Grimstad", 93598, 7, "blablabla", "555555555")
             });
 
             string store1 = new WebClient().DownloadString("https://my-json-server.typicode.com/voljumet/demo/Store1");
