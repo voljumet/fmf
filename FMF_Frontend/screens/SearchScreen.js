@@ -15,6 +15,8 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
+import {Header } from "react-native-elements";
+
 class SearchScreen extends React.Component {
 
   constructor() {
@@ -105,7 +107,6 @@ class SearchScreen extends React.Component {
   );
 
   render() {
-
     if (this.state.isLoading) {
       return (
         <View style={styles.container}>
@@ -115,6 +116,7 @@ class SearchScreen extends React.Component {
     }
     return (
       <View style={{ flex: 1 }}>
+        
         <View
           style={{
             padding: 50,

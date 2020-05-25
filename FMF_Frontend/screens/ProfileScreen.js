@@ -3,55 +3,66 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   Image,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
+  TouchableOpacity
+} from 'react-native';
 import DialogInput from 'react-native-dialog-input';
+import { ScrollView } from 'react-native-gesture-handler';
+import {Header } from "react-native-elements";
+
 
 export default class Profile extends Component {
   constructor(){
     super();
     this.state = {
       dataSource: [],
-      display: 'Info',
+      display: 'enterProfileScreen',
       isDialogVisible: true,
       showdialognow: true,
-      username: "hei"
     };
+    const url = 'https://630589b8.ngrok.io/api/profile';
   }
 
-  static navigationOptions = {
-   title: 'Profile',
- };
-
-  //Henter en profil fra customer og gjør dataen tilgjengelig i dataSource
-  componentDidMount = async () => {
-    this.userid = 2; 
-    return fetch('http://188.166.53.175/api/profile/' + this.userid)
-    .then((response) => response.json())
-    .then((responseJson) => {
-      this.setState({
-        dataSource: responseJson,
-      });
-    })
-    .catch((error) => {
-      alert(error);
+//Henter en profil fra customer og gjør dataen tilgjengelig i dataSource
+componentDidMount = async () => {
+  // console.log(this.props.route.params);
+  return fetch("https://630589b8.ngrok.io/api/profile",)
+  .then((response) => response.json())
+  .then((responseJson) => {
+    this.setState({
+      dataSource: responseJson,
     });
-  }
+  })
+  .catch((error) => {
+    alert(error);
+  });
+}
+
+searchForGoogleId=()=>{
+  let orgner = this.props.route.params.id;
+  let filtered = this.state.dataSource.find((item=>item.googleId===orgner))
+  console.log(filtered)
+  return filtered;
+}
 
   showDialog = () => {
     this.setState({isDialogVisible: true})
   }
 
   closeDialog = () => {
+    this.setState({display: 'newUser'})
+  }
+
+  displayInfo = () => {
     this.setState({display: 'Info'})
+  }
+  displaynewUser = () => {
+    this.setState({display: 'newUser'})
   }
 
   PutFirstname=(inputText)=> {
     {
-      fetch('http://188.166.53.175/api/profile/' + this.userid, {
+      fetch(this.url + this.userid, {
           method: 'PUT',
           headers: {
               Accept: 'application/json',
@@ -65,7 +76,7 @@ export default class Profile extends Component {
   }
   }
   PutTLF=(inputText)=> {
-    fetch('http://188.166.53.175/api/profile/' + this.userid, {
+    fetch(this.url + this.userid, {
       method: 'PUT',
       headers: {
           Accept: 'application/json',
@@ -78,7 +89,7 @@ export default class Profile extends Component {
   })
   }
   PutAdress=(inputText)=> {
-    fetch('http://188.166.53.175/api/profile/' + this.userid, {
+    fetch(this.url + this.userid, {
       method: 'PUT',
       headers: {
           Accept: 'application/json',
@@ -91,6 +102,24 @@ export default class Profile extends Component {
   })
   }
 
+  PostProfile=()=>{
+    fetch("https://630589b8.ngrok.io/api/profile", {
+      method: 'POST',
+      headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          "firstName": this.props.route.params.firstName,
+          "lastName": this.props.route.params.lastName,
+          "email": this.props.route.params.email,
+          "phone": this.phone,
+          "address": this.address,
+          "googleId": this.props.route.params.id, 
+      })
+  })
+  }
+
   changeFirstName = () =>{
     this.setState({display: 'FirstName'})
   }
@@ -99,14 +128,12 @@ export default class Profile extends Component {
   }
   changeAdress = () =>{
     this.setState({display: 'Adress'})
-    
+  }
+  newProfile = () =>{
+    this.setState({display: 'newUser'})
   }
 
-
   renderForm = ()=>{
-    // const { id } = route.params;
-    // console.log({id})
-
     switch(this.state.display){
       case 'FirstName':
         return(
@@ -121,22 +148,6 @@ export default class Profile extends Component {
         </DialogInput> 
         </View>
         )
-      case 'Test':
-        if (condition) {
-          
-        }
-        return(
-          <View>
-          <DialogInput
-            isDialogVisible = {this.showdialognow}
-            title={"Juice"}
-            message={"Change your name"}
-            hintInput ={this.state.dataSource.firstName}
-            submitInput={ (inputText) => {this.PutFirstname(inputText)} }
-            closeDialog={this.closeDialog}>
-        </DialogInput> 
-        </View>
-        )
       case 'TLF':
         return(
           <View>
@@ -144,8 +155,8 @@ export default class Profile extends Component {
             isDialogVisible = {this.showdialognow}
             title={"Profile info"}
             message={"Change your TLF"}
-            hintInput ={this.state.dataSource.phone}
-            submitInput={ (inputText) => {this.PutTLF(inputText)} }
+            hintInput ={"Phone"}
+            submitInput={ (inputText) => {this.phone = inputText} } //this.PutTLF(inputText)
             closeDialog={this.closeDialog}>
         </DialogInput> 
         </View>
@@ -158,49 +169,113 @@ export default class Profile extends Component {
             title={"Profile info"}
             message={"Change your Adress"}
             hintInput ={this.state.dataSource.address}
-            submitInput={ (inputText) => {this.PutAdress(inputText)} }
+            submitInput={ (inputText) => {this.address = inputText} } //this.PutAdress(inputText)
             closeDialog={this.closeDialog}>
         </DialogInput> 
         </View>
         )
+        case 'enterProfileScreen':
+          
+          if(this.searchForGoogleId() != null){
+            return (this.displaynewUser)
+          }else{
+            return (this.displayInfo)
+          }
+       
       case 'Info':
+        if(this.searchForGoogleId() != null){
+          
+        }
         return(
           <View style={styles.container}>
           <View style={styles.header}></View>
           {/* Henter bilde for avatar. Kan endres senere for å hente bilde fra google bruker */}
-          <Image style={styles.avatar} source={{uri: 'https://vectorified.com/images/pickle-rick-icon-2.png'}}/>
+          <Image style={styles.avatar} source={{uri: this.props.route.params.picture}}/>
           <View style={styles.body}>
             <View style={styles.bodyContent}>
 
-              <TouchableOpacity style={styles.buttonContainer}  >
-              <Text> TEST </Text>  
+              <TouchableOpacity style={styles.buttonContainer} onPress = {this.changeFirstName}>
+              <Text>{this.props.route.params.firstName}</Text>  
               </TouchableOpacity>      
 
               <TouchableOpacity style={styles.buttonContainer} onPress = {this.changeTLF}>
-                <Text>{this.state.dataSource.phone}</Text> 
+                <Text>{this.props.route.params.lastName}</Text> 
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.buttonContainer} onPress = {this.changeAdress}>
-                <Text>{this.state.dataSource.address}</Text>  
+                <Text>{this.props.route.params.email}</Text>  
+              </TouchableOpacity>
+              
+              <TouchableOpacity style={styles.buttonContainer}>
+              <Text>{this.props.route.params.phone}</Text> 
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.buttonContainer}>
-              <Text>{"Rating: " + this.state.dataSource.rating}</Text> 
+              <Text>{this.props.route.params.address}</Text> 
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.buttonContainer}>
+              <Text>Sing out</Text> 
               </TouchableOpacity>
             </View>
         </View>
       </View>
         )
+        
+
+        case 'newUser':
+          return(
+            <ScrollView>
+            <View style={styles.container}>
+            <View style={styles.header}></View>
+            {/* Henter bilde for avatar. Kan endres senere for å hente bilde fra google bruker */}
+            <Image style={styles.avatar} source={{uri: this.props.route.params.picture}}/>
+            <View style={styles.body}>
+              <View style={styles.bodyContent}>
+  
+                <TouchableOpacity style={styles.buttonContainer} >
+                <Text>{this.props.route.params.firstName}</Text>  
+                </TouchableOpacity>      
+  
+                <TouchableOpacity style={styles.buttonContainer} >
+                  <Text>{this.props.route.params.lastName}</Text> 
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.buttonContainer}>
+                <Text>{this.props.route.params.email}</Text> 
+                </TouchableOpacity>
+  
+                <TouchableOpacity style={styles.buttonContainer} onPress = {this.changeTLF}>
+                <Text>Add Phone number</Text>  
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.buttonContainer} onPress = {this.changeAdress}>
+                <Text>Add address</Text>  
+                </TouchableOpacity>
+  
+                <TouchableOpacity style={styles.buttonContainer} onPress= {this.PostProfile}>
+                <Text>Save Profile</Text> 
+                </TouchableOpacity>
+              </View>
+          </View>
+        </View>
+        </ScrollView>
+      )
     }
   }
 
   render() {
     const {navigate} = this.props.navigation;
-
     return (
-      <View style={styles.container}>
+      <View>
+        <Header
+        leftComponent={{ icon: 'home', color: '#fff', onPress: () => navigate("Home")}}
+        centerComponent={{ text: 'Profile', style: { color: '#fff' } }}
+        rightComponent={{ icon: 'person', color: '#fff', onPress: () => navigate("Profile")}}
+        />  
       {this.renderForm()}
       </View>
+
     );
   }
 }

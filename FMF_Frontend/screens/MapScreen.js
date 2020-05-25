@@ -4,6 +4,8 @@ import { StyleSheet, ScrollView ,Text, View, Dimensions, Button, FlatList,  Touc
 import Geocoder from "react-native-geocoding";
 import redMarker from '../assets/images/dot.png'
 import Modal from 'react-native-modal';
+import {Header } from "react-native-elements";
+
 import { Table, Row, Rows } from 'react-native-table-component';
 import { List, ListItem } from "react-native-elements";
 
@@ -31,10 +33,6 @@ export default class MapScreen extends Component {
     };
   }
 
-  static navigationOptions = {
-    //Setting the header of the screen
-    title: 'Driver',
-  };
 
 ShowModalFunction = async () => {
     this.setState({modalVisible: !this.state.modalVisible});
@@ -73,6 +71,8 @@ ShowModalFunction = async () => {
 
 componentDidMount = async () => {
 
+  //console.log(this.props.route.params.Data)
+
   navigator.geolocation.getCurrentPosition(
     ({ coords }) => {
       this.setState({
@@ -88,11 +88,11 @@ componentDidMount = async () => {
 
   liste = []
 
- await fetch("http://188.166.53.175/api/orderList/")
+ await fetch("https://630589b8.ngrok.io/api/orderList/")
                      .then((response) => response.json())
                      .then((responseJson) => {
                       for(const list of responseJson){ 
-                        fetch("http://188.166.53.175/api/orderList/getOrderList/" + list.id)
+                        fetch("https://630589b8.ngrok.io/api/orderList/getOrderList/" + list.id)
                         .then((response) => response.json())
                         .then((resJson) => {
                           if(resJson.shopper != null || resJson.shopper != undefined){
@@ -146,9 +146,15 @@ componentDidUpdate = async (prevProps, prevState) => {
 }
 
   render() {
+    const {navigate} = this.props.navigation;
     if(this.state.currentList != null){
       return (
         <View style={styles.container}>
+        <Header
+        leftComponent={{ icon: 'home', color: '#fff', onPress: () => navigate("Home")}}
+        centerComponent={{ text: 'Available Shopping Lists', style: { color: '#fff' } }}
+        rightComponent={{ icon: 'person', color: '#fff', onPress: () => navigate("Profile")}}
+        />
         <Modal
         animationType="slide"
         transparent={true}
@@ -208,6 +214,11 @@ componentDidUpdate = async (prevProps, prevState) => {
   else{
   return (
     <View style={styles.container}>
+      <Header
+        leftComponent={{ icon: 'home', color: '#fff', onPress: () => navigate("Home")}}
+        centerComponent={{ text: 'Available Shopping Lists', style: { color: '#fff' } }}
+        rightComponent={{ icon: 'person', color: '#fff', onPress: () => navigate("Profile")}}
+        />
       <MapView
         style={styles.mapStyle}
         region={{
@@ -233,6 +244,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    paddingTop: 80,
   },
   mapStyle: {
     width: Dimensions.get("window").width,
