@@ -4,18 +4,24 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using FMF_Backend.Data;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FMF_Backend {
     /* This class must have the same name with ... */
     public class BackgroundTask : IHostedService, IDisposable
     {
         private int executionCount = 0;
-        private readonly ILogger<TimedHostedService> _logger;
+        private readonly ILogger<BackgroundTask> _logger;
         private Timer _timer;
+        private FMFDbContext _context;
 
-        public BackgroundTask(ILogger<TimedHostedService> logger)
+        private readonly IServiceScopeFactory scopeFactory;
+        public BackgroundTask( IServiceScopeFactory scopeFactory, ILogger <BackgroundTask> logger)
         {
             _logger = logger;
+            this.scopeFactory = scopeFactory;
+            
         }
 
         public Task StartAsync(CancellationToken stoppingToken)
@@ -23,22 +29,18 @@ namespace FMF_Backend {
             _logger.LogInformation("Timed Hosted Service running.");
 
             _timer = new Timer(DoWork, null, TimeSpan.Zero, 
-                TimeSpan.FromSeconds(10));
+                TimeSpan.FromSeconds(5));
 
             return Task.CompletedTask;
         }
 
-/* Here we add code work background work */
+        /* Here we add code work background work */
         private void DoWork(object state)
         {
-/*             var count = Interlocked.Increment(ref executionCount);
-
-            _logger.LogInformation(
-                "Timed Hosted Service is working. Count: {Count}", count); */
-    
-            var context = services.GetRequiredService<FMFDbContext>();
-            Updater.Update;
-            Console.WriteLine($"bla bla bla");
+           using (var scope = scopeFactory.CreateScope()){
+                var dbContext = scope.ServiceProvider.GetRequiredService<FMFDbContext>();
+                Updater.Update(dbContext);
+            }
         }
         public Task StopAsync(CancellationToken stoppingToken)
         {
@@ -52,10 +54,6 @@ namespace FMF_Backend {
         public void Dispose()
         {
             _timer?.Dispose();
-        }
-
-        public class TimedHostedService
-        {
         }
     }
 }

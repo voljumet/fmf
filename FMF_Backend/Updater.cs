@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 using FMF_Backend.Data;
 namespace FMF_Backend{
     public static class Updater{
-                public static void Update(FMFDbContext context){
+            public static void Update(FMFDbContext context){
             // Delete the database before we initialize it.
             // This is common to do during development.
         
@@ -30,28 +30,39 @@ namespace FMF_Backend{
             context.SaveChanges();
 
             var store1s = context.Store1s.ToList();
-            var store2s = context.Store2s.ToList();
+            var store2s = context.Store1s.ToList();
             var store3s = context.Store1s.ToList();
-            var store4s = context.Store2s.ToList();
+            var store4s = context.Store1s.ToList();
             var store5s = context.Store1s.ToList();
 
             /* Change item prices */
-            Console.WriteLine($"Store item price before: ", store1s[1].Price);
+            Console.WriteLine("Store item price before: {0:C}\n", store1s[1].Price);
             foreach (var item in store1s){
-                item.Price = item.Price * 0.01;
+                item.Price = item.Price * 1.02;
             }
-            Console.WriteLine($"Store item price change: ", store1s[1].Price);
+            Console.WriteLine($"Store item price change: {0:C}\n", store1s[1].Price);
+            /*  Rest in peace store 2 */
+            foreach (var item in store3s){
+                item.Price = item.Price * 1.01;
+            }
+            foreach (var item in store4s){
+                item.Price = item.Price * 0.98;
+            }
+            foreach (var item in store5s){
+                item.Price = item.Price * 0.99;
+            }
+/* Here comes the changes */
 
             // sammenligner store 1 og store 2 si pris.
             foreach (var item1 in store2s){
                 foreach (var item2 in store1s){
                     if (item2.ProductName == item1.ProductName && item2.Supplier == item1.Supplier){
                         if(item1.Price <= item2.Price){
-                            context.Products.AddRange(new List<Product>{
+                            context.CheckOne.AddRange(new List<Product>{
                                 new Product(item1.ProductName, item1.Supplier, item2.Price, item1.Weight)
                             });
                         } else {
-                            context.Products.AddRange(new List<Product>{
+                            context.CheckOne.AddRange(new List<Product>{
                                 new Product(item1.ProductName, item1.Supplier, item1.Price, item1.Weight)
                             });
                         }       
@@ -60,6 +71,82 @@ namespace FMF_Backend{
             }
             context.SaveChanges();
             /*  Slutt på blokken som må kjøres en gang om dagen. */
+
+
+
+            var CheckOne = context.CheckOne.ToList();
+            var CheckTwo = context.CheckTwo.ToList();
+
+
+            foreach (var item1 in store3s)
+            {
+                foreach (var item2 in CheckOne)
+                {
+                    if (item2.ProductName == item1.ProductName && item2.Supplier == item1.Supplier)
+                    {
+                        if (item1.Price <= item2.Price)
+                        {
+                            context.CheckTwo.AddRange(new List<Product>{
+                                new Product(item1.ProductName, item1.Supplier, item2.Price, item1.Weight)
+                            });
+                        }
+                        else
+                        {
+                            context.CheckTwo.AddRange(new List<Product>{
+                                new Product(item1.ProductName, item1.Supplier, item1.Price, item1.Weight)
+                            });
+                        }
+                    }
+                }
+            }
+            context.CheckOne.RemoveRange();
+            context.SaveChanges();
+
+            foreach (var item1 in store4s)
+            {
+                foreach (var item2 in CheckTwo)
+                {
+                    if (item2.ProductName == item1.ProductName && item2.Supplier == item1.Supplier)
+                    {
+                        if (item1.Price <= item2.Price)
+                        {
+                            context.CheckOne.AddRange(new List<Product>{
+                                new Product(item1.ProductName, item1.Supplier, item2.Price, item1.Weight)
+                            });
+                        }
+                        else
+                        {
+                            context.CheckOne.AddRange(new List<Product>{
+                                new Product(item1.ProductName, item1.Supplier, item1.Price, item1.Weight)
+                            });
+                        }
+                    }
+                }
+            }
+            context.SaveChanges();
+
+            foreach (var item1 in store5s)
+            {
+                foreach (var item2 in CheckOne)
+                {
+                    if (item2.ProductName == item1.ProductName && item2.Supplier == item1.Supplier)
+                    {
+                        if (item1.Price <= item2.Price)
+                        {
+                            context.Products.AddRange(new List<Product>{
+                                new Product(item1.ProductName, item1.Supplier, item2.Price, item1.Weight)
+                            });
+                        }
+                        else
+                        {
+                            context.Products.AddRange(new List<Product>{
+                                new Product(item1.ProductName, item1.Supplier, item1.Price, item1.Weight)
+                            });
+                        }
+                    }
+                }
+            }
+            context.SaveChanges();
 
         }
     }

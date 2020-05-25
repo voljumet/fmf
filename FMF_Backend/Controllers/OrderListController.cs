@@ -37,10 +37,8 @@ namespace FMF_Backend.Controllers
                 .Include(ordl => ordl.Products)
                     // .ThenInclude(ordl => ordl.ProductName)
 
-
                 .Where(ordl => ordl.Id == id)
                 .FirstOrDefaultAsync();
-            
 
             if (orderList == null)
             {
@@ -60,7 +58,6 @@ namespace FMF_Backend.Controllers
             {
                 return NotFound();
             }
-
             return orderList;
         }
 

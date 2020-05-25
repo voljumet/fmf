@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 namespace FMF_Backend.Models {
     public class Product {
         public Product() {}
-        public Product(string productName, string supplier, double priceFMF, double weight ){
+        public Product(string productName, string supplier, double price, double weight ){
             ProductName = productName;
             Supplier = supplier;
-            PriceFMF = priceFMF;
+            Price = price;
             Weight = weight;
             Quantity = 0;
         }
@@ -15,7 +15,7 @@ namespace FMF_Backend.Models {
         public string ProductName { get; set;}
         public string Supplier { get; set;}
         [DataType(DataType.Currency)]
-        public double PriceFMF { get; set; }
+        public double Price { get; set; }
         public double Quantity { get; set;}
         public double Weight { get; set;}
 
