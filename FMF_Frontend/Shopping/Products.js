@@ -6,12 +6,15 @@ import {
     Button,
     TouchableOpacity,
     ScrollView,
-    Image
+    Image,
+    Alert,
+    Dimensions
 } from "react-native";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
+import { TextInput } from "react-native-gesture-handler";
 
 
 
@@ -21,18 +24,37 @@ class Products extends Component {
     constructor() {
         super();
         this.state = {
-            sendInput: [],
             isDatePickerVisible: false,
-            chosenDate: ''
+            chosenDate: '',
+            isConfirmDisabled: true
 
 
 
         };
     }
-    handlePressAdd= (item) =>{
+    totalPriceCar = (products) => {
+        var tprice = 0;
+
+        for (var i = 0; i < products.length; i++) {
+            tprice += products[i].price * products[i].quantity
+        }
+        return tprice.toFixed(2);
+
+    }
+
+    DisableConfirmButton = () => {
+        this.setState({ isConfirmDisabled: true })
+    }
+    EnableConfirmButton = () => {
+        this.setState({ isConfirmDisabled: false })
+
+    }
+
+
+    handlePressAdd = (item) => {
         this.props.addItemToCart(item)
-       };
-    handlePressRemove=(item)=>{
+    };
+    handlePressRemove = (item) => {
         this.props.removeItem(item)
     }
     postOrderlist = () => {
@@ -52,6 +74,8 @@ class Products extends Component {
         });
         this.hideDatePicker();
 
+        this.EnableConfirmButton();
+
 
     };
 
@@ -61,27 +85,39 @@ class Products extends Component {
 
 
             return (
-                <View key={index} style={{ paddingTop: 20, paddingBottom: 20 }}>
-                    <TouchableOpacity   >
-                        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 13 }}>{item.supplier}</Text>
-                        <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>{item.productModel.productName}</Text>
-                        <Text style={{ color: '#050', fontWeight: 'bold', fontSize: 20 }}>kr {item.price},-</Text>
-                        <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>Quantity: {item.quantity}</Text>
+            
+                    <View key={index} style={{borderWidth: 1, borderColor: 'black', paddingTop:20, width:'80%',alignContent:'center'}}>
+
+                    
+                    <TouchableOpacity style={{  width: 130, height: 100 }}>
+                        <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 15, paddingLeft:10 }}>{item.productModel.productName}</Text>
+                    
                         <Image
                             source={{
-                                url: item.productModel.picture,
+                                uri: item.productModel.picture,
                             }}
-                            style={{ width: 90, height: 90 }} />
+                            style={{ width: 45, height: 45  }}
+                        />
+                        <Text style={{ color: '#050', fontWeight: 'bold', fontSize: 13, paddingLeft:10  }}>kr {item.price},-</Text>
+
                       
-                            <Icon onPress={(val) => this.handlePressAdd(item)}
-                            name="ios-add-circle" size={30} color={"green"} style={{ left: 100, bottom: 90 }} />
-                             <Icon onPress={(val) => this.handlePressRemove(item)}
-                            name="ios-remove-circle" size={30} color={"red"} style={{ left: 100, bottom: 70 }} />
                         
 
-                    </TouchableOpacity>
+                        <Icon onPress={(val) => this.handlePressAdd(item)}
+                            name="ios-add-circle" size={40} color={"green"} style={{ left:"90%", bottom: "95%"}} />
+                        <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20, left:"130%", bottom: "95%"}}>{item.quantity}</Text>
+                        <Icon onPress={(val) => this.handlePressRemove(item)}
+                            name="ios-remove-circle" size={40} color={"red"} style={{ left:"90%", bottom: "95%" }} />
+                            
+                        
+                      
+                            
 
-                </View>
+
+                    </TouchableOpacity>
+                    </View>
+
+               
             )
 
         })
@@ -118,20 +154,27 @@ class Products extends Component {
 
     post = (products) => {
 
+        if (this.state.isConfirmDisabled === true) {
+            Alert.alert("PLease Choose a date");
+        } else {
 
-        fetch('https://f58d5968.ngrok.io/api/orderlist', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
 
-            body: JSON.stringify(this.replacer(products))
+            fetch('https://f58d5968.ngrok.io/api/orderlist', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
 
-        })
-        alert("Post successfully done!")
-        console.log("A date has been picked: ", this.state.chosenDate);
+                body: JSON.stringify(this.replacer(products))
 
+            })
+            Alert.alert("Post successfully done!")
+            console.log("A date has been picked: ", this.state.chosenDate);
+            this.props.emptyCart();
+            this.DisableConfirmButton();
+
+        }
 
 
     }
@@ -141,8 +184,7 @@ class Products extends Component {
         return (
 
 
-            <ScrollView >
-
+            <ScrollView style={{ paddingHorizontal: Dimensions.get("window").width/5, backgroundColor:'white' }} >
                 {this.renderProducts(this.props.products)}
                 <View>
 
@@ -154,13 +196,16 @@ class Products extends Component {
                             onConfirm={this.handleConfirm}
                             mode={'datetime'}
                             is24Hour={true}
-
-
                         />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => this.post(this.props.products)}>
+
+                    <TouchableOpacity style={styles.button} onPress={() => this.post(this.props.products)}  >
                         <Text style={styles.text} >Confirm Your Order</Text>
                     </TouchableOpacity>
+
+
+                    <Text style={{ color: 'red', fontWeight: 'bold', fontSize: 20, paddingTop: 20, left: Dimensions.get("window").width/9 }}>TOTAL: {this.totalPriceCar(this.props.products)},- kr </Text>
+                    
                 </View>
 
             </ScrollView>
@@ -172,15 +217,16 @@ class Products extends Component {
 const mapDispatchToProps = (dispatch) => {
 
     return {
-      addItemToCart: (product) => dispatch({ type: 'ADD_TO_CART_TWO', payLoad: product }),
-      removeItem: (product) => dispatch({ type: 'REMOVE_FROM_CART', payLoad: product })
+        addItemToCart: (product) => dispatch({ type: 'ADD_TO_CART_TWO', payLoad: product }),
+        removeItem: (product) => dispatch({ type: 'REMOVE_FROM_CART', payLoad: product }),
+        emptyCart: () => dispatch({ type: 'EMPTY_CART' })
     }
 }
 const mapStateToProps = (state) => {
-    return{
+    return {
         cartItems: state
     }
-  }
+}
 
 
 export default connect(null, mapDispatchToProps)(Products)
@@ -194,20 +240,20 @@ const styles = StyleSheet.create({
     },
     btn: {
 
-        width: 60, height: 60,
-        backgroundColor: '#61dafb',
-        borderRadius: 50,
-        flex: 1,
-        bottom: 5,
-        left: 60,
-        flexDirection: 'column'
+        width: 30, height: 30,
+        backgroundColor: 'black',
+        borderRadius: 30,
+        justifyContent: 'center',
+        marginTop: 15
 
     },
     plus: {
         color: 'white',
         fontSize: 25,
-        left: 17,
-        fontSize: 40
+        left: 6,
+        bottom:11,
+        fontSize: 40,
+
     }, text: {
         fontSize: 18,
         color: 'white',

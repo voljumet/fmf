@@ -34,10 +34,7 @@ class SearchScreen extends React.Component {
       "keyboardDidShow",
       this.keyboardDidShow
     );
-    this.keyboardWillShow = Keyboard.addListener(
-      "keyboardWillShow",
-      this.keyboardWillShow
-    );
+   
     this.keyboardDidHide = Keyboard.addListener(
       "keyboardDidHide",
       this.keyboardDidHide
@@ -57,7 +54,18 @@ class SearchScreen extends React.Component {
       });
   };
 
+  handleSearchIcon=()=>{
+    if(this.state.searchBarFocused===true){
+      this.setState({searchBarFocused: false})
+     
+     
 
+    }else{
+      this.setState({searchBarFocused: true})
+     
+     
+    }
+  }
   
   buttonISable=()=>{
     this.setState({ItemsAddedToCart: true})
@@ -88,7 +96,7 @@ class SearchScreen extends React.Component {
 
   handlePress = (item) => {
     this.props.addItemToCart(item)
-
+    
   };
   //items will be displayed
   renderItem = ({ item }) => (
@@ -100,7 +108,7 @@ class SearchScreen extends React.Component {
         <Text style={{ color: '#050', fontWeight: 'bold', fontSize: 20 }}>kr {item.price},-</Text>
         <Image
           source={{
-            url: item.productModel.picture,
+            uri: item.productModel.picture,
           }}
           style={{ width: 90, height: 90 }} />
 
@@ -119,11 +127,11 @@ class SearchScreen extends React.Component {
 
     if (this.state.isLoading) {
       return (
-        <View style={styles.container}>
+        <View style={styles.activityindicator}>
           <ActivityIndicator />
         </View>
       );
-    }
+    }else
     return (
       <View style={{ flex: 1 }}>
         <View
@@ -152,6 +160,7 @@ class SearchScreen extends React.Component {
                   : "ios-search"
               }
               style={{ fontSize: 24 }}
+              onPress={()=> this.handleSearchIcon()}
             //onPress = {(value) => serachitem(value)}
             />
             <TextInput
@@ -205,7 +214,7 @@ const mapStateToProps = (state) => {
 export default connect(null, mapDispatchToProps)(SearchScreen)
 
 const styles = StyleSheet.create({
-  container: {
+  activityindicator: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
