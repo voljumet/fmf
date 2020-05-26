@@ -33,25 +33,29 @@ export default class Profile extends Component {
 
 // 1. ------------------------------------------------------------------------------------------
     const requestGoogle = async () => {
-      const response = await fetch("https://3b19a865.ngrok.io/api/profile/googleid");
+      const response = await fetch("https://6e621bf1.ngrok.io/api/profile/googleid");
       const json = await response.json();
       let googleIdFromLogin = this.props.route.params.googleId;
 
       // Bruk denne til å printe googleId fra login, så legg den inn i initializer!
+     
       // console.log("googleId fra loginScreen: "+googleIdFromLogin)
       // -------------------------------------------------------------------------
 
       for (var i = 0; i < json.length; i++) {
         if (json[i].googleId == googleIdFromLogin) {
-          this.setState({
+          await this.setState({
             userId: json[i].id,
 
             // Saving as array, all googleId's from FMF_Db
             storedGoogleId :json
           });
-
           console.log("Existing googleId in FMF_Db!")
+          requestProfile();
         } else {
+          
+
+
           // If googleId from login does not exist in FMF_Db
           // Do stuff to make the user POST info to Db
         }
@@ -60,10 +64,13 @@ export default class Profile extends Component {
 
 // 2. ------------------------------------------------------------------------------------------
     requestGoogle();
-
+    
 // 3. ------------------------------------------------------------------------------------------
     const requestProfile = async () => {
-       const response = await fetch("https://3b19a865.ngrok.io/api/profile/" + this.state.userid );
+    
+     
+        
+       const response = await fetch("https://6e621bf1.ngrok.io/api/profile/"+this.state.userId);
        const json = await response.json();
        this.setState({
         dataSource: json,
@@ -73,12 +80,15 @@ export default class Profile extends Component {
       //  ----------------------------->>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-------------
       //  ----------------------------->>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-------------
     
+       
+      
     };
 
 // 4. ------------------------------------------------------------------------------------------
-    requestProfile();
+
     
   }
+  
 
 
 
@@ -100,7 +110,7 @@ export default class Profile extends Component {
 
   PutFirstname = (inputText) => {
     {
-      fetch("https://ed6e1b85.ngrok.io/api/profile/" + this.state.userid, {
+      fetch("https://6e621bf1.ngrok.io/api/profile/" + this.state.userid, {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -114,7 +124,7 @@ export default class Profile extends Component {
     }
   };
   PutTLF = (inputText) => {
-    fetch("https://ed6e1b85.ngrok.io/api/profile/" + this.state.userid, {
+    fetch("https://6e621bf1.ngrok.io/api/profile/" + this.state.userid, {
       method: "PUT",
       headers: {
         Accept: "application/json",
@@ -127,7 +137,7 @@ export default class Profile extends Component {
     });
   };
   PutAdress = (inputText) => {
-    fetch("https://ed6e1b85.ngrok.io/api/profile/" + this.state.userid, {
+    fetch("https://6e621bf1.ngrok.io/api/profile/" + this.state.userid, {
       method: "PUT",
       headers: {
         Accept: "application/json",
@@ -243,6 +253,7 @@ export default class Profile extends Component {
 
   render() {
     this.getIdbyGoogleId();
+    
 
     const { navigate } = this.props.navigation;
     return (
