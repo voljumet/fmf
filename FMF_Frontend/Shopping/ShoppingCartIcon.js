@@ -12,6 +12,7 @@ import { connect } from "react-redux"
 
 const ShoppingCartIcon = (props) => (
     
+    
     <View  style={[{padding:5}, Platform.OS == 'android' ? styles.iconContainer : null]}>
         <View style ={{
             position: 'absolute',
@@ -29,15 +30,19 @@ const ShoppingCartIcon = (props) => (
         }}>
             <Text style={{color: 'white', fontWeight:'bold'}}>
                 {props.cartItems.length}
+                
             </Text>
         
         </View>
-        <Icon onPress= {() => {props.navigation.navigate('Cart'),{userId: userId}}} name ="ios-cart" size={30}/>
+        <Icon onPress= {() => {props.navigation.navigate('Cart')}} name ="ios-cart" size={30}/>
     </View>
+    
 )
+
 const mapStateToProps = (state) => {
     return{
         cartItems: state,
+       
     }
 }
 

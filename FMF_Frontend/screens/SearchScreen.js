@@ -126,6 +126,7 @@ class SearchScreen extends React.Component {
   );
 
   render() {
+    console.log("search: ",this.props)
 
     if (this.state.isLoading) {
       return (

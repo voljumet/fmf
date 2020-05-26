@@ -11,32 +11,44 @@ import SearchScreen from '../screens/SearchScreen';
 import CartScreen from "../screens/CartScreen";
 
 
-
+var ID = ""
 class ShoppingCart extends Component {
+
+    
     render() {
+       console.log("sdf",this.props.userId)
+        ID = this.props.userId
         return(
-                <AppStackNavigator
-                userId={this.props.userId}
+            
+            
+                <AppStackNavigator 
                 />
+                
         );
+        
     }
+    
 }
+
 export default ShoppingCart;
 
 
 
 const AppStackNavigator = createStackNavigator({
 
-    Home: () => <SearchScreen/>,
-    Cart: () => <CartScreen/>
+    
+
+    Home: () => <SearchScreen />,
+    Cart: () => <CartScreen userId={ID} />
     
 },{
         navigationOptions: {
             headerTitle:"Search for groceries",
             headerRight: (
-                <ShoppingCartIcon/>
+                <ShoppingCartIcon />
             )
         }
+        
     })
 
 
