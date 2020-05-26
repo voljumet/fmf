@@ -20,10 +20,7 @@ namespace FMF_Backend
             var host = CreateHostBuilder(args).Build();
             using (var scope = host.Services.CreateScope()){
                 var services = scope.ServiceProvider;
-
-                
                 var context = services.GetRequiredService<FMFDbContext>();
-
                 var environment = services.GetService<IHostEnvironment>();
 
                 DbInitializer.Initialize(context, environment.IsDevelopment());
