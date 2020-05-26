@@ -18,6 +18,7 @@ import SearchScreen from './screens/SearchScreen';
 
 
 
+
 const Stack = createStackNavigator();
 
 
@@ -71,6 +72,7 @@ export default function App(props) {
             <Stack.Screen name="Profile" component={Profile}/>
             <Stack.Screen name="Store" component={ShopScreen} />
             <Stack.Screen name="Shop" component={SearchScreen} />
+            
           </Stack.Navigator>
         </NavigationContainer>
         
