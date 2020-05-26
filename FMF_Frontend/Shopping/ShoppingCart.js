@@ -15,7 +15,9 @@ import CartScreen from "../screens/CartScreen";
 class ShoppingCart extends Component {
     render() {
         return(
-                <AppStackNavigator/>
+                <AppStackNavigator
+                userId={this.props.userId}
+                />
         );
     }
 }

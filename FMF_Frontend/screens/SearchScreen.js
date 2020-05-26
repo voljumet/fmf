@@ -15,6 +15,8 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
+import { Header } from "react-native-elements";
+
 class SearchScreen extends React.Component {
 
   constructor() {

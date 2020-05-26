@@ -6,7 +6,7 @@ import store from '../Shopping/store';
 import { Header } from "react-native-elements";
 
 
-export default class NewScreen extends React.Component {
+export default class ShopScreen extends React.Component {
   render() {
     const {navigate} = this.props.navigation;
     return (
@@ -16,7 +16,7 @@ export default class NewScreen extends React.Component {
         centerComponent={{ text: 'Create shopping list', style: { color: '#fff' } }}
         rightComponent={{ icon: 'person', color: '#fff', onPress: () => navigate("Profile")}}
         />
-        <ShoppingCart />
+        <ShoppingCart userId={this.props.route.params.userId}/>
       </Provider>
     );
   }

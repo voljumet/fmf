@@ -69,9 +69,7 @@ export default class HomeScreen extends Component {
                 title="Driver"
                 // Text inside button-------------
                 onPress={() =>
-                  navigate('Driver', {
-                    Data: "hei",
-                  })
+                  navigate('Driver', {userId: this.props.route.params.userId})
                 }
               />
             </View>
@@ -89,7 +87,7 @@ export default class HomeScreen extends Component {
                 // Text inside button-------------
                 title="Shopper"
                 // Text inside button-------------
-                onPress={() => navigate("Store")}
+                onPress={() => navigate("ShopScreen", {userId: this.props.route.params.userId})}
               />
             </View>
           </View>
