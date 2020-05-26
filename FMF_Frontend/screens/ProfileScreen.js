@@ -29,7 +29,7 @@ export default class Profile extends Component {
 //Henter en profil fra customer og gjør dataen tilgjengelig i dataSource
 componentDidMount = async () => {
   this.userid = 2; 
-  return fetch('https://659cad17.ngrok.io/api/profile/' + this.userid)
+  return fetch('https://11403577.ngrok.io/api/profile/' + this.userid)
   .then((response) => response.json())
   .then((responseJson) => {
     this.setState({
@@ -51,7 +51,7 @@ componentDidMount = async () => {
 
   PutFirstname=(inputText)=> {
     {
-      fetch('https://659cad17.ngrok.io/api/profile/' + this.userid, {
+      fetch('https://11403577.ngrok.io/api/profile/' + this.userid, {
           method: 'PUT',
           headers: {
               Accept: 'application/json',
@@ -65,7 +65,7 @@ componentDidMount = async () => {
   }
   }
   PutTLF=(inputText)=> {
-    fetch('https://659cad17.ngrok.io/api/profile/' + this.userid, {
+    fetch('https://11403577.ngrok.io/api/profile/' + this.userid, {
       method: 'PUT',
       headers: {
           Accept: 'application/json',
@@ -78,7 +78,7 @@ componentDidMount = async () => {
   })
   }
   PutAdress=(inputText)=> {
-    fetch('https://659cad17.ngrok.io/api/profile/' + this.userid, {
+    fetch('https://11403577.ngrok.io/api/profile/' + this.userid, {
       method: 'PUT',
       headers: {
           Accept: 'application/json',
