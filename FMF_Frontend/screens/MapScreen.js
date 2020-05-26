@@ -76,11 +76,11 @@ componentDidMount = async () => {
 
   liste = []
 
- await fetch("http://f58d5968.ngrok.io/api/orderList/")
+ await fetch("https://11403577.ngrok.io/api/orderList/")
                      .then((response) => response.json())
                      .then((responseJson) => {
                       //for(const list of responseJson){ 
-                        fetch("http://f58d5968.ngrok.io/api/orderList/getOrderList/50")
+                        fetch("https://11403577.ngrok.io/api/orderList/getOrderList/50")
                         .then((response) => response.json())
                         .then((resJson) => {
                           if(resJson.shopper != null || resJson.shopper != undefined){
