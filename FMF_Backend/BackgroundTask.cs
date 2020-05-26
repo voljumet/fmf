@@ -11,10 +11,10 @@ namespace FMF_Backend {
     /* This class must have the same name with ... */
     public class BackgroundTask : IHostedService, IDisposable
     {
-        private int executionCount = 0;
+        // private int executionCount = 0;
         private readonly ILogger<BackgroundTask> _logger;
         private Timer _timer;
-        private FMFDbContext _context;
+        // private FMFDbContext _context;
 
         private readonly IServiceScopeFactory scopeFactory;
         public BackgroundTask( IServiceScopeFactory scopeFactory, ILogger <BackgroundTask> logger)

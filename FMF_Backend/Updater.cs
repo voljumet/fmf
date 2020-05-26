@@ -6,11 +6,26 @@ using System.Net.Http;
 using FMF_Backend.Models;
 using Newtonsoft.Json;
 using FMF_Backend.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
+
 namespace FMF_Backend{
+
     public static class Updater{
-            public static void Update(FMFDbContext context){
+    
+        public static void Update(FMFDbContext context){
             // Delete the database before we initialize it.
             // This is common to do during development.
+
+            // context.Store1s.RemoveRange(context.Store1s);
+
+            // context.delete(Store1, null, null);
+
+            // Funker, men id vokser
+            // var all = from c in context.Store1s select c;
+            // context.Store1s.RemoveRange(all);
+            context.SaveChanges();
+        
         
 // store 1
 /* Må kjøres en gang om dagen */
@@ -23,9 +38,6 @@ namespace FMF_Backend{
                 });
             }
 
-            /* Hente updater inni backgroundtasks 
-            * teste the shit.
-            */
 
             context.SaveChanges();
 
@@ -40,17 +52,14 @@ namespace FMF_Backend{
             foreach (var item in store1s){
                 item.Price = item.Price * 1.02;
             }
-            Console.WriteLine($"Store item price change: {0:C}\n", store1s[1].Price);
-            /*  Rest in peace store 2 */
             foreach (var item in store3s){
                 item.Price = item.Price * 1.01;
             }
             foreach (var item in store4s){
                 item.Price = item.Price * 0.98;
             }
-            foreach (var item in store5s){
-                item.Price = item.Price * 0.99;
-            }
+
+            foreach (var item in store5s){ item.Price = item.Price * 0.99; }
 /* Here comes the changes */
 
             // sammenligner store 1 og store 2 si pris.
@@ -123,6 +132,8 @@ namespace FMF_Backend{
                     }
                 }
             }
+
+            context.Products.RemoveRange();
             context.SaveChanges();
 
             foreach (var item1 in store5s)
