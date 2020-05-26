@@ -2,7 +2,7 @@ namespace FMF_Backend.Models{
    public class Profile {
 
            public Profile(){}
-      public Profile( string firstName, string lastName, string address, string phone, int rating, string notes, string googleId){
+      public Profile( string firstName, string lastName, string address, string phone, int rating, string notes, string googleId, string email){
               
                         FirstName = firstName;
                         LastName = lastName;
@@ -11,6 +11,7 @@ namespace FMF_Backend.Models{
                         Rating = rating;
                         notes = Notes;
                         GoogleId = googleId;
+                        Email = email;
                         
                 }
                 public long Id { get; set; }
@@ -24,6 +25,7 @@ namespace FMF_Backend.Models{
                 public bool Shopper { get; set;}
                 public bool Driver { get; set;}
                 public string GoogleId {get; set;}
+                public string Email{get; set;}
         }
 
         

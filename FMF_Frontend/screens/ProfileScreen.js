@@ -5,7 +5,8 @@ import {
   View,
   Image,
   TouchableOpacity,
-  Button
+  Button,
+  ScrollView
 } from 'react-native';
 import DialogInput from 'react-native-dialog-input';
 import { Header } from "react-native-elements";
@@ -39,7 +40,7 @@ export default class Profile extends Component {
 
     // 1. ------------------------------------------------------------------------------------------
     requestGoogle = async () => {
-      const response = await fetch("https://c0b16483.ngrok.io/api/profile/googleid");
+      const response = await fetch("https://b096b580.ngrok.io/api/profile/googleid");
       const json = await response.json();
       let googleIdFromLogin = this.props.route.params.googleId;
 
@@ -83,7 +84,7 @@ export default class Profile extends Component {
 
 
 
-      const response = await fetch("https://c0b16483.ngrok.io/api/profile/" + this.state.userId);
+      const response = await fetch("https://b096b580.ngrok.io/api/profile/" + this.state.userId);
       const json = await response.json();
       this.setState({
         dataSource: json,
@@ -111,15 +112,7 @@ export default class Profile extends Component {
       tlfphone: value.Tlf,
       adressnew: value.Adress
     })
-    console.log( JSON.stringify({
-      googleId: this.props.route.params.googleId,
-      lastName: this.props.route.params.lastName,
-      firstName: this.props.route.params.firstName,
-      phone: value.Tlf,
-      address: value.Adress,
-
-    }))
-    fetch("https://c0b16483.ngrok.io/api/profile", {
+    fetch("https://b096b580.ngrok.io/api/profile", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -129,6 +122,7 @@ export default class Profile extends Component {
           googleId: this.props.route.params.googleId,
           lastName: this.props.route.params.lastName,
           firstName: this.props.route.params.firstName,
+          email: this.props.route.params.email,
           phone: value.Tlf,
           address: value.Adress,
 
@@ -138,12 +132,9 @@ export default class Profile extends Component {
       this.setState({
       
       display:"Info"
-    })
-    
-  
+    })  
   }
 
- 
 
   showDialog = () => {
     this.setState({ isDialogVisible: true });
@@ -155,16 +146,8 @@ export default class Profile extends Component {
 
   PutFirstname = (inputText) => {
     var ID = this.state.userId
-    console.log("from PUT:",JSON.stringify({
-      id: ID,
-          firstName: inputText,
-          googleId: this.props.route.params.googleId,
-          lastName: this.props.route.params.lastName,
-          phone: this.state.tlfphone,
-          address: this.state.adressnew
-    }))
     {
-      fetch("https://c0b16483.ngrok.io/api/profile/" + this.state.userId , {
+      fetch("https://b096b580.ngrok.io/api/profile/" + this.state.userId , {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -173,28 +156,135 @@ export default class Profile extends Component {
         body: JSON.stringify({
           id: ID,
           firstName: inputText,
-          googleId: this.props.route.params.googleId,
-          lastName: this.props.route.params.lastName,
-          phone: this.state.tlfphone,
-          address: this.state.adressnew
-          
-          
+          googleId: this.state.dataSource.googleId,
+          lastName: this.state.dataSource.lastName,
+          phone: this.state.dataSource.phone,
+          address: this.state.dataSource.address,
+          email: this.state.dataSource.email
         }),
-
-        
-        
       });
       this.setState({
         display:"Info"
       })
       this.componentDidMount()
-      
-    
     }
   };
+  PutLastname = (inputText) => {
+    var ID = this.state.userId
+    {
+      fetch("https://b096b580.ngrok.io/api/profile/" + this.state.userId , {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: ID,
+          firstName: this.state.dataSource.firstName,
+          googleId: this.state.dataSource.googleId,
+          lastName: inputText,
+          phone: this.state.dataSource.phone,
+          address: this.state.dataSource.address,
+          email: this.state.dataSource.email
+        }),
+      });
+      this.setState({
+        display:"Info"
+      })
+      this.componentDidMount()
+    }
+  };
+  PutEmail = (inputText) => {
+    var ID = this.state.userId
+    {
+      fetch("https://b096b580.ngrok.io/api/profile/" + this.state.userId , {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: ID,
+          firstName: this.state.dataSource.firstName,
+          googleId: this.state.dataSource.googleId,
+          lastName: this.state.dataSource.lastName,
+          phone: this.state.dataSource.phone,
+          address: this.state.dataSource.address,
+          email: inputText,
+        }),
+      });
+      this.setState({
+        display:"Info"
+      })
+      this.componentDidMount()
+    }
+  };
+  PutPhone = (inputText) => {
+    var ID = this.state.userId
+    {
+      fetch("https://b096b580.ngrok.io/api/profile/" + this.state.userId , {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: ID,
+          firstName: this.state.dataSource.firstName,
+          googleId: this.state.dataSource.googleId,
+          lastName: this.state.dataSource.lastName,
+          phone: inputText,
+          address: this.state.dataSource.address,
+          email: this.state.dataSource.email
+        }),
+      });
+      this.setState({
+        display:"Info"
+      })
+      this.componentDidMount()
+    }
+  };
+  PutAddress = (inputText) => {
+    var ID = this.state.userId
+    {
+      fetch("https://b096b580.ngrok.io/api/profile/" + this.state.userId , {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: ID,
+          firstName: this.state.dataSource.firstName,
+          googleId: this.state.dataSource.googleId,
+          lastName: this.state.dataSource.lastName,
+          phone: this.state.dataSource.phone,
+          address: inputText,
+          email: this.state.dataSource.email
+        }),
+      });
+      this.setState({
+        display:"Info"
+      })
+      this.componentDidMount()
+    }
+  };
+
   changeFirstName = () => {
     this.setState({ display: "FirstName" });
   };
+  changeLastname =()=>{
+    this.setState({display: "LastName"})
+  }
+  changeEmail=()=>{
+    this.setState({display: "Email"})
+  }
+  changeTLF=()=>{
+    this.setState({display: "TLF"})
+  }
+  changeAdress=()=>{
+    this.setState({display: "Address"})
+  }
   renderForm = () => {
 
     switch (this.state.display) {
@@ -204,7 +294,7 @@ export default class Profile extends Component {
             <DialogInput
               isDialogVisible={this.showdialognow}
               title={"Profile info"}
-              message={"Change your name"}
+              message={"Change your firstname"}
               hintInput={this.state.dataSource.firstName}
               submitInput={(inputText) => {
                 this.PutFirstname(inputText);
@@ -213,53 +303,111 @@ export default class Profile extends Component {
             ></DialogInput>
           </View>
         );
+
+        case "LastName" :
+          return (
+            <View>
+              <DialogInput
+                isDialogVisible={this.showdialognow}
+                title={"Profile info"}
+                message={"Change your lastname"}
+                hintInput={this.state.dataSource.firstName}
+                submitInput={(inputText) => {
+                  this.PutLastname(inputText);
+                }}
+                closeDialog={this.closeDialog}
+              ></DialogInput>
+            </View>
+          );
+
+        case "Email":
+          return (
+            <View>
+              <DialogInput
+                isDialogVisible={this.showdialognow}
+                title={"Profile info"}
+                message={"Change your email"}
+                hintInput={this.state.dataSource.firstName}
+                submitInput={(inputText) => {
+                  this.PutEmail(inputText);
+                }}
+                closeDialog={this.closeDialog}
+              ></DialogInput>
+            </View>
+          );
+
+        case "TLF":
+          return (
+            <View>
+              <DialogInput
+                isDialogVisible={this.showdialognow}
+                title={"Profile info"}
+                message={"Change your phone number"}
+                hintInput={this.state.dataSource.firstName}
+                submitInput={(inputText) => {
+                  this.PutPhone(inputText);
+                }}
+                closeDialog={this.closeDialog}
+              ></DialogInput>
+            </View>
+          );
+
+        case "Address":
+          return (
+            <View>
+              <DialogInput
+                isDialogVisible={this.showdialognow}
+                title={"Profile info"}
+                message={"Change your address"}
+                hintInput={this.state.dataSource.firstName}
+                submitInput={(inputText) => {
+                  this.PutAddress(inputText);
+                }}
+                closeDialog={this.closeDialog}
+              ></DialogInput>
+            </View>
+          );
+
       case "Info":
              
         return (
           
           <View style={styles.container}>
-            <View style={styles.header}></View>
+            <View style={styles.header}>
             {/* Henter bilde for avatar. Kan endres senere for å hente bilde fra google bruker */}
             <Image
               style={styles.avatar}
               source={{
-                uri: "https://vectorified.com/images/pickle-rick-icon-2.png",
+                uri: this.props.route.params.picture,
               }}
-            />
+            /></View>
+            
             <View style={styles.body}>
+            <ScrollView>
               <View style={styles.bodyContent}>
-                <TouchableOpacity
-                  style={styles.buttonContainer}
-                  onPress={this.changeFirstName}
-                >
+                <TouchableOpacity style={styles.buttonContainer} onPress={this.changeFirstName}>
                   <Text>{this.state.dataSource.firstName}</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity
-                  style={styles.buttonContainer}
-                  onPress={this.changeTLF}
-                >
-                  <Text>{this.state.tlfphone}</Text>
+                <TouchableOpacity style={styles.buttonContainer} onPress={this.changeLastname}>
+                  <Text>{this.state.dataSource.lastName}</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity
-                  style={styles.buttonContainer}
-                  onPress={this.changeAdress}
-                >
-                  <Text>{this.state.adressnew}</Text>
+                <TouchableOpacity style={styles.buttonContainer} onPress={this.changeEmail}>
+                  <Text>{this.state.dataSource.email}</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.buttonContainer}>
-                  <Text>{"Rating: " + this.state.dataSource.rating}</Text>
+                <TouchableOpacity style={styles.buttonContainer} onPress = {this.changeTLF}>
+                  <Text>{this.state.dataSource.phone}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.buttonContainer}
-                  onPress={this.changeFirstName}
-                >
-                  <Text>Change profile</Text>
+
+                <TouchableOpacity style={styles.buttonContainer} onPress = {this.changeAdress}>
+                  <Text>{this.state.dataSource.address}</Text>
                 </TouchableOpacity>
               </View>
+              </ScrollView>
             </View>
+            
           </View>
         );
 
@@ -346,9 +494,10 @@ const styles = StyleSheet.create({
   },
   container: {
     justifyContent: 'center',
-    marginTop: 50,
-    padding: 20,
-    backgroundColor: '#ffffff',
+    marginTop: 0,
+    marginBottom: 0,
+    padding: 1,
+    backgroundColor: 'white',
   },
   avatar: {
     width: 130,
@@ -359,7 +508,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignSelf: 'center',
     position: 'absolute',
-    marginTop: 130
+    marginTop: 40
   },
   name: {
     fontSize: 22,
@@ -367,12 +516,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   body: {
-    marginTop: 40,
+    marginTop: -100,
+    marginBottom: 10,
   },
   bodyContent: {
     flex: 1,
     alignItems: 'center',
-    padding: 30,
+    padding: 140,
   },
   name: {
     fontSize: 28,
