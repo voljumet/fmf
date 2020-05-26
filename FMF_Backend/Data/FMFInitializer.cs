@@ -76,11 +76,11 @@ namespace FMF_Backend.Data{
 
 
             context.OrderLists.AddRange(new List<OrderList>{
-                new OrderList(produkter[0], profiles[0], DateTime.Now, DateTime.UtcNow, 123, 6, true),
+                /*new OrderList(produkter[0], profiles[0], DateTime.Now, DateTime.UtcNow, 123, 6, true),
                 new OrderList(produkter[0], profiles[1], DateTime.Now, DateTime.UtcNow, 1337, 55, true),
                 new OrderList(produkter[0], profiles[2], DateTime.Now, DateTime.UtcNow, 420, 69, true),
                 new OrderList(produkter[0], profiles[3], DateTime.Now, DateTime.UtcNow, 20, 0.5, true),
-                new OrderList(produkter[0], profiles[4], DateTime.Now, DateTime.UtcNow, 101, 1, true)
+                new OrderList(produkter[0], profiles[4], DateTime.Now, DateTime.UtcNow, 101, 1, true)*/
             });
 
 

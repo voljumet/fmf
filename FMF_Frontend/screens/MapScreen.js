@@ -7,6 +7,7 @@ import Modal from 'react-native-modal';
 import { Table, Row, Rows } from 'react-native-table-component';
 import { List, ListItem } from "react-native-elements";
 import { Header } from "react-native-elements";
+import { TextInput } from "react-native-gesture-handler";
 
 
 
@@ -76,15 +77,15 @@ componentDidMount = async () => {
 
   liste = []
 
- await fetch(" https://659cad17.ngrok.io/api/orderList/")
+ await fetch("https://659cad17.ngrok.io/api/orderList/")
                      .then((response) => response.json())
                      .then((responseJson) => {
                       for(const list of responseJson){ 
-                        fetch(" https://659cad17.ngrok.io/api/orderList/getOrderList/" + list.id)
+                        fetch("https://659cad17.ngrok.io/api/orderList/getOrderList/" + list.id)
                         .then((response) => response.json())
                         .then((resJson) => {
-                          if(resJson.shopper != null || resJson.shopper != undefined && resJson.available){
-                            console.log(resJson)
+                          console.log(resJson)
+                          if(resJson.shopper != null || resJson.shopper != undefined){
                           this.getGeoData(resJson)
                           this.setState(prevState => ({
                             AllLists: [...prevState.AllLists, resJson],
@@ -189,16 +190,13 @@ componentDidUpdate = async (prevProps, prevState) => {
           data={this.state.currentList.products}
           renderItem={({item, index, separators}) => (
               <View style={{backgroundColor: 'white'}}>
-                <Text style={styles.modalText}>{item.quantity}</Text>
-                <Text style={styles.modalText}>{item.productName}</Text>
-                <Text style={styles.modalText}>{item.priceFMF},-</Text>
+                <Text style={styles.modalText}>{item.quantity}stk  {item.productName}     {item.priceFMF*item.quantity},-</Text>
               </View>
           )}
           scrollEnabled
           horizontal={false}
-          numColumns={3}
           keyExtractor={(item, index) => index.toString()}/>
-
+          <Text style={styles.modalText}>Totalpris: {this.state.currentList.totalPrice},-</Text>
           <TouchableHighlight
               style={{ ...styles.closeButton, backgroundColor: "#2196F3" }}
               onPress={this.putBackend}
@@ -264,7 +262,6 @@ componentDidUpdate = async (prevProps, prevState) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
@@ -311,11 +308,24 @@ const styles = StyleSheet.create({
     marginLeft: 13,
     fontSize: 20
   },
+  totalPrice:{
+    marginLeft: 13,
+    fontSize: 20,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
+    marginBottom: 40
+  },
   listContainer: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 10,
     marginBottom: 40
+},
+listView:{
+  paddingTop: 40,
+  paddingBottom: 40,
 }
 });

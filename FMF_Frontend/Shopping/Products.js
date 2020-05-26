@@ -159,7 +159,7 @@ class Products extends Component {
         } else {
 
 
-            fetch('https://f58d5968.ngrok.io/api/orderlist', {
+            fetch('https://659cad17.ngrok.io/api/orderlist', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -167,7 +167,6 @@ class Products extends Component {
                 },
 
                 body: JSON.stringify(this.replacer(products))
-
             })
             Alert.alert("Post successfully done!")
             console.log("A date has been picked: ", this.state.chosenDate);
