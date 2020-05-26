@@ -158,7 +158,6 @@ class Products extends Component {
             Alert.alert("PLease Choose a date");
         } else {
 
-
             fetch('https://11403577.ngrok.io/api/orderlist', {
                 method: 'POST',
                 headers: {
@@ -180,6 +179,7 @@ class Products extends Component {
 
 
     render() {
+        
         return (
 
 

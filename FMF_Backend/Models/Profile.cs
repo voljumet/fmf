@@ -2,7 +2,7 @@ namespace FMF_Backend.Models{
    public class Profile {
 
            public Profile(){}
-      public Profile( string firstName, string lastName, string address, int phone, int rating, string notes){
+      public Profile( string firstName, string lastName, string address, string phone, int rating, string notes, string googleId, string email){
               
                         FirstName = firstName;
                         LastName = lastName;
@@ -10,17 +10,23 @@ namespace FMF_Backend.Models{
                         Phone = phone;
                         Rating = rating;
                         notes = Notes;
+                        GoogleId = googleId;
+                        Email = email;
                         
                 }
                 public long Id { get; set; }
                 public string FirstName { get; set; }
                 public string LastName { get; set; }
                 public string Address { get; set; }
-                public int Phone { get; set; }
+                public string Phone { get; set; }
                 public int Rating { get; set; }
                 public string Vehicle { get; set; }
                 public string Notes { get; set; }
                 public bool Shopper { get; set;}
                 public bool Driver { get; set;}
+                public string GoogleId {get; set;}
+                public string Email{get; set;}
         }
+
+        
 }

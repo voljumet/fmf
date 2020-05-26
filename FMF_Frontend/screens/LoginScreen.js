@@ -30,12 +30,12 @@ export default class Login extends Component {
     this.state.auth = await AppAuth.authAsync(this.state.config)
     const result = await this.fetchUserInfo(this.state.auth.accessToken);
     let email = result["email"];
-    console.log(result);
+    // console.log(result);
     if (email != null) {
       
   
       this.props.navigation.navigate("Profile", {
-        id: result["id"],
+        googleId: result["id"],
         email: result["email"],
         lastName: result["family_name"],
         firstName: result["given_name"],

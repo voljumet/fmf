@@ -18,6 +18,7 @@ import SearchScreen from './screens/SearchScreen';
 
 
 
+
 const Stack = createStackNavigator();
 
 
@@ -65,13 +66,13 @@ export default function App(props) {
           <Stack.Navigator screenOptions={{
           headerShown: false
           }}>
-            {/*<Stack.Screen name="Login" component={Login} />*/}
-          <Stack.Screen name="Home" component={HomeScreen} 
-            />
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Driver" component={MapScreen} />
             <Stack.Screen name="Profile" component={Profile}/>
             <Stack.Screen name="Store" component={ShopScreen} />
             <Stack.Screen name="Shop" component={SearchScreen} />
+            
           </Stack.Navigator>
         </NavigationContainer>
         
