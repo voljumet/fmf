@@ -371,8 +371,9 @@ export default class Profile extends Component {
       case "Info":
              
         return (
-          
+          <ScrollView>
           <View style={styles.container}>
+
             <View style={styles.header}>
             {/* Henter bilde for avatar. Kan endres senere for å hente bilde fra google bruker */}
             <Image
@@ -383,7 +384,6 @@ export default class Profile extends Component {
             /></View>
             
             <View style={styles.body}>
-            <ScrollView>
               <View style={styles.bodyContent}>
               <Text style={{fontWeight:"bold", fontSize:16}}>FirstName</Text>
                 <TouchableOpacity style={styles.buttonContainer} onPress={this.changeFirstName}>
@@ -406,10 +406,10 @@ export default class Profile extends Component {
                   <Text>{this.state.dataSource.address}</Text>
                 </TouchableOpacity>
               </View>
-              </ScrollView>
             </View>
             
           </View>
+          </ScrollView>
         );
 
       case "NewUser":
@@ -453,7 +453,7 @@ export default class Profile extends Component {
           leftComponent={{
             icon: "home",
             color: "#fff",
-            onPress: () => navigate("Home"),
+            onPress: () => navigate("Home",{userId: this.state.userId}),
           }}
           centerComponent={{
             text: "Available Shopping Lists",

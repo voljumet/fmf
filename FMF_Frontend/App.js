@@ -15,6 +15,9 @@ import Profile from './screens/ProfileScreen';
 import Login from './screens/LoginScreen';
 import ShopScreen from './screens/ShopScreen';
 import SearchScreen from './screens/SearchScreen';
+import Products from './Shopping/Products';
+import ShoppingCartIcon from './Shopping/ShoppingCartIcon';
+import CartScreen from './screens/CartScreen';
 
 
 
@@ -70,8 +73,8 @@ export default function App(props) {
           <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Driver" component={MapScreen} />
             <Stack.Screen name="Profile" component={Profile}/>
-            <Stack.Screen name="Store" component={ShopScreen} />
-            <Stack.Screen name="Shop" component={SearchScreen} />
+            <Stack.Screen name="ShopScreen" component={ShopScreen} />
+            <Stack.Screen name="Products" component={Products}/>
             
           </Stack.Navigator>
         </NavigationContainer>

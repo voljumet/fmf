@@ -15,6 +15,7 @@ import Products  from '../Shopping/Products';
 
 class CartScreen extends Component {
     render(){
+        console.log("DETTE ER CARTSCREEN" , this.props)
         return(
             
             <View style={styles.container}>
