@@ -12,12 +12,22 @@ using Microsoft.Data.SqlClient;
 namespace FMF_Backend{
 
     public static class Updater{
+
+        
     
         public static void Update(FMFDbContext context){
             // Delete the database before we initialize it.
             // This is common to do during development.
 
-            // context.Store1s.RemoveRange(context.Store1s);
+            context.Store1s.RemoveRange(context.Store1s);
+
+
+
+            // context.Database.ExecuteStoreCommand("DBCC CHECKIDENT('BibContents',RESEED,1);");
+
+            context.Database.ExecuteSqlCommand("DBCC CHECKIDENT('Store1s',RESEED,1)");
+
+
 
             // context.delete(Store1, null, null);
 
