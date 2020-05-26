@@ -23,7 +23,8 @@ class CartScreen extends Component {
             {this.props.cartItems.length > 0 ?
                 <Products
                    
-                    products={this.props.cartItems} 
+                    products={this.props.cartItems}
+                    UserID={this.props.userId}
                  />
                     
                 : <Text>No items in your cart</Text>
@@ -45,7 +46,9 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        removeItem: (product) => dispatch({ type: 'REMOVE_FROM_CART', payLoad: product })
+        removeItem: (product) => dispatch({ type: 'REMOVE_FROM_CART', payLoad: product }),
+        
+       
     }
 }
 

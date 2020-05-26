@@ -26,12 +26,16 @@ class Products extends Component {
         this.state = {
             isDatePickerVisible: false,
             chosenDate: '',
-            isConfirmDisabled: true
+            isConfirmDisabled: true,
+            currentUser:null
 
 
 
         };
     }
+
+    
+    
     totalPriceCar = (products) => {
         var tprice = 0;
 
@@ -80,6 +84,8 @@ class Products extends Component {
     };
 
     renderProducts = (products) => {
+        
+       
 
         return products.map((item, index) => {
 
@@ -126,7 +132,16 @@ class Products extends Component {
     replacer(products) {
         const test = {};
         test.products = [];
-        test.requestedTime = this.state.chosenDate; // Array
+        test.requestedTime = this.state.chosenDate;
+        test.shopper ={};
+        test.shopper.firstName = this.state.currentUser.firstName;
+        test.shopper.lastName = this.state.currentUser.lastName;
+        test.shopper.address = this.state.currentUser.address;
+        test.shopper.phone = this.state.currentUser.phone;
+        test.shopper.id = this.props.UserID;
+        
+         
+    
         var tprice = 0;
 
         for (var i = 0; i < products.length; i++) {
@@ -151,8 +166,22 @@ class Products extends Component {
 
     }
 
+    ProfileFetch=()=>{
+       fetch("https://cb81c798.ngrok.io/api/profile/" + this.props.UserID)
+                        .then((response) => response.json())
+                        .then((resJson) => {
+                        this.setState({
+                          currentUser: resJson
+                        })
+                        })
+                          .catch((error) => {
+                          console.log(error);
+                        });
+    }
+
 
     post = (products) => {
+        this.ProfileFetch();
 
         if (this.state.isConfirmDisabled === true) {
             Alert.alert("PLease Choose a date");
@@ -167,9 +196,14 @@ class Products extends Component {
                 },
 
                 body: JSON.stringify(this.replacer(products))
+                
+                
+                
+                
+                
             })
             Alert.alert("Post successfully done!")
-            console.log("A date has been picked: ", this.state.chosenDate);
+            console.log("A date has been picked: ",JSON.stringify(this.replacer(products)));
             this.props.emptyCart();
             this.DisableConfirmButton();
 
@@ -180,6 +214,9 @@ class Products extends Component {
 
 
     render() {
+        this.ProfileFetch();
+       
+       console.log("FROM PRODUCTS:", this.props.UserID)
         return (
 
 
@@ -217,8 +254,9 @@ const mapDispatchToProps = (dispatch) => {
 
     return {
         addItemToCart: (product) => dispatch({ type: 'ADD_TO_CART_TWO', payLoad: product }),
-        removeItem: (product) => dispatch({ type: 'REMOVE_FROM_CART', payLoad: product }),
-        emptyCart: () => dispatch({ type: 'EMPTY_CART' })
+        removeItem: (product) => dispatch({ type: 'REMOVE_FROM_CART', payLoad: product}),
+        emptyCart: () => dispatch({ type: 'EMPTY_CART' }),
+        
     }
 }
 const mapStateToProps = (state) => {
