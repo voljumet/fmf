@@ -40,7 +40,7 @@ export default class Profile extends Component {
 
     // 1. ------------------------------------------------------------------------------------------
     requestGoogle = async () => {
-      const response = await fetch("https://b096b580.ngrok.io/api/profile/googleid");
+      const response = await fetch("https://52964a03.ngrok.io/api/profile/googleid");
       const json = await response.json();
       let googleIdFromLogin = this.props.route.params.googleId;
 
@@ -84,7 +84,7 @@ export default class Profile extends Component {
 
 
 
-      const response = await fetch("https://b096b580.ngrok.io/api/profile/" + this.state.userId);
+      const response = await fetch("https://52964a03.ngrok.io/api/profile/" + this.state.userId);
       const json = await response.json();
       this.setState({
         dataSource: json,
@@ -112,7 +112,7 @@ export default class Profile extends Component {
       tlfphone: value.Tlf,
       adressnew: value.Adress
     })
-    fetch("https://b096b580.ngrok.io/api/profile", {
+    fetch("https://52964a03.ngrok.io/api/profile", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -147,7 +147,7 @@ export default class Profile extends Component {
   PutFirstname = (inputText) => {
     var ID = this.state.userId
     {
-      fetch("https://b096b580.ngrok.io/api/profile/" + this.state.userId , {
+      fetch("https://52964a03.ngrok.io/api/profile/" + this.state.userId , {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -172,7 +172,7 @@ export default class Profile extends Component {
   PutLastname = (inputText) => {
     var ID = this.state.userId
     {
-      fetch("https://b096b580.ngrok.io/api/profile/" + this.state.userId , {
+      fetch("https://52964a03.ngrok.io/api/profile/" + this.state.userId , {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -197,7 +197,7 @@ export default class Profile extends Component {
   PutEmail = (inputText) => {
     var ID = this.state.userId
     {
-      fetch("https://b096b580.ngrok.io/api/profile/" + this.state.userId , {
+      fetch("https://52964a03.ngrok.io/api/profile/" + this.state.userId , {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -222,7 +222,7 @@ export default class Profile extends Component {
   PutPhone = (inputText) => {
     var ID = this.state.userId
     {
-      fetch("https://b096b580.ngrok.io/api/profile/" + this.state.userId , {
+      fetch("https://52964a03.ngrok.io/api/profile/" + this.state.userId , {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -247,7 +247,7 @@ export default class Profile extends Component {
   PutAddress = (inputText) => {
     var ID = this.state.userId
     {
-      fetch("https://b096b580.ngrok.io/api/profile/" + this.state.userId , {
+      fetch("https://52964a03.ngrok.io/api/profile/" + this.state.userId , {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -385,22 +385,23 @@ export default class Profile extends Component {
             <View style={styles.body}>
             <ScrollView>
               <View style={styles.bodyContent}>
+              <Text style={{fontWeight:"bold", fontSize:16}}>FirstName</Text>
                 <TouchableOpacity style={styles.buttonContainer} onPress={this.changeFirstName}>
                   <Text>{this.state.dataSource.firstName}</Text>
                 </TouchableOpacity>
-
+                <Text style={{fontWeight:"bold", fontSize:16}}>LastName</Text>
                 <TouchableOpacity style={styles.buttonContainer} onPress={this.changeLastname}>
                   <Text>{this.state.dataSource.lastName}</Text>
                 </TouchableOpacity>
-
+                <Text style={{fontWeight:"bold", fontSize:16}}>E-mail</Text>
                 <TouchableOpacity style={styles.buttonContainer} onPress={this.changeEmail}>
                   <Text>{this.state.dataSource.email}</Text>
                 </TouchableOpacity>
-
+                <Text style={{fontWeight:"bold", fontSize:16}}>Tlf</Text>
                 <TouchableOpacity style={styles.buttonContainer} onPress = {this.changeTLF}>
                   <Text>{this.state.dataSource.phone}</Text>
                 </TouchableOpacity>
-
+                <Text style={{fontWeight:"bold", fontSize:16}}>Adress</Text>
                 <TouchableOpacity style={styles.buttonContainer} onPress = {this.changeAdress}>
                   <Text>{this.state.dataSource.address}</Text>
                 </TouchableOpacity>
@@ -516,7 +517,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   body: {
-    marginTop: -100,
+    marginTop: -130,
     marginBottom: 10,
   },
   bodyContent: {
@@ -541,7 +542,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   buttonContainer: {
-    marginTop: 10,
+    marginTop: 0,
     height: 45,
     textAlign: "center",
     flexDirection: 'row',
@@ -552,4 +553,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: "#00BFFF",
   },
+  text:{
+    left:40
+  }
 });
