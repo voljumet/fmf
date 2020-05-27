@@ -22,9 +22,10 @@ namespace FMF_Backend{
         
             context.SaveChanges();
         
+            System.Console.WriteLine("fetch");
         
             // Fech til liste 1 
-            string store1 = new WebClient().DownloadString("https://my-json-server.typicode.com/voljumet/demo/Store1");
+            string store1 = new WebClient().DownloadString("https://bhunter.online/api/PostAPI/GetPostModels");
             List<Store1> store1Items = JsonConvert.DeserializeObject<List<Store1>>(store1);
 
             foreach (var item in store1Items){
@@ -32,8 +33,9 @@ namespace FMF_Backend{
                     new Store1(item.ProductName,item.Supplier, item.Price, item.Weight)
                 });
             }
+            System.Console.WriteLine("fetch 1 done");
 
-            string store2 = new WebClient().DownloadString("https://my-json-server.typicode.com/voljumet/demo/Store1");
+            string store2 = new WebClient().DownloadString("https://bhunter.online/api/PostAPI/GetPostModels");
             List<Store2> store2Items = JsonConvert.DeserializeObject<List<Store2>>(store2);
 
             foreach (var item in store2Items){
@@ -41,22 +43,16 @@ namespace FMF_Backend{
                     new Store2(item.ProductName,item.Supplier, item.Price+1, item.Weight)
                 });
             }
-            
-            // string store3 = new WebClient().DownloadString("https://my-json-server.typicode.com/voljumet/demo/Store1");
-            // List<Store3> store3Items = JsonConvert.DeserializeObject<List<Store3>>(store3);
-
-            // foreach (var item in store3Items){
-            //     context.Store3s.AddRange(new List<Store3>{
-            //         new Store3(item.ProductName,item.Supplier, item.Price, item.Weight)
-            //     });
-            // }
-
+            System.Console.WriteLine("fetch 2 done ");
+        
             context.SaveChanges();
 
             var storeOne = context.Store1s.ToList();
             var storeTwo = context.Store2s.ToList();
             var storeThree = context.Store3s.ToList();
             var products = context.Products.ToList();
+
+            System.Console.WriteLine("loop 1 start");
 
             context.SaveChanges();
             
@@ -76,6 +72,7 @@ namespace FMF_Backend{
                     }
                 }
             }
+            System.Console.WriteLine("loop 1 done");
 
             context.Store2s.RemoveRange(context.Store2s);
             storeTwo.Clear();
@@ -107,7 +104,7 @@ namespace FMF_Backend{
 
             /* stores in store 4, but add the real deal in store1 */
             // Fech til liste 1 
-            string store4 = new WebClient().DownloadString("https://my-json-server.typicode.com/voljumet/demo/Store1");
+            string store4 = new WebClient().DownloadString("https://bhunter.online/api/PostAPI/GetPostModels");
             List<Store1> store4Items = JsonConvert.DeserializeObject<List<Store1>>(store4);
 
             foreach (var item in store4Items){
@@ -142,7 +139,7 @@ namespace FMF_Backend{
             storeOne.Clear();
             storeTwo.Clear();
 
-            string store5 = new WebClient().DownloadString("https://my-json-server.typicode.com/voljumet/demo/Store1");
+            string store5 = new WebClient().DownloadString("https://bhunter.online/api/PostAPI/GetPostModels");
             List<Store1> store5Items = JsonConvert.DeserializeObject<List<Store1>>(store5);
 
             foreach (var item in store5Items){
