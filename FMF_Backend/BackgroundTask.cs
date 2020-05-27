@@ -29,7 +29,7 @@ namespace FMF_Backend {
             _logger.LogInformation("Timed Hosted Service running.");
 
             _timer = new Timer(DoWork, null, TimeSpan.Zero, 
-                TimeSpan.FromSeconds(5));
+                TimeSpan.FromSeconds(10));
 
             return Task.CompletedTask;
         }

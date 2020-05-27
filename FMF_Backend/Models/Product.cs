@@ -19,6 +19,5 @@ namespace FMF_Backend.Models {
         public double Quantity { get; set;}
         public double Weight { get; set;}
 
-        
     }
 }

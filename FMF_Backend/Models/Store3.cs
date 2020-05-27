@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace FMF_Backend.Models{
-public class Store2 {
-    public Store2(string productName, string supplier, double price, double weight ){
+public class Store3 {
+    public Store3(string productName, string supplier, double price, double weight ){
             ProductName = productName;
             Supplier = supplier;
             Price = price;
