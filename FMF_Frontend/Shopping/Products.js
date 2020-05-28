@@ -134,13 +134,12 @@ class Products extends Component {
         test.products = [];
         test.requestedTime = this.state.chosenDate;
         test.shopper ={};
-        test.shopper.firstName = this.state.currentUser.firstName;
-        test.shopper.lastName = this.state.currentUser.lastName;
-        test.shopper.address = this.state.currentUser.address;
-        test.shopper.phone = this.state.currentUser.phone;
+        test.shopper.firstName = this.state.currentUser.FirstName;
+        test.shopper.lastName = this.state.currentUser.LastName;
+        test.shopper.address = this.state.currentUser.Address;
+        test.shopper.phone = this.state.currentUser.Phone;
         test.shopper.id = this.props.UserID;
         
-         
     
         var tprice = 0;
 

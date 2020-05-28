@@ -6,7 +6,7 @@ namespace FMF_Backend.Models{
     public class OrderList{
         public OrderList() {}
         public OrderList(Product product, Profile shopper, DateTime orderTime, 
-        DateTime requestedTime, double totalPrice, double totalWeight, Boolean available){
+        DateTime requestedTime, double totalPrice, double totalWeight, Boolean available, string driverName, string driverNumber){
 
            Products = new List<Product>();
            // Product = product;
@@ -14,6 +14,8 @@ namespace FMF_Backend.Models{
             TotalPrice = totalPrice;
             TotalWeight = totalWeight;
             Available = available;
+            DriverName = driverName;
+            DriverNumber = driverNumber;
         }
 
         public int Id { get; set; }
@@ -35,6 +37,10 @@ namespace FMF_Backend.Models{
         public double TotalWeight { get; set; }
 
         public Boolean Available{ get; set; }
+
+        public string DriverName { get; set; }
+        public string DriverNumber { get; set; }
+
 
 
 
