@@ -41,8 +41,10 @@ export default class Login extends Component {
         firstName: result["given_name"],
         picture: result["picture"],
       });
+
     }    
     // await this.cacheAuthAsync();
+    return this.state.auth
 
   }
   fetchUserInfo= async(accessToken) => {
