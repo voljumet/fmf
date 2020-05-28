@@ -29,7 +29,8 @@ export default class MapScreen extends Component {
       key: null,
       modalVisible: false,
       currentList: null,
-      listData: []
+      listData: [],
+      currentUser: null
     };
   }
 
@@ -62,6 +63,17 @@ ShowModalFunction = async () => {
 
 componentDidMount = async () => {
 
+  await fetch("https://3786bce80a4e.ngrok.io/api/profile/" + this.props.route.params.userId)
+  .then((response) => response.json())
+  .then((resJson) => {
+  this.setState({
+    currentUser: resJson
+  })  
+  })                        
+    .catch((error) => {
+    console.log(error);
+  });
+
   navigator.geolocation.getCurrentPosition(
     ({ coords }) => {
       this.setState({
@@ -75,7 +87,6 @@ componentDidMount = async () => {
     { enableHighAccuracy: true }
   )
 
-  liste = []
 
  await fetch("https://3786bce80a4e.ngrok.io/api/orderList/")
                      .then((response) => response.json())
@@ -84,7 +95,7 @@ componentDidMount = async () => {
                         fetch("https://3786bce80a4e.ngrok.io/api/orderList/getOrderList/" + list.id)
                         .then((response) => response.json())
                         .then((resJson) => {
-                          if(resJson.shopper != null || resJson.shopper != undefined){
+                          if(resJson.shopper != null && resJson.available){
                           this.getGeoData(resJson)
                           this.setState(prevState => ({
                             AllLists: [...prevState.AllLists, resJson],
@@ -151,9 +162,15 @@ putBackend= async () => {
       body: JSON.stringify({
           "id": this.state.currentList.id, 
           "available": false,
-          "driver": this.state.currentUser.firstName
+          "driverName": this.state.currentUser.firstName,
+          "driverNumber": this.state.currentUser.phne
+
       })
   })
+  this.ShowModalFunction()
+  alert("Du booket handlelisten!")
+  this.props.navigation.navigate("Home")
+
 }
 
 /*renderItem = ({item}) => (
@@ -168,7 +185,6 @@ componentDidUpdate = async (prevProps, prevState) => {
 
   render() {
     const {navigate} = this.props.navigation;
-    console.log(this.props.route.params.userId)
     if(this.state.currentList != null){
       return (
         <View style={styles.container}>
