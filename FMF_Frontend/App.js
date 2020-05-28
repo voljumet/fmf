@@ -68,9 +68,8 @@ export default function App(props) {
           <Stack.Navigator screenOptions={{
           headerShown: false
           }}>
-            {/*<Stack.Screen name="Login" component={Login} />*/}
-          <Stack.Screen name="Home" component={HomeScreen} 
-            />
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Driver" component={MapScreen} />
             <Stack.Screen name="Profile" component={Profile}/>
             <Stack.Screen name="ShopScreen" component={ShopScreen} />
