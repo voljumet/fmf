@@ -138,7 +138,15 @@ class Products extends Component {
         test.shopper.lastName = this.state.currentUser.LastName;
         test.shopper.address = this.state.currentUser.Address;
         test.shopper.phone = this.state.currentUser.Phone;
-        test.shopper.id = this.props.UserID;
+        //test.shopper.id = this.props.UserID;
+       /* test.shopper.firstName = this.state.currentUser.FirstName;
+        test.shopper.lastName = this.state.currentUser.LastName;
+        test.shopper.address = this.state.currentUser.Address;
+        test.shopper.phone = this.state.currentUser.Phone;
+        test.shopper.email = this.state.currentUser.Email;
+        test.shopper.googleId = this.state.currentUser.GoogleId;
+        test.shopper.notes = this.state.currentUser.Notes;
+        test.shopper.rating = this.state.currentUser.Rating;*/
         
     
         var tprice = 0;
@@ -166,7 +174,7 @@ class Products extends Component {
     }
 
     ProfileFetch=()=>{
-       fetch("https://cb81c798.ngrok.io/api/profile/" + this.props.UserID)
+       fetch("https://deef976b7bd2.ngrok.io/api/profile/" + this.props.UserID)
                         .then((response) => response.json())
                         .then((resJson) => {
                         this.setState({
@@ -176,18 +184,22 @@ class Products extends Component {
                           .catch((error) => {
                           console.log(error);
                         });
+                        console.log(this.state.currentUser)
+
     }
 
+//this.props.UserID
 
     post = (products) => {
         this.ProfileFetch();
+
 
         if (this.state.isConfirmDisabled === true) {
             Alert.alert("PLease Choose a date");
         } else {
 
 
-            fetch('https://11403577.ngrok.io/api/orderlist', {
+            fetch('https://deef976b7bd2.ngrok.io/api/orderlist', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -214,8 +226,6 @@ class Products extends Component {
 
     render() {
         this.ProfileFetch();
-       
-       console.log("FROM PRODUCTS:", this.props.UserID)
         return (
 
 

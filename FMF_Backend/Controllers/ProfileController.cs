@@ -42,23 +42,6 @@ namespace FMF_Backend.Controllers
 
             return profile;
         }
-        public class GoogleIdCl{
-             public long Id {get; set;}
-             public string GoogleId {get; set; }
-        }
-
-        // GET: api/Profile
-        [HttpGet("googleid")]
-        public async Task<ActionResult<IEnumerable<GoogleIdCl>>> GetProfileGoogleId()
-        {
-            var proflist = await _context.Profiles
-            .Select(prof => new GoogleIdCl{
-                Id = prof.Id,
-                GoogleId = prof.GoogleId
-            })
-            .ToListAsync();
-            return proflist;
-        }
 
         // PUT: api/Profile/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
