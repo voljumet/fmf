@@ -17,9 +17,8 @@ const cartItems  = (state = [] , action) => {
                 }
             }
 
-
-
             
+          
         
         case 'ADD_TO_CART':
             let existingCartItem = state.find(

@@ -168,6 +168,7 @@ componentDidUpdate = async (prevProps, prevState) => {
 
   render() {
     const {navigate} = this.props.navigation;
+    console.log(this.props.route.params.userId)
     if(this.state.currentList != null){
       return (
         <View style={styles.container}>
