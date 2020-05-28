@@ -77,11 +77,11 @@ componentDidMount = async () => {
 
   liste = []
 
- await fetch("https://11403577.ngrok.io/api/orderList/")
+ await fetch("https://3786bce80a4e.ngrok.io/api/orderList/")
                      .then((response) => response.json())
                      .then((responseJson) => {
                       for(const list of responseJson){ 
-                        fetch("https://11403577.ngrok.io/api/orderList/getOrderList/" + list.id)
+                        fetch("https://3786bce80a4e.ngrok.io/api/orderList/getOrderList/" + list.id)
                         .then((response) => response.json())
                         .then((resJson) => {
                           if(resJson.shopper != null || resJson.shopper != undefined){
@@ -142,7 +142,7 @@ putBackend= async () => {
     }
 }))
 
-    await fetch('https://11403577.ngrok.io/api/orderList/PutOrderList/' + this.state.currentList.id, {
+    await fetch('https://3786bce80a4e.ngrok.io/api/orderList/PutOrderList/' + this.state.currentList.id, {
       method: 'PUT',
       headers: {
           Accept: 'application/json',
@@ -151,6 +151,7 @@ putBackend= async () => {
       body: JSON.stringify({
           "id": this.state.currentList.id, 
           "available": false,
+          "driver": this.state.currentUser.firstName
       })
   })
 }
