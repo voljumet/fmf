@@ -29,14 +29,13 @@ export default class Profile extends Component {
     };
   }
 
-async componentDidMount() {
+  async componentDidMount() {
     requestGoogle = async () => {
       const response = await fetch(
-        "https://150eb9b0ca84.ngrok.io/api/profile/googleid"
+        "https://574e87637d42.ngrok.io/api/profile/googleid"
       );
       const json = await response.json();
       let googleIdFromLogin = this.props.route.params.googleId;
-
 
       for (var i = 0; i < json.length; i++) {
         if (json[i].googleId === googleIdFromLogin) {
@@ -61,7 +60,7 @@ async componentDidMount() {
     requestGoogle();
     const requestProfile = async () => {
       const response = await fetch(
-        "https://150eb9b0ca84.ngrok.io/api/profile/" + this.state.userId
+        "https://574e87637d42.ngrok.io/api/profile/" + this.state.userId
       );
       const json = await response.json();
       this.setState({
@@ -76,7 +75,7 @@ async componentDidMount() {
       tlfphone: value.Tlf,
       adressnew: value.Adress,
     });
-    fetch("https://150eb9b0ca84.ngrok.io/api/profile", {
+    fetch("https://574e87637d42.ngrok.io/api/profile", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -108,7 +107,7 @@ async componentDidMount() {
   PutFirstname = (inputText) => {
     var ID = this.state.userId;
     {
-      fetch("https://150eb9b0ca84.ngrok.io/api/profile/" + this.state.userId, {
+      fetch("https://574e87637d42.ngrok.io/api/profile/" + this.state.userId, {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -133,7 +132,7 @@ async componentDidMount() {
   PutLastname = (inputText) => {
     var ID = this.state.userId;
     {
-      fetch("https://150eb9b0ca84.ngrok.io/api/profile/" + this.state.userId, {
+      fetch("https://574e87637d42.ngrok.io/api/profile/" + this.state.userId, {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -158,7 +157,7 @@ async componentDidMount() {
   PutEmail = (inputText) => {
     var ID = this.state.userId;
     {
-      fetch("https://150eb9b0ca84.ngrok.io/api/profile/" + this.state.userId, {
+      fetch("https://574e87637d42.ngrok.io/api/profile/" + this.state.userId, {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -183,7 +182,7 @@ async componentDidMount() {
   PutPhone = (inputText) => {
     var ID = this.state.userId;
     {
-      fetch("https://150eb9b0ca84.ngrok.io/api/profile/" + this.state.userId, {
+      fetch("https://574e87637d42.ngrok.io/api/profile/" + this.state.userId, {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -208,7 +207,7 @@ async componentDidMount() {
   PutAddress = (inputText) => {
     var ID = this.state.userId;
     {
-      fetch("https://150eb9b0ca84.ngrok.io/api/profile/" + this.state.userId, {
+      fetch("https://574e87637d42.ngrok.io/api/profile/" + this.state.userId, {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -417,7 +416,7 @@ async componentDidMount() {
   };
 
   render() {
-    console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
+    console.ignoredYellowBox = ["Warning: Each", "Warning: Failed"];
     const { navigate } = this.props.navigation;
     return (
       <View>
@@ -447,13 +446,11 @@ const options = {
   fields: {
     Telefon: {
       placeholder: "909 90 909",
-      error:
-        "Uten telefonnummer, hvordan skal vi få tak i deg?",
+      error: "Uten telefonnummer, hvordan skal vi få tak i deg?",
     },
     Adresse: {
       placeholder: "eks. Jon Lilletuns vei 9, 4879 Grimstad",
-      error:
-        "VI trenger adressen din for å vite hvor vi skal levere",
+      error: "VI trenger adressen din for å vite hvor vi skal levere",
     },
     terms: {
       label: "Aksepter vilkår",

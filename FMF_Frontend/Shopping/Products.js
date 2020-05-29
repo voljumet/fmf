@@ -169,15 +169,14 @@ class Products extends Component {
   }
 
   ProfileFetch = () => {
-    fetch("https://150eb9b0ca84.ngrok.io/api/profile/" + this.props.UserID)
+    fetch("https://574e87637d42.ngrok.io/api/profile/" + this.props.UserID)
       .then((response) => response.json())
       .then((resJson) => {
         this.setState({
           currentUser: resJson,
         });
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   post = (products) => {
@@ -185,7 +184,7 @@ class Products extends Component {
     if (this.state.isConfirmDisabled === true) {
       Alert.alert("Velg en dato!");
     } else {
-      fetch("https://150eb9b0ca84.ngrok.io/api/orderlist", {
+      fetch("https://574e87637d42.ngrok.io/api/orderlist", {
         method: "POST",
         headers: {
           Accept: "application/json",

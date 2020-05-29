@@ -13,7 +13,6 @@ import redMarker from "../assets/images/dot.png";
 import Modal from "react-native-modal";
 import { Header } from "react-native-elements";
 
-
 Geocoder.init("AIzaSyBh4LzOmbFVqu5wc_u_9S4yKT1rhbgHBuw");
 
 export default class MapScreen extends Component {
@@ -72,7 +71,7 @@ export default class MapScreen extends Component {
 
   componentDidMount = async () => {
     await fetch(
-      "https://150eb9b0ca84.ngrok.io/api/profile/" +
+      "https://574e87637d42.ngrok.io/api/profile/" +
         this.props.route.params.userId
     )
       .then((response) => response.json())
@@ -98,12 +97,12 @@ export default class MapScreen extends Component {
       { enableHighAccuracy: true }
     );
 
-    await fetch("https://150eb9b0ca84.ngrok.io/api/orderList/")
+    await fetch("https://574e87637d42.ngrok.io/api/orderList/")
       .then((response) => response.json())
       .then((responseJson) => {
         for (const list of responseJson) {
           fetch(
-            "https://150eb9b0ca84.ngrok.io/api/orderList/getOrderList/" +
+            "https://574e87637d42.ngrok.io/api/orderList/getOrderList/" +
               list.id
           )
             .then((response) => response.json())
@@ -115,12 +114,10 @@ export default class MapScreen extends Component {
                 }));
               }
             })
-            .catch((error) => {
-            });
+            .catch((error) => {});
         }
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   getGeoData(list) {
@@ -162,7 +159,7 @@ export default class MapScreen extends Component {
     }));
 
     await fetch(
-      "https://150eb9b0ca84.ngrok.io/api/orderList/PutOrderList/" +
+      "https://574e87637d42.ngrok.io/api/orderList/PutOrderList/" +
         this.state.currentList.id,
       {
         method: "PUT",
@@ -186,7 +183,7 @@ export default class MapScreen extends Component {
   componentDidUpdate = async (prevProps, prevState) => {};
 
   render() {
-    console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
+    console.ignoredYellowBox = ["Warning: Each", "Warning: Failed"];
     const { navigate } = this.props.navigation;
     if (this.state.currentList != null) {
       return (
