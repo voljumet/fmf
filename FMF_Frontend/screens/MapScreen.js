@@ -70,10 +70,7 @@ export default class MapScreen extends Component {
   }
 
   componentDidMount = async () => {
-    await fetch(
-      "https://574e87637d42.ngrok.io/api/profile/" +
-        this.props.route.params.userId
-    )
+    await fetch("fillmyfridge.no/api/profile/" + this.props.route.params.userId)
       .then((response) => response.json())
       .then((resJson) => {
         this.setState({
@@ -97,14 +94,11 @@ export default class MapScreen extends Component {
       { enableHighAccuracy: true }
     );
 
-    await fetch("https://574e87637d42.ngrok.io/api/orderList/")
+    await fetch("fillmyfridge.no/api/orderList/")
       .then((response) => response.json())
       .then((responseJson) => {
         for (const list of responseJson) {
-          fetch(
-            "https://574e87637d42.ngrok.io/api/orderList/getOrderList/" +
-              list.id
-          )
+          fetch("fillmyfridge.no/api/orderList/getOrderList/" + list.id)
             .then((response) => response.json())
             .then((resJson) => {
               if (resJson.shopper != null && resJson.available) {
@@ -159,8 +153,7 @@ export default class MapScreen extends Component {
     }));
 
     await fetch(
-      "https://574e87637d42.ngrok.io/api/orderList/PutOrderList/" +
-        this.state.currentList.id,
+      "fillmyfridge.no/api/orderList/PutOrderList/" + this.state.currentList.id,
       {
         method: "PUT",
         headers: {

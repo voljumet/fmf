@@ -31,9 +31,7 @@ export default class Profile extends Component {
 
   async componentDidMount() {
     requestGoogle = async () => {
-      const response = await fetch(
-        "https://574e87637d42.ngrok.io/api/profile/googleid"
-      );
+      const response = await fetch("fillmyfridge.no/api/profile/googleid");
       const json = await response.json();
       let googleIdFromLogin = this.props.route.params.googleId;
 
@@ -60,7 +58,7 @@ export default class Profile extends Component {
     requestGoogle();
     const requestProfile = async () => {
       const response = await fetch(
-        "https://574e87637d42.ngrok.io/api/profile/" + this.state.userId
+        "fillmyfridge.no/api/profile/" + this.state.userId
       );
       const json = await response.json();
       this.setState({
@@ -75,7 +73,7 @@ export default class Profile extends Component {
       tlfphone: value.Tlf,
       adressnew: value.Adress,
     });
-    fetch("https://574e87637d42.ngrok.io/api/profile", {
+    fetch("fillmyfridge.no/api/profile", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -107,7 +105,7 @@ export default class Profile extends Component {
   PutFirstname = (inputText) => {
     var ID = this.state.userId;
     {
-      fetch("https://574e87637d42.ngrok.io/api/profile/" + this.state.userId, {
+      fetch("fillmyfridge.no/api/profile/" + this.state.userId, {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -132,7 +130,7 @@ export default class Profile extends Component {
   PutLastname = (inputText) => {
     var ID = this.state.userId;
     {
-      fetch("https://574e87637d42.ngrok.io/api/profile/" + this.state.userId, {
+      fetch("fillmyfridge.no/api/profile/" + this.state.userId, {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -157,7 +155,7 @@ export default class Profile extends Component {
   PutEmail = (inputText) => {
     var ID = this.state.userId;
     {
-      fetch("https://574e87637d42.ngrok.io/api/profile/" + this.state.userId, {
+      fetch("fillmyfridge.no/api/profile/" + this.state.userId, {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -182,7 +180,7 @@ export default class Profile extends Component {
   PutPhone = (inputText) => {
     var ID = this.state.userId;
     {
-      fetch("https://574e87637d42.ngrok.io/api/profile/" + this.state.userId, {
+      fetch("fillmyfridge.no/api/profile/" + this.state.userId, {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -207,7 +205,7 @@ export default class Profile extends Component {
   PutAddress = (inputText) => {
     var ID = this.state.userId;
     {
-      fetch("https://574e87637d42.ngrok.io/api/profile/" + this.state.userId, {
+      fetch("fillmyfridge.no/api/profile/" + this.state.userId, {
         method: "PUT",
         headers: {
           Accept: "application/json",
