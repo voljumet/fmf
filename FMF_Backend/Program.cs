@@ -10,6 +10,7 @@ using FMF_Backend.Data;
 using Microsoft.Extensions.DependencyInjection;
 using FMF_Backend.Models;
 using Microsoft.EntityFrameworkCore;
+using FMF_Backend;
 
 namespace FMF_Backend
 {
@@ -18,7 +19,8 @@ namespace FMF_Backend
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            using (var scope = host.Services.CreateScope()){
+            using (var scope = host.Services.CreateScope())
+            {
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<FMFDbContext>();
                 var environment = services.GetService<IHostEnvironment>();
@@ -29,11 +31,16 @@ namespace FMF_Backend
             host.Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            }).ConfigureServices(services => {
+                /* services.AddHostedService<VideosWatcher>(); */
+                services.AddHostedService<BackgroundTask>();
+
+            });
+            /* litt kodesnutt. */
     }
 }

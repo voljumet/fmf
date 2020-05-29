@@ -14,7 +14,6 @@ import Login from './screens/LoginScreen';
 import ShopScreen from './screens/ShopScreen';
 import Products from './Shopping/Products';
 
-
 const Stack = createStackNavigator();
 
 export default function App(props) {

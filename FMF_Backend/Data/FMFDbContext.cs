@@ -10,5 +10,7 @@ namespace FMF_Backend.Data {
         public DbSet<OrderList> OrderLists { get; set; }
         public DbSet<Store1> Store1s { get; set; }
         public DbSet<Store2> Store2s { get; set; }
+        public DbSet<Store3> Store3s { get; set; }
+
     }
 }

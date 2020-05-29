@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "FMF_Frontend"
+		},
+		{
+			"path": "FMF_Backend"
+		},
+		{
+			"path": "ngrok"
+		}
+	],
+	"settings": {}
+}

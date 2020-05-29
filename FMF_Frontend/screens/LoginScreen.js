@@ -132,6 +132,9 @@ export default class Login extends Component {
 
 
 
+/* ----------------------------- function --------------------------------------- */
+
+/* ----------------------------- Styles --------------------------------------- */
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -148,4 +151,3 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
 });
-
