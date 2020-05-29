@@ -169,7 +169,7 @@ class Products extends Component {
   }
 
   ProfileFetch = () => {
-    fetch("fillmyfridge.no/api/profile/" + this.props.UserID)
+    fetch("https://fillmyfridge.no/api/profile/" + this.props.UserID)
       .then((response) => response.json())
       .then((resJson) => {
         this.setState({
@@ -184,7 +184,7 @@ class Products extends Component {
     if (this.state.isConfirmDisabled === true) {
       Alert.alert("Velg en dato!");
     } else {
-      fetch("fillmyfridge.no/api/orderlist", {
+      fetch("https://fillmyfridge.no/api/orderlist", {
         method: "POST",
         headers: {
           Accept: "application/json",
