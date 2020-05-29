@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FMF_Backend.Migrations
 {
     [DbContext(typeof(FMFDbContext))]
-    [Migration("20200526194755_InitialCreate")]
+    [Migration("20200529050720_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,11 +53,20 @@ namespace FMF_Backend.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTime>("OrderTime")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<bool>("Available")
+                        .HasColumnType("boolean");
 
-                    b.Property<DateTime>("RequestedTime")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<string>("DriverName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("DriverNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OrderTime")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RequestedTime")
+                        .HasColumnType("text");
 
                     b.Property<long?>("ShopperId")
                         .HasColumnType("bigint");
@@ -82,11 +91,20 @@ namespace FMF_Backend.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<long>("Barcode")
+                        .HasColumnType("bigint");
+
                     b.Property<int?>("OrderListId")
                         .HasColumnType("integer");
 
-                    b.Property<double>("PriceFMF")
-                        .HasColumnType("double precision");
+                    b.Property<string>("Picture")
+                        .HasColumnType("text");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<long>("ProdId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("ProductName")
                         .HasColumnType("text");
@@ -100,9 +118,14 @@ namespace FMF_Backend.Migrations
                     b.Property<double>("Weight")
                         .HasColumnType("double precision");
 
+                    b.Property<long?>("productModelId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OrderListId");
+
+                    b.HasIndex("productModelId");
 
                     b.ToTable("Products");
                 });
@@ -120,11 +143,14 @@ namespace FMF_Backend.Migrations
                     b.Property<bool>("Driver")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
 
-                    b.Property<long>("GoogleId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("GoogleId")
+                        .HasColumnType("text");
 
                     b.Property<string>("LastName")
                         .HasColumnType("text");
@@ -132,8 +158,8 @@ namespace FMF_Backend.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("text");
 
-                    b.Property<int>("Phone")
-                        .HasColumnType("integer");
+                    b.Property<string>("Phone")
+                        .HasColumnType("text");
 
                     b.Property<int>("Rating")
                         .HasColumnType("integer");
@@ -156,11 +182,23 @@ namespace FMF_Backend.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
+                    b.Property<long>("Barcode")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Picture")
+                        .HasColumnType("text");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<long>("ProdId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("ProductName")
                         .HasColumnType("text");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("Supplier")
                         .HasColumnType("text");
@@ -168,7 +206,12 @@ namespace FMF_Backend.Migrations
                     b.Property<double>("Weight")
                         .HasColumnType("double precision");
 
+                    b.Property<long?>("productModelId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("productModelId");
 
                     b.ToTable("Store1s");
                 });
@@ -180,11 +223,23 @@ namespace FMF_Backend.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
+                    b.Property<long>("Barcode")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Picture")
+                        .HasColumnType("text");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<long>("ProdId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("ProductName")
                         .HasColumnType("text");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("Supplier")
                         .HasColumnType("text");
@@ -192,9 +247,76 @@ namespace FMF_Backend.Migrations
                     b.Property<double>("Weight")
                         .HasColumnType("double precision");
 
+                    b.Property<long?>("productModelId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("productModelId");
+
                     b.ToTable("Store2s");
+                });
+
+            modelBuilder.Entity("FMF_Backend.Models.Store3", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<long>("Barcode")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Picture")
+                        .HasColumnType("text");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<long>("ProdId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ProductName")
+                        .HasColumnType("text");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Supplier")
+                        .HasColumnType("text");
+
+                    b.Property<double>("Weight")
+                        .HasColumnType("double precision");
+
+                    b.Property<long?>("productModelId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("productModelId");
+
+                    b.ToTable("Store3s");
+                });
+
+            modelBuilder.Entity("FMF_Backend.Models.productModel", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<long>("barScan")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("picture")
+                        .HasColumnType("text");
+
+                    b.Property<string>("productName")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("productModel");
                 });
 
             modelBuilder.Entity("FMF_Backend.Models.Order", b =>
@@ -220,6 +342,31 @@ namespace FMF_Backend.Migrations
                     b.HasOne("FMF_Backend.Models.OrderList", null)
                         .WithMany("Products")
                         .HasForeignKey("OrderListId");
+
+                    b.HasOne("FMF_Backend.Models.productModel", "productModel")
+                        .WithMany()
+                        .HasForeignKey("productModelId");
+                });
+
+            modelBuilder.Entity("FMF_Backend.Models.Store1", b =>
+                {
+                    b.HasOne("FMF_Backend.Models.productModel", "productModel")
+                        .WithMany()
+                        .HasForeignKey("productModelId");
+                });
+
+            modelBuilder.Entity("FMF_Backend.Models.Store2", b =>
+                {
+                    b.HasOne("FMF_Backend.Models.productModel", "productModel")
+                        .WithMany()
+                        .HasForeignKey("productModelId");
+                });
+
+            modelBuilder.Entity("FMF_Backend.Models.Store3", b =>
+                {
+                    b.HasOne("FMF_Backend.Models.productModel", "productModel")
+                        .WithMany()
+                        .HasForeignKey("productModelId");
                 });
 #pragma warning restore 612, 618
         }
