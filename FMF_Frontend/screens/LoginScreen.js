@@ -1,9 +1,6 @@
-import React, { useEffect, useState, Component } from 'react';
-import { AsyncStorage, Button, StyleSheet, Text, View, Image } from 'react-native';
+import React, { Component } from 'react';
+import { AsyncStorage, Button, StyleSheet, View, Image } from 'react-native';
 import * as AppAuth from 'expo-app-auth';
-import { ScrollView } from 'react-native-gesture-handler';
-import { Header } from "react-native-elements";
-
 
 export default class Login extends Component {
   constructor(){
@@ -21,7 +18,6 @@ export default class Login extends Component {
       ],
         clientId: '763542689360-jj5ibnjo9rtf0lhf6lpd9cs6j7iqq9k6.apps.googleusercontent.com',
       }
-      
     }
   }
   
@@ -30,10 +26,8 @@ export default class Login extends Component {
     this.state.auth = await AppAuth.authAsync(this.state.config)
     const result = await this.fetchUserInfo(this.state.auth.accessToken);
     let email = result["email"];
-    // console.log(result);
     if (email != null) {
       
-  
       this.props.navigation.navigate("Profile", {
         googleId: result["id"],
         email: result["email"],
@@ -43,10 +37,9 @@ export default class Login extends Component {
       });
 
     }    
-    // await this.cacheAuthAsync();
     return this.state.auth
-
   }
+  
   fetchUserInfo= async(accessToken) => {
     const response = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
       method: 'GET',
@@ -66,7 +59,6 @@ export default class Login extends Component {
   getCachedAuthAsync= async() => {
     let value = await AsyncStorage.getItem(this.state.StorageKey);
     this.setState({authState: JSON.parse(value)});
-    // console.log('getCachedAuthAsync', authState);
     if (this.state.authState) {
       if (this.checkIfTokenExpired(this.state.authState)) {
         return this.refreshAuthAsync(this.state.authState);
@@ -82,7 +74,6 @@ export default class Login extends Component {
   refreshAuthAsync=async({ refreshToken })=> {
     const getøojeBNF = await AppAuth.refreshAsync(this.state.config, refreshToken);
     this.setState({authState: getøojeBNF});
-    // console.log('refreshAuth', authState);
     await this.cacheAuthAsync(this.state.authState);
     return this.state.authState;
   }
@@ -94,20 +85,11 @@ export default class Login extends Component {
         isClientIdProvided: true,
       });
       await AsyncStorage.removeItem(this.state.StorageKey);
-      console.log('logger out');
       return null;
     } catch (e) {
-      alert(`Failed to revoke token: ${e.message}`);
+      alert(`Kunne ikke tilbakekalle kode: ${e.message}`);
     }
   }
-  // useEffect=(() => {
-  //   (async () => {
-  //     let cachedAuth = await getCachedAuthAsync();
-  //     if (cachedAuth && !this.state) {
-  //       setAuthState(cachedAuth);
-  //     }
-  //   })();
-  // }, []);
 
   componentDidMount=async()=>{
     const cachedAuth = await this.getCachedAuthAsync();
@@ -117,6 +99,7 @@ export default class Login extends Component {
   }
 
   render(){
+    console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
     return (
       <View style={styles.container}>
         <Image
@@ -129,14 +112,14 @@ export default class Login extends Component {
         />
   
         <Button
-          title="Google Signin"
+          title="Logg inn med Google"
           onPress={async () => {
             const _authState = await this.signInAsync({});
             this.setState({authState: _authState});
           }}
         />
          <Button
-          title="Sign Out "
+          title="Logg ut"
           onPress={async () => {
             await this.signOutAsync(this.state.authState);
             this.setState({authState: null});
@@ -155,6 +138,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    scaleX: 2,
   },
   loginImg: {
     width: 100,

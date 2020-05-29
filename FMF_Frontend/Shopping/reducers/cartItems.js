@@ -18,8 +18,6 @@ const cartItems  = (state = [] , action) => {
             }
 
             
-          
-        
         case 'ADD_TO_CART':
             let existingCartItem = state.find(
                 cartItem => cartItem.id === action.payLoad.id
@@ -29,7 +27,7 @@ const cartItems  = (state = [] , action) => {
                     cartItem.id === action.payLoad.id
                     ? {...cartItem, quantity: cartItem.quantity }
                     : cartItem ,
-                    Alert.alert("Already added ")
+                    Alert.alert("Allerede lagt til")
                     );
                     
             }else{
@@ -52,19 +50,10 @@ const cartItems  = (state = [] , action) => {
                     return[...state,  {...action.payLoad, quantity: 1}]
                 }
 
-
             case 'EMPTY_CART':
                 return[...state = []]
-               
-           
-
-
-                
-
-
-        
+    
     }
     return state
 }
-
 export default cartItems

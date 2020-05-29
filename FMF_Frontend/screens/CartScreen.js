@@ -2,41 +2,26 @@ import React, {Component} from "react";
 import{
     View,
     Text,
-    StyleSheet,
-    FlatList,
-    TouchableOpacity
+    StyleSheet
 } from "react-native";
 import {connect} from 'react-redux';
-import SearchScreen  from './SearchScreen';
 import Products  from '../Shopping/Products';
-
-
-
 
 class CartScreen extends Component {
     render(){
         return(
-            
-            <View style={styles.container}>
-                
+            <View style={styles.container}> 
             {this.props.cartItems.length > 0 ?
                 <Products
-                   
                     products={this.props.cartItems}
                     UserID={this.props.userId}
                  />
-                    
-                : <Text>No items in your cart</Text>
+                : <Text>Ingen varer i handlekurven</Text>
             }
-            
         </View>
-        );
-      
-        
+        );  
     }
 }
-
-
 
 const mapStateToProps = (state) => {
     return{
@@ -46,8 +31,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         removeItem: (product) => dispatch({ type: 'REMOVE_FROM_CART', payLoad: product }),
-        
-       
     }
 }
 

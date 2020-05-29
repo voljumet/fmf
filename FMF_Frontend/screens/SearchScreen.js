@@ -10,15 +10,12 @@ import {
   TouchableOpacity,
   Image
 
-
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
-import { Header } from "react-native-elements";
 
 class SearchScreen extends React.Component {
-
   constructor() {
     super();
     this.state = {
@@ -30,7 +27,6 @@ class SearchScreen extends React.Component {
     };
   }
 
-
   componentDidMount = async () => {
     this.keyboardDidShow = Keyboard.addListener(
       "keyboardDidShow",
@@ -41,7 +37,6 @@ class SearchScreen extends React.Component {
       "keyboardDidHide",
       this.keyboardDidHide
     );
-    // Change the URL to Store's URL
     return fetch("https://bhunter.online/api/PostAPI/GetPostModels")
       .then((response) => response.json())
       .then((responseJson) => {
@@ -59,13 +54,8 @@ class SearchScreen extends React.Component {
   handleSearchIcon=()=>{
     if(this.state.searchBarFocused===true){
       this.setState({searchBarFocused: false})
-     
-     
-
     }else{
       this.setState({searchBarFocused: true})
-     
-     
     }
   }
   
@@ -75,9 +65,6 @@ class SearchScreen extends React.Component {
   buttonISdisable=()=>{
     this.setState({ItemsAddedToCart: false})
   }
-
-
-
   keyboardDidShow = () => {
     this.setState({ searchBarFocused: true });
   };
@@ -100,10 +87,8 @@ class SearchScreen extends React.Component {
     this.props.addItemToCart(item)
     
   };
-  //items will be displayed
   renderItem = ({ item }) => (
-    //Change "title" with the corresponding name in API
-    <View style={{ backgroundColor: 'white', padding: 5, margin: 10, borderWidth: 2, borderColor: '#61dafb' }}>
+    <View style={{ backgroundColor: 'white', padding: 5, margin: 10, borderWidth: 2, borderColor: '#3c6fb5' }}>
       <View>
         <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 13 }}>{item.supplier}</Text>
         <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>{item.productModel.productName}</Text>
@@ -115,19 +100,14 @@ class SearchScreen extends React.Component {
           style={{ width: 90, height: 90 }} />
 
         <TouchableOpacity style={styles.button}  onPress={(val) => this.handlePress(item)}>
-          <Text style={styles.text} >Add to your cart</Text>
+          <Text style={styles.text}>Legg til i handlekurv</Text>
         </TouchableOpacity>
-
       </View>
-
-
-
     </View>
   );
 
   render() {
-    console.log("search: ",this.props)
-
+    console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
     if (this.state.isLoading) {
       return (
         <View style={styles.activityindicator}>
@@ -136,7 +116,7 @@ class SearchScreen extends React.Component {
       );
     }else
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1}}>
         <View
           style={{
             padding: 50,
@@ -164,10 +144,9 @@ class SearchScreen extends React.Component {
               }
               style={{ fontSize: 24 }}
               onPress={()=> this.handleSearchIcon()}
-            //onPress = {(value) => serachitem(value)}
             />
             <TextInput
-              placeholder="Search for groceries"
+              placeholder="Søk etter varer"
               style={{
                 fontSize: 24,
                 marginLeft: 15,
@@ -187,10 +166,9 @@ class SearchScreen extends React.Component {
               }}
               data={this.state.dataSource}
               renderItem={this.renderItem}
-              //{({ item }) => <Text style={{ padding: 20, fontSize: 20 }}>{item.title} </Text>}
               ListEmptyComponent={() => (
                 <Text style={{ color: "red" }}>
-                  No Item Found{" "}
+                  Ingen vare funnet{" "}
                 </Text>
               )}
               keyExtractor={(item, index) => index.toString()}
@@ -203,11 +181,9 @@ class SearchScreen extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => {
-
   return {
     addItemToCart: (product) => dispatch({ type: 'ADD_TO_CART', payLoad: product }),
   }
-
 }
 const mapStateToProps = (state) => {
   return {
@@ -231,26 +207,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
-
-  },
-  buttoms: {
-    paddingLeft: 30, paddingTop: 10, marginRight: 10
-  },
-  fixToText: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
   },
   icon: {
-
   }, text: {
     fontSize: 18,
     color: 'white',
     textAlign: 'center'
   },
   button: {
-    width: 250,
+    left:20,
+    width: 200,
     height: 50,
-   backgroundColor: "#61dafb",
+   backgroundColor: "#3c6fb5",
     borderRadius: 30,
     justifyContent: 'center',
     marginTop: 15

@@ -1,14 +1,17 @@
 import React, { Component } from "react";
-import MapView, { AnimatedRegion } from "react-native-maps";
-import { StyleSheet, ScrollView ,Text, View, Dimensions, Button, FlatList,  TouchableHighlight, Item} from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  FlatList,
+  TouchableHighlight,
+} from "react-native";
 import Geocoder from "react-native-geocoding";
-import redMarker from '../assets/images/dot.png'
-import Modal from 'react-native-modal';
-import { Table, Row, Rows } from 'react-native-table-component';
-import { List, ListItem } from "react-native-elements";
+import MapView from "react-native-maps";
+import redMarker from "../assets/images/dot.png";
+import Modal from "react-native-modal";
 import { Header } from "react-native-elements";
-import { TextInput } from "react-native-gesture-handler";
-
 
 
 Geocoder.init("AIzaSyBh4LzOmbFVqu5wc_u_9S4yKT1rhbgHBuw");
@@ -30,217 +33,235 @@ export default class MapScreen extends Component {
       modalVisible: false,
       currentList: null,
       listData: [],
-      currentUser: null
+      currentUser: null,
     };
   }
 
-ShowModalFunction = async () => {
-    this.setState({modalVisible: !this.state.modalVisible});
-}
-  
+  ShowModalFunction = async () => {
+    this.setState({ modalVisible: !this.state.modalVisible });
+  };
+
   handleMarkerPress = async (event) => {
-    const markerID = event.nativeEvent.id
-    let object = this.state.AllLists.find(list => list.id === parseInt(markerID, 10))
+    const markerID = event.nativeEvent.id;
+    let object = this.state.AllLists.find(
+      (list) => list.id === parseInt(markerID, 10)
+    );
     this.setState({
       currentList: object,
-    });   
-    this.ShowModalFunction()
-    
+    });
+    this.ShowModalFunction();
+  };
+
+  renderMarkers() {
+    return this.state.locations.map((location) => {
+      return (
+        <MapView.Marker
+          coordinate={{
+            latitude: location.location.lat,
+            longitude: location.location.lng,
+          }}
+          key={location.key}
+          title={location.title}
+          image={redMarker}
+          identifier={location.key.toString()}
+          onPress={(event) => this.handleMarkerPress(event)}
+        />
+      );
+    });
   }
 
-  renderMarkers (){
-    return this.state.locations.map(location => {
-      return <MapView.Marker 
-      coordinate={{ latitude: location.location.lat, longitude: location.location.lng }}
-      key={location.key}
-      title={location.title}
-      image={redMarker}
-      identifier={location.key.toString()} onPress={(event) => this.handleMarkerPress(event)}
-      />
-    })
-}
-
-
-componentDidMount = async () => {
-
-  await fetch("https://35e4fd19a09b.ngrok.io/api/profile/" + this.props.route.params.userId)
-  .then((response) => response.json())
-  .then((resJson) => {
-  this.setState({
-    currentUser: resJson
-  })  
-  })                        
-    .catch((error) => {
-    console.log(error);
-  });
-
-  navigator.geolocation.getCurrentPosition(
-    ({ coords }) => {
-      this.setState({
-        longitude: coords.longitude,
-        latitude: coords.latitude,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
+  componentDidMount = async () => {
+    await fetch(
+      "https://150eb9b0ca84.ngrok.io/api/profile/" +
+        this.props.route.params.userId
+    )
+      .then((response) => response.json())
+      .then((resJson) => {
+        this.setState({
+          currentUser: resJson,
+        });
       })
-    },
-    (error) => alert('Error: Are location services on?'),
-    { enableHighAccuracy: true }
-  )
+      .catch((error) => {
+        // console.log(error);
+      });
 
-
- await fetch("https://35e4fd19a09b.ngrok.io/api/orderList/")
-                     .then((response) => response.json())
-                     .then((responseJson) => {
-                      for(const list of responseJson){ 
-                        fetch("https://35e4fd19a09b.ngrok.io/api/orderList/getOrderList/" + list.id)
-                        .then((response) => response.json())
-                        .then((resJson) => {
-                          if(resJson.shopper != null && resJson.available){
-                          this.getGeoData(resJson)
-                          this.setState(prevState => ({
-                            AllLists: [...prevState.AllLists, resJson],
-                          }
-                          ))
-                        }})                        
-                          .catch((error) => {
-                          console.log(error);
-                        });
-                        }
-                      })
-                     .catch((error) => {
-                       console.log(error);
-                     });
-                    }
-
-
-getGeoData(list) {
-    if(list.shopper != null || list.shopper != undefined){
-    Geocoder.from(list.shopper.address)
-      .then((response) => {
-        const object = {
-          location: response.results[0].geometry.location,
-          key: list.id,
-          title: "Handleliste " + list.id,
-        }
-        this.setState(prevState => ({
-          locations: [...prevState.locations, object]
-        }))
-        },
-          )
-      .catch((error) => console.warn(error)); }
-}
-
-
-renderSeparator = () => {
-  return (
-    <View
-      style={{
-        height: 1,
-        width: "86%",
-        backgroundColor: "#CED0CE",
-        marginLeft: "14%"
-      }}
-    />
-  );
-};
-
-putBackend= async () => {
-
-  this.setState(prevState => ({
-    currentList: {                  
-        ...prevState.currentList,    
-        available: false       
-    }
-}))
-
-    await fetch('https://35e4fd19a09b.ngrok.io/api/orderList/PutOrderList/' + this.state.currentList.id, {
-      method: 'PUT',
-      headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => {
+        this.setState({
+          longitude: coords.longitude,
+          latitude: coords.latitude,
+          latitudeDelta: 0.005,
+          longitudeDelta: 0.005,
+        });
       },
-      body: JSON.stringify({
-          "id": this.state.currentList.id, 
-          "available": false,
-          "driverName": this.state.currentUser.firstName,
-          "driverNumber": this.state.currentUser.phne
+      (error) => alert("Error: Are location services on?"),
+      { enableHighAccuracy: true }
+    );
 
+    await fetch("https://150eb9b0ca84.ngrok.io/api/orderList/")
+      .then((response) => response.json())
+      .then((responseJson) => {
+        for (const list of responseJson) {
+          fetch(
+            "https://150eb9b0ca84.ngrok.io/api/orderList/getOrderList/" +
+              list.id
+          )
+            .then((response) => response.json())
+            .then((resJson) => {
+              if (resJson.shopper != null && resJson.available) {
+                this.getGeoData(resJson);
+                this.setState((prevState) => ({
+                  AllLists: [...prevState.AllLists, resJson],
+                }));
+              }
+            })
+            .catch((error) => {
+            });
+        }
       })
-  })
-  this.ShowModalFunction()
-  alert("Du booket handlelisten!")
-  this.props.navigation.navigate("Home")
+      .catch((error) => {
+      });
+  };
 
-}
+  getGeoData(list) {
+    if (list.shopper != null || list.shopper != undefined) {
+      Geocoder.from(list.shopper.address)
+        .then((response) => {
+          const object = {
+            location: response.results[0].geometry.location,
+            key: list.id,
+            title: "Handleliste " + list.id,
+          };
+          this.setState((prevState) => ({
+            locations: [...prevState.locations, object],
+          }));
+        })
+        .catch((error) => console.warn(error));
+    }
+  }
 
-/*renderItem = ({item}) => (
-  <View>
-  <Text>{item.productName}</Text>
-  </View>
+  renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "86%",
+          backgroundColor: "#CED0CE",
+          marginLeft: "14%",
+        }}
+      />
+    );
+  };
 
-);
-*/
-componentDidUpdate = async (prevProps, prevState) => {
-}
+  putBackend = async () => {
+    this.setState((prevState) => ({
+      currentList: {
+        ...prevState.currentList,
+        available: false,
+      },
+    }));
+
+    await fetch(
+      "https://150eb9b0ca84.ngrok.io/api/orderList/PutOrderList/" +
+        this.state.currentList.id,
+      {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: this.state.currentList.id,
+          available: false,
+          driverName: this.state.currentUser.firstName,
+          driverNumber: this.state.currentUser.phne,
+        }),
+      }
+    );
+    this.ShowModalFunction();
+    alert("Du booket handlelisten!");
+    this.props.navigation.navigate("Home");
+  };
+
+  componentDidUpdate = async (prevProps, prevState) => {};
 
   render() {
-    const {navigate} = this.props.navigation;
-    if(this.state.currentList != null){
+    console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
+    const { navigate } = this.props.navigation;
+    if (this.state.currentList != null) {
       return (
         <View style={styles.container}>
           <Header
-        leftComponent={{ icon: 'home', color: '#fff', onPress: () => navigate("Home")}}
-        centerComponent={{ text: 'Available Shopping Lists', style: { color: '#fff' } }}
-        rightComponent={{ icon: 'person', color: '#fff', onPress: () => navigate("Profile")}}
-        />
-        <Modal
-        animationType="slide"
-        transparent={true}
-        visible={this.state.modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-          <FlatList
-          data={this.state.currentList.products}
-          renderItem={({item, index, separators}) => (
-              <View style={{backgroundColor: 'white'}}>
-                <Text style={styles.modalText}>{item.quantity}stk  {item.productName}     {item.priceFMF*item.quantity},-</Text>
+            leftComponent={{
+              icon: "home",
+              color: "#fff",
+              onPress: () => navigate("Home"),
+            }}
+            centerComponent={{
+              text: "Tilgjengelige handlelister",
+              style: { color: "#fff" },
+            }}
+            rightComponent={{
+              icon: "person",
+              color: "#fff",
+              onPress: () => navigate("Profile"),
+            }}
+          />
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={this.state.modalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <FlatList
+                  data={this.state.currentList.products}
+                  renderItem={({ item, index, separators }) => (
+                    <View style={{ backgroundColor: "white" }}>
+                      <Text style={styles.modalText}>
+                        {item.quantity}stk {item.productName}{" "}
+                        {item.priceFMF * item.quantity},-
+                      </Text>
+                    </View>
+                  )}
+                  scrollEnabled
+                  horizontal={false}
+                  keyExtractor={(item, index) => index.toString()}
+                />
+                <Text style={styles.modalText}>
+                  Totalpris: {this.state.currentList.totalPrice},-
+                </Text>
+                <TouchableHighlight
+                  style={{ ...styles.closeButton, backgroundColor: "#2196F3" }}
+                  onPress={this.putBackend}
+                >
+                  <Text style={styles.textStyle}> Book liste</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={{ ...styles.closeButton, backgroundColor: "#2196F3" }}
+                  onPress={() => {
+                    this.setState({
+                      modalVisible: !this.state.modalVisible,
+                    });
+                  }}
+                >
+                  <Text style={styles.textStyle}> Lukk</Text>
+                </TouchableHighlight>
               </View>
-          )}
-          scrollEnabled
-          horizontal={false}
-          keyExtractor={(item, index) => index.toString()}/>
-          <Text style={styles.modalText}>Totalpris: {this.state.currentList.totalPrice},-</Text>
-          <TouchableHighlight
-              style={{ ...styles.closeButton, backgroundColor: "#2196F3" }}
-              onPress={this.putBackend}
-            >
-            <Text style={styles.textStyle}> Book liste</Text>
-            </TouchableHighlight>
-          <TouchableHighlight
-              style={{ ...styles.closeButton, backgroundColor: "#2196F3" }}
-              onPress={() => {
-                this.setState({
-                  modalVisible: !this.state.modalVisible
-                });
-              }}
-            >
-            <Text style={styles.textStyle}> Lukk</Text>
-            </TouchableHighlight>
             </View>
-          </View>
-      </Modal>
+          </Modal>
 
           <MapView
             style={styles.mapStyle}
             region={{
-              latitude: this.state.latitude, 
-              longitude: this.state.longitude, 
+              latitude: this.state.latitude,
+              longitude: this.state.longitude,
               latitudeDelta: this.state.latitudeDelta,
-              longitudeDelta: this.state.longitudeDelta}}
+              longitudeDelta: this.state.longitudeDelta,
+            }}
             showsUserLocation={true}
             showsMyLocationButton={true}
             onMarkerPress={this._onMarkerPress}
@@ -249,32 +270,43 @@ componentDidUpdate = async (prevProps, prevState) => {
           </MapView>
         </View>
       );
+    } else {
+      return (
+        <View style={styles.container}>
+          <Header
+            leftComponent={{
+              icon: "home",
+              color: "#fff",
+              onPress: () => navigate("Home"),
+            }}
+            centerComponent={{
+              text: "Tilgjengelige handlelister",
+              style: { color: "#fff" },
+            }}
+            rightComponent={{
+              icon: "person",
+              color: "#fff",
+              onPress: () => navigate("Profile"),
+            }}
+          />
+          <MapView
+            style={styles.mapStyle}
+            region={{
+              latitude: this.state.latitude,
+              longitude: this.state.longitude,
+              latitudeDelta: this.state.latitudeDelta,
+              longitudeDelta: this.state.longitudeDelta,
+            }}
+            showsUserLocation={true}
+            showsMyLocationButton={true}
+            onMarkerPress={this._onMarkerPress}
+          >
+            {this.renderMarkers()}
+          </MapView>
+        </View>
+      );
+    }
   }
-  else{
-  return (
-    <View style={styles.container}>
-      <Header
-        leftComponent={{ icon: 'home', color: '#fff', onPress: () => navigate("Home")}}
-        centerComponent={{ text: 'Available Shopping Lists', style: { color: '#fff' } }}
-        rightComponent={{ icon: 'person', color: '#fff', onPress: () => navigate("Profile")}}
-        />
-      <MapView
-        style={styles.mapStyle}
-        region={{
-          latitude: this.state.latitude, 
-          longitude: this.state.longitude, 
-          latitudeDelta: this.state.latitudeDelta,
-          longitudeDelta: this.state.longitudeDelta}}
-        showsUserLocation={true}
-        showsMyLocationButton={true}
-        onMarkerPress={this._onMarkerPress}
-
-      >
-        {this.renderMarkers()}
-      </MapView>
-    </View>
-  );
-}}
 }
 
 const styles = StyleSheet.create({
@@ -302,47 +334,36 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    width: "70%"
+    width: "70%",
   },
   closeButton: {
     backgroundColor: "#F194FF",
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   modalText: {
     marginLeft: 13,
-    fontSize: 20
+    fontSize: 20,
   },
-  totalPrice:{
+  totalPrice: {
     marginLeft: 13,
     fontSize: 20,
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     padding: 10,
-    marginBottom: 40
+    marginBottom: 40,
   },
-  listContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 10,
-    marginBottom: 40
-},
-listView:{
-  paddingTop: 40,
-  paddingBottom: 40,
-}
 });

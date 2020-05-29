@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import {
   Image,
-  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -15,22 +14,15 @@ export default class HomeScreen extends Component {
     this.state = {
     };
   }
-  
 
-
-  // const { googleId } = route.params;
-  // const { email } = route.params;
-  // const { lastName } = route.params;
-  // const { firstName } = route.params;
-  // const { picture } = route.params;
   render(){
-    console.log(this.navigationOptions)
+    console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
     const {navigate} = this.props.navigation;
   return (
     <View style={styles.container}>
         <Header
         leftComponent={{ icon: 'home', color: '#fff', onPress: () => navigate("Home")}}
-        centerComponent={{ text: 'Home', style: { color: '#fff' } }}
+        centerComponent={{ text: 'Hjem', style: { color: '#fff' } }}
         rightComponent={{ icon: 'person', color: '#fff', onPress: () => navigate("Profile")}}
         />        
         <View style={styles.logoContainer}>
@@ -45,28 +37,22 @@ export default class HomeScreen extends Component {
         </View>
         <View style={styles.container}>
           <Text style={styles.getStartedText}>
-            What do you want to continue as today?
+            Hva vil du gjøre i dag?
           </Text>
-
-          {/* <Text style={styles.tabBarInfoText}>Info fra login:</Text> */}
-        {/* <Text style={styles.tabBarInfoText}>id: {googleId}</Text> */}
-        {/* <Text style={styles.tabBarInfoText}>email: {email}</Text> */}
-          {/* <Text style={styles.tabBarInfoText}>navn: {firstName}, {lastName}</Text> */}
-        {/* <Text style={styles.tabBarInfoText}>id: {picture}</Text> */}
       
           <View>
             <View marginTop={20}>
               <Button 
                 titleStyle={{
                   color: "white",
-                  marginTop: 25,
+                  marginTop: 0,
                   marginBottom: 25,
-                  fontSize: 90,
+                  fontSize: 70,
                   fontFamily: "arista",
                 }}
                 style={styles.RectangleShape}
                 // Text inside button-------------
-                title="Driver"
+                title="Sjåfør"
                 // Text inside button-------------
                 onPress={() =>
                   navigate('Driver', {userId: this.props.route.params.userId})
@@ -78,14 +64,14 @@ export default class HomeScreen extends Component {
               <Button
                 titleStyle={{
                   color: "white",
-                  marginTop: 25,
+                  marginTop: 0,
                   marginBottom: 25,
-                  fontSize: 90,
+                  fontSize: 70,
                   fontFamily: "arista",
                 }}
                 style={styles.RectangleShape}
                 // Text inside button-------------
-                title="Shopper"
+                title="Kjøper"
                 // Text inside button-------------
                 onPress={() => navigate("ShopScreen", {userId: this.props.route.params.userId})}
               />
@@ -127,10 +113,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   logoImage: {
-    height: 120,
+    height: 150,
     resizeMode: "contain",
-    marginTop: 3,
-    marginLeft: -10,
+    marginTop: 40,
   },
   getStartedText: {
     fontSize: 17,
