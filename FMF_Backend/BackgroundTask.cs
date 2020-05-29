@@ -39,7 +39,7 @@ namespace FMF_Backend {
         {
            using (var scope = scopeFactory.CreateScope()){
                 var dbContext = scope.ServiceProvider.GetRequiredService<FMFDbContext>();
-                Updater.Update(dbContext);
+                // Updater.Update(dbContext);
             }
         }
         public Task StopAsync(CancellationToken stoppingToken)

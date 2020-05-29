@@ -116,11 +116,6 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderColor: "#3c6fb5",
   },
-  multiButtonContainer: {
-    margin: 10,
-    fontSize: 50,
-    alignContent: "center",
-  },
   contentContainer: {
     paddingTop: 30,
   },
