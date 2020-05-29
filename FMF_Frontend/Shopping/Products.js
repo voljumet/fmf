@@ -175,7 +175,7 @@ class Products extends Component {
    }
  
    ProfileFetch=()=>{
-      fetch("https://18af2f39bf6e.ngrok.io/api/profile/" + this.props.UserID)
+      fetch("https://2b6d184479c7.ngrok.io/api/profile/" + this.props.UserID)
                        .then((response) => response.json())
                        .then((resJson) => {
                        this.setState({
@@ -201,7 +201,7 @@ class Products extends Component {
        } else {
  
  
-           fetch('https://18af2f39bf6e.ngrok.io/api/orderlist', {
+           fetch('https://2b6d184479c7.ngrok.io/api/orderlist', {
                method: 'POST',
                headers: {
                    Accept: 'application/json',
