@@ -63,7 +63,7 @@ ShowModalFunction = async () => {
 
 componentDidMount = async () => {
 
-  await fetch("https://18af2f39bf6e.ngrok.io/api/profile/" + this.props.route.params.userId)
+  await fetch("https://35e4fd19a09b.ngrok.io/api/profile/" + this.props.route.params.userId)
   .then((response) => response.json())
   .then((resJson) => {
   this.setState({
@@ -88,11 +88,11 @@ componentDidMount = async () => {
   )
 
 
- await fetch("https://18af2f39bf6e.ngrok.io/api/orderList/")
+ await fetch("https://35e4fd19a09b.ngrok.io/api/orderList/")
                      .then((response) => response.json())
                      .then((responseJson) => {
                       for(const list of responseJson){ 
-                        fetch("https://18af2f39bf6e.ngrok.io/api/orderList/getOrderList/" + list.id)
+                        fetch("https://35e4fd19a09b.ngrok.io/api/orderList/getOrderList/" + list.id)
                         .then((response) => response.json())
                         .then((resJson) => {
                           if(resJson.shopper != null && resJson.available){
@@ -153,7 +153,7 @@ putBackend= async () => {
     }
 }))
 
-    await fetch('https://18af2f39bf6e.ngrok.io/api/orderList/PutOrderList/' + this.state.currentList.id, {
+    await fetch('https://35e4fd19a09b.ngrok.io/api/orderList/PutOrderList/' + this.state.currentList.id, {
       method: 'PUT',
       headers: {
           Accept: 'application/json',
